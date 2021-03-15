@@ -9,8 +9,8 @@ import { ReactLogo } from "./ReactLogo";
  * https://www.styled-components.com/
  */
 const Container = styled.div`
-  height: ${props => props.height}px;
-  background: ${props => props.background};
+  height: ${(props) => props.height}px;
+  background: ${(props) => props.background};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,10 +29,10 @@ const Title = styled.h1`
  * https://reactjs.org/docs/components-and-props.html
  * @FunctionalComponent
  */
-const Header = props => {
+const Header = (props) => {
   return (
     <Container height={props.height}>
-      <Title>SoPra FS21 rocks with React!</Title>
+      <Title>SoPra FS21 rocks with group 20!</Title>
       <ReactLogo width={60} height={60} />
     </Container>
   );
