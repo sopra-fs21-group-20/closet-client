@@ -1,8 +1,8 @@
 {
   "expo": {
     "owner": "myoutfit",
-    "name": "testingExpo",
-    "slug": "testingExpo",
+    "name": "MyOutfit",
+    "slug": "MyOutfit",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,6 +29,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "Sick app!"
   }
 }
