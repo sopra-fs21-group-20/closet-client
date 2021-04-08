@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "myOutfit",
-    "slug": "myOutfit",
+    "name": "testExpo",
+    "slug": "testExpo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
