@@ -26,14 +26,8 @@ function FeedScreen({navigation}) {
                 id: 1,
                 username: "model69",
                 caption: "This is caption 1 a very very very long caption that will overflow after two lines of text.",
-                likes: 249,
-                comments: [{
-                    comment: "Hello"
-                },{
-                    comment: "Hello"
-                },{
-                    comment: "Hello"
-                }],
+                likes: 1236,
+                comments: 234,
                 images: [{
                     url: "https://cdn.21buttons.com/users/ccbf5acf555b4729be948a118202b688.medium.jpg",
                     thumbnailUrl: "https://cdn.21buttons.com/users/ccbf5acf555b4729be948a118202b688.medium.jpg",
@@ -47,13 +41,7 @@ function FeedScreen({navigation}) {
                 username: "ArosaLover123",
                 caption: "This is caption 2.",
                 likes: 249,
-                comments: [{
-                    comment: "Hello"
-                },{
-                    comment: "Hello"
-                },{
-                    comment: "Hello"
-                }],
+                comments: 100023,
                 images: [{
                     url: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
                     thumbnailUrl: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
@@ -90,8 +78,10 @@ function FeedScreen({navigation}) {
                     keyExtractor={(listing) => listing.id.toString()}
                     renderItem={({item, index}) => {
                         return (<Card
-                            title={item.title}
-                            subTitle={item.price}
+                            username={item.username}
+                            caption={item.caption}
+                            likes={item.likes}
+                            comments={item.comments}
                             imageUrl={item.images[0].url}
                             onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/}}
                             thumbnailUrl={item.images[0].thumbnailUrl}

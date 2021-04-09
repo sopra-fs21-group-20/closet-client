@@ -34,7 +34,7 @@ function UserDisplay({username, caption, profileImage, lightTheme,}) {
         }}>
             <View style={styles.container}>
                 {profileImage && <Image style={styles.profileImage} source={profileImage}/>}
-                <View style={[styles.detailsContainer, {height: isOpen ? null : 70}]}>
+                <View style={[styles.detailsContainer, {height: isOpen ? null : 100}]}>
                     <Text style={[styles.username, (lightTheme ? lightThemeStyle.username : null)]} numberOfLines={1}>
                         {username}
                     </Text>

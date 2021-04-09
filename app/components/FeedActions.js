@@ -5,98 +5,68 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Text from "./Text";
 import colors from "../config/colors";
 
-function FeedActions({username, caption, profileImage, lightTheme,}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [spinValue, setSpinValue] = useState(new Animated.Value(0));
+function FeedActions({likes, comments, lightTheme,}) {
 
-    const rotate = () => {
-        setIsOpen(!isOpen);
-        const toVal = isOpen ? 0 : 0.5;
-        Animated.timing(
-            spinValue,
-            {
-                toValue: toVal,
-                duration: 300,
-                easing: Easing.ease, // Easing is an additional import from react-native
-                useNativeDriver: true  // To make use of native driver for performance
-            }
-        ).start();
-    };
-
-    const spin = spinValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '360deg']
-    });
 
     return (
-        <TouchableWithoutFeedback onPress={() => {
-            rotate();
-        }}>
-            <View style={styles.container}>
-                {profileImage && <Image style={styles.profileImage} source={profileImage}/>}
-                <View style={[styles.detailsContainer, {height: isOpen ? null : 70}]}>
-                    <Text style={[styles.username, (lightTheme ? lightThemeStyle.username : null)]} numberOfLines={1}>
-                        {username}
-                    </Text>
-                    {caption && (
-                        <Text style={[styles.caption, (lightTheme ? lightThemeStyle.caption : null)]}
-                              numberOfLines={isOpen ? 0 : 2}>
-                            {caption}
-                        </Text>
-                    )}
-                </View>
+        <View style={styles.container}>
+            <TouchableWithoutFeedback onPress={() => {
 
-                <Animated.View style={{transform: [{rotate: spin}]}}>
+            }}>
+                <View style={styles.detailsContainer}>
+                    <Text style={[styles.text, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}>{likes}</Text>
                     <MaterialCommunityIcons
-                        color={(lightTheme ? lightThemeStyle.chevron.color : styles.chevron.color)}
-                        name={"chevron-down"}
+                        color={(lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}
+                        name={"heart-outline"}
                         size={25}
                     />
-                </Animated.View>
-            </View>
-        </TouchableWithoutFeedback>
+                </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => {
+
+            }}>
+                <View style={styles.detailsContainer}>
+                    <Text style={[styles.text, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}>{comments}</Text>
+                    <MaterialCommunityIcons
+                        color={(lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}
+                        name={"comment-outline"}
+                        size={25}
+                    />
+                </View>
+            </TouchableWithoutFeedback>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: "flex-start",
+        justifyContent: "flex-end",
+        alignItems: "center",
         flexDirection: "row",
         padding: 0,
         width: '100%',
+        marginTop: 20
     },
     detailsContainer: {
-        flex: 1,
-        marginLeft: 20,
-        justifyContent: "flex-start"
+        justifyContent: "flex-end",
+        alignItems: "center",
+        flexDirection: "row",
+        marginLeft: 20
     },
-    profileImage: {
-        width: 50,
-        height: 50,
-        borderRadius: 35,
-    },
-    caption: {
+    text: {
         color: colors.white,
+        marginRight: 5,
     },
-    username: {
-        fontWeight: "700",
-        color: colors.white,
-        fontSize: 24,
-        marginBottom: 5
-    },
-    chevron: {
+    icon: {
         color: colors.white
     },
 });
 
 const lightThemeStyle = StyleSheet.create({
-    caption: {
+    text: {
         color: colors.dark,
     },
-    username: {
-        color: colors.dark,
-    },
-    chevron: {
+    icon: {
         color: colors.dark,
     },
 });

@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import UserDisplay from "./UserDisplay";
 import FeedActions from "./FeedActions";
 
-function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl, index }) {
+function Card({ username, caption, likes, comments, imageUrl, onPress, thumbnailUrl, index }) {
   console.log(index);
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -20,12 +20,14 @@ function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl, index }) {
         />
         <View style={styles.detailsContainer}>
           <UserDisplay
-              username={title}
-              caption={subTitle}
+              username={username}
+              caption={caption}
               profileImage={require("../assets/mockProfileImage.jpg")}
               lightTheme={index%2 !== 0}
           />
-          <FeedActions likes={249}/>
+          <FeedActions likes={likes}
+                       comments={comments}
+                       lightTheme={index%2 !== 0}/>
         </View>
         <View style={[styles.afterCard, (index%2 === 0 ? null : lightTheme.afterCard)]} />
       </View>
@@ -64,6 +66,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     paddingVertical: 20,
+    flexDirection: "column",
   },
   image: {
     width: "100%",
