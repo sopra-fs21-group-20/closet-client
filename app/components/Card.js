@@ -4,11 +4,14 @@ import { Image } from "react-native-expo-image-cache";
 
 import Text from "./Text";
 import colors from "../config/colors";
+import UserDisplay from "./UserDisplay";
+import FeedActions from "./FeedActions";
 
-function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
+function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl, index }) {
+  console.log(index);
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.card}>
+      <View style={[styles.card, (index%2 === 0 ? null : lightTheme.card)]}>
         <Image
           style={styles.image}
           tint="light"
@@ -16,38 +19,91 @@ function Card({ title, subTitle, imageUrl, onPress, thumbnailUrl }) {
           uri={imageUrl}
         />
         <View style={styles.detailsContainer}>
-          <Text style={styles.title} numberOfLines={1}>
-            {title}
-          </Text>
-          <Text style={styles.subTitle} numberOfLines={2}>
-            {subTitle}
-          </Text>
+          <UserDisplay
+              username={title}
+              caption={subTitle}
+              profileImage={require("../assets/mockProfileImage.jpg")}
+              lightTheme={index%2 !== 0}
+          />
+          <FeedActions likes={249}/>
         </View>
+        <View style={[styles.afterCard, (index%2 === 0 ? null : lightTheme.afterCard)]} />
       </View>
     </TouchableWithoutFeedback>
   );
 }
 
+/*const headerHeight = ;
+const tabBarHeight = useBottomTabBarHeight();*/
+
 const styles = StyleSheet.create({
+  afterCard: {
+    height: 90,
+    bottom:-90,
+    left: 0,
+    right: 0,
+    position:"absolute",
+    backgroundColor: colors.dark
+  },
   card: {
-    borderRadius: 15,
-    backgroundColor: colors.white,
-    marginBottom: 20,
-    overflow: "hidden",
+    borderBottomColor: colors.dark,
+    borderBottomWidth: 20,
+    borderRadius: 0,
+    borderTopLeftRadius: 50,
+    backgroundColor: colors.dark,
+    marginTop: 20,
+    padding: 20,
+    paddingBottom: 0,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: -5
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 10,
   },
   detailsContainer: {
-    padding: 20,
+    paddingVertical: 20,
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 400,
+    borderRadius: 15,
+    borderTopLeftRadius: 35,
+    borderBottomRightRadius: 35,
+    shadowColor: colors.black,
+    shadowOffset: {
+      height: 5,
+      width: 5
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 10,
   },
   subTitle: {
-    color: colors.secondary,
+    color: colors.light,
     fontWeight: "bold",
   },
   title: {
+    color: colors.white,
     marginBottom: 7,
+    fontSize: 24
+  },
+});
+
+
+const lightTheme = StyleSheet.create({
+  afterCard: {
+    backgroundColor: colors.white
+  },
+  card: {
+    backgroundColor: colors.white,
+  },
+  subTitle: {
+    color: colors.dark,
+  },
+  title: {
+    color: colors.dark,
   },
 });
 
