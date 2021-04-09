@@ -10,14 +10,18 @@ import routes from "./routes";
 
 const Tab = createBottomTabNavigator();
 
+
 const AppNavigator = () => (
-  <Tab.Navigator>
+  <Tab.Navigator initialRouteName={"Account"}>
     <Tab.Screen
       name="Feed"
       component={FeedNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={size} />
+          <MaterialCommunityIcons
+              name="home"
+              color={color}
+              size={size}/>
         ),
       }}
     />
