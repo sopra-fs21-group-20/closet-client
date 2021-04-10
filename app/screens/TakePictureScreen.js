@@ -3,10 +3,8 @@ import {StyleSheet, Text, View, Button, Image, TouchableOpacity, SafeAreaView} f
 import { Camera } from 'expo-camera';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
 import colors from "../config/colors";
-import { Entypo } from '@expo/vector-icons';
 
 
 export default function TakePictureScreen({navigation, sendPropsToParent}) {
