@@ -5,20 +5,20 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import colors from "../config/colors";
-import listingsApi from "../api/listings";
+import listingsApi from "../api/feed";
 import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import AppText from "../components/Text";
 import useApi from "../hooks/useApi";
 
 function FeedScreen({navigation}) {
-    /*const getListingsApi = useApi(listingsApi.getListings);
+    /*const getFeedApi = useApi(feedApi.getFeed);
 
     useEffect(() => {
-      getListingsApi.request();
+      feedApi.request();
     }, []);*/
 
-    const getListingsApi = {
+    const getFeedApi = {
         loading: false,
         error: null,
         data: [
@@ -63,28 +63,27 @@ function FeedScreen({navigation}) {
 
     return (
         <>
-            <ActivityIndicator visible={getListingsApi.loading}/>
+            <ActivityIndicator visible={getFeedApi.loading}/>
             <Screen style={styles.screen}>
-                {getListingsApi.error && (
+                {getFeedApi.error && (
                     <>
                         <AppText>Couldn't retrieve the listings.</AppText>
-                        <Button title="Retry" onPress={getListingsApi.request}/>
+                        <Button title="Retry" onPress={getFeedApi.request}/>
                     </>
                 )}
                 <FlatList
                     /*viewabilityConfig={viabilityConfig}
                     onViewableItemsChanged={onViewableItemsChanged}*/
-                    data={getListingsApi.data}
-                    keyExtractor={(listing) => listing.id.toString()}
+                    data={getFeedApi.data}
+                    keyExtractor={(item) => item.id.toString()}
                     renderItem={({item, index}) => {
                         return (<Card
                             username={item.username}
                             caption={item.caption}
                             likes={item.likes}
                             comments={item.comments}
-                            imageUrl={item.images[0].url}
+                            images={item.images}
                             onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/}}
-                            thumbnailUrl={item.images[0].thumbnailUrl}
                             index={index}
                         />);
                     }}

@@ -11,7 +11,7 @@ import {
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import Screen from "../components/Screen";
 import FormImagePicker from "../components/forms/FormImagePicker";
-import listingsApi from "../api/listings";
+import listingsApi from "../api/feed";
 import useLocation from "../hooks/useLocation";
 import UploadScreen from "./UploadScreen";
 

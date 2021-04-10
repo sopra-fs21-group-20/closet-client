@@ -1,36 +1,46 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Easing, Animated, View, StyleSheet, Image, TouchableWithoutFeedback} from "react-native";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {Octicons} from "@expo/vector-icons";
 
 import Text from "./Text";
 import colors from "../config/colors";
+import LottieView from "lottie-react-native";
 
-function FeedActions({likes, comments, lightTheme,}) {
+function FeedActions({likes, comments, isLiked, lightTheme,}) {
+    useEffect(() => {
+        return () => {
+            animationPress();
+        };
+    }, [isLiked]);
 
+    const animation = useRef(null);
+    const animationPress = () => {
+        if(animation?.current && !isLiked) {
+            animation.current.play();
+        }
+    }
 
     return (
         <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={() => {
-
-            }}>
+            <TouchableWithoutFeedback onPress={animationPress}>
                 <View style={styles.detailsContainer}>
-                    <Text style={[styles.text, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}>{likes}</Text>
-                    <MaterialCommunityIcons
-                        color={(lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}
-                        name={"heart-outline"}
-                        size={25}
-                    />
+                    <Text
+                        style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>{likes}</Text>
+                    <View style={styles.lottieContainer}>
+                        <LottieView progress={0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(lightTheme ? require("../assets/animations/like-button-dark.json") : require("../assets/animations/like-button-white.json"))} />
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => {
 
             }}>
                 <View style={styles.detailsContainer}>
-                    <Text style={[styles.text, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}>{comments}</Text>
-                    <MaterialCommunityIcons
-                        color={(lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}
-                        name={"comment-outline"}
+                    <Text
+                        style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>{comments}</Text>
+                    <Octicons
+                        name={"comment"}
                         size={25}
+                        style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
                     />
                 </View>
             </TouchableWithoutFeedback>
@@ -41,7 +51,7 @@ function FeedActions({likes, comments, lightTheme,}) {
 const styles = StyleSheet.create({
     container: {
         justifyContent: "flex-end",
-        alignItems: "center",
+        alignItems: "stretch",
         flexDirection: "row",
         padding: 0,
         width: '100%',
@@ -51,15 +61,29 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "center",
         flexDirection: "row",
-        marginLeft: 20
+        marginLeft: 25,
     },
     text: {
         color: colors.white,
-        marginRight: 5,
+        marginRight: 8,
+        fontSize: 14,
     },
     icon: {
-        color: colors.white
+        color: colors.white,
+        marginLeft: 3,
+        height: 24
     },
+    lottieContainer: {
+        width: 30,
+        height: 30,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    lottie: {
+        width: 100,
+        height: 100,
+        top: -1
+    }
 });
 
 const lightThemeStyle = StyleSheet.create({
