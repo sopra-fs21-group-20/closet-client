@@ -6,23 +6,32 @@ import routes from "../navigation/routes";
 import FeedScreen from "../screens/FeedScreen";
 import colors from "../config/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import CommentScreen from "../screens/CommentScreen";
 import CameraNavigator from "./CameraNavigator";
 
 const Stack = createStackNavigator();
 
 const FeedNavigator = ({navigation}) => {
-    return (<Stack.Navigator mode="modal" screenOptions={{
+    return (<Stack.Navigator mode="float" screenOptions={{
         headerStyle: [styles.headerStyle],
         headerTitle: "myOutf.it",
         headerTitleStyle: styles.headerTitle,
-        headerLeft: () => (
-            <MaterialCommunityIcons name="camera-outline" style={styles.headerLeft} onPress={() => {
-                navigation.navigate('cameraNavigator')
-            }}/>
-        )
     }}>
-        <Stack.Screen name="Feed" component={FeedScreen}/>
-        <Stack.Screen name="cameraNavigator" component={CameraNavigator} options={{headerShown: false}}/>
+        <Stack.Screen name="Feed" component={FeedScreen} options={{
+            headerLeft: () => (
+                <MaterialCommunityIcons name="camera-outline" style={styles.headerLeft} onPress={() => {
+                    navigation.navigate('cameraNavigator');
+                }}/>
+            )
+        }}/>
+        <Stack.Screen name="Comments" component={CommentScreen} options={{
+            headerTitle: "Comments",
+            headerBackImage: () => (
+                <MaterialCommunityIcons name="chevron-left" style={styles.headerLeft} onPress={() => {
+                    Alert.alert("Not yet implemented.");
+                }}/>
+            ),
+        }}/>
     </Stack.Navigator>)
 };
 

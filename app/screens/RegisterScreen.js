@@ -16,7 +16,9 @@ import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().label("Name"),
+  firstName: Yup.string().required().label("First Name"),
+  lastName: Yup.string().required().label("Last Name"),
+  username: Yup.string().required().label("Username"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(4).label("Password"),
 });
@@ -32,7 +34,10 @@ function RegisterScreen() {
     const result = await registerApi.request(userInfo);
 
     if (!result.ok) {
-      if (result.data) setError(result.data.error);
+      if (result.data) {
+        setError(result.data.error);
+        console.log(result);
+      }
       else {
         setError("An unexpected error occurred.");
         console.log(result);
@@ -44,6 +49,7 @@ function RegisterScreen() {
       userInfo.username,
       userInfo.password
     );
+    console.log(authToken);
     auth.logIn(authToken);
   };
 
@@ -52,8 +58,8 @@ function RegisterScreen() {
       <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
       <Screen style={styles.container}>
         <Form
-          initialValues={{ firstName: "", lastName: "", username:"", email: "", password: "" }}
-          onSubmit={() => {console.log("submitted_hey")}}
+          initialValues={{ firstName: "Test", lastName: "Test2", username: "testusername", email: "test@test.ch", password: "test1234" }}
+          onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
           <ErrorMessage error={error} visible={error} />
@@ -64,16 +70,16 @@ function RegisterScreen() {
             placeholder="First Name"
           />
           <FormField
-              autoCorrect={false}
-              icon="account"
-              name="lastName"
-              placeholder="Last Name"
+            autoCorrect={false}
+            icon="account"
+            name="lastName"
+            placeholder="Last Name"
           />
           <FormField
-              autoCorrect={false}
-              icon="account"
-              name="username"
-              placeholder="Username"
+            autoCorrect={false}
+            icon="account"
+            name="username"
+            placeholder="Username"
           />
           <FormField
             autoCapitalize="none"

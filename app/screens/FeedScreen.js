@@ -5,26 +5,30 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import colors from "../config/colors";
-import listingsApi from "../api/listings";
+import listingsApi from "../api/feed";
 import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import AppText from "../components/Text";
 import useApi from "../hooks/useApi";
 
 function FeedScreen({navigation}) {
-    /*const getListingsApi = useApi(listingsApi.getListings);
+    /*const getFeedApi = useApi(feedApi.getFeed);
+
+    //default is start=0, end=3
 
     useEffect(() => {
-      getListingsApi.request();
+      feedApi.request();
     }, []);*/
 
-    const getListingsApi = {
+    const getFeedApi = {
         loading: false,
         error: null,
         data: [
             {
                 id: 1,
+                creationDate: null,
                 username: "model69",
+                profileImage: "https://cdn.21buttons.com/users/ccbf5acf555b4729be948a118202b688.medium.jpg",
                 caption: "This is caption 1 a very very very long caption that will overflow after two lines of text.",
                 likes: 1236,
                 comments: 234,
@@ -38,7 +42,22 @@ function FeedScreen({navigation}) {
             },
             {
                 id: 2,
+                creationDate: null,
                 username: "ArosaLover123",
+                profileImage: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
+                caption: "This is caption 2.",
+                likes: 249,
+                comments: 100023,
+                images: [{
+                    url: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
+                    thumbnailUrl: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
+                },]
+            },
+            {
+                id: 3,
+                creationDate: null,
+                username: "ArosaLover123",
+                profileImage: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
                 caption: "This is caption 2.",
                 likes: 249,
                 comments: 100023,
@@ -61,31 +80,38 @@ function FeedScreen({navigation}) {
         console.log(color);
     };*/
 
+    const navigateToComments = (post_id, captionAttrs, lightThemeEnabled) => {
+        console.log(post_id, captionAttrs);
+        navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
+    };
+
     return (
         <>
-            <ActivityIndicator visible={getListingsApi.loading}/>
+            <ActivityIndicator visible={getFeedApi.loading}/>
             <Screen style={styles.screen}>
-                {getListingsApi.error && (
+                {getFeedApi.error && (
                     <>
                         <AppText>Couldn't retrieve the listings.</AppText>
-                        <Button title="Retry" onPress={getListingsApi.request}/>
+                        <Button title="Retry" onPress={getFeedApi.request}/>
                     </>
                 )}
                 <FlatList
                     /*viewabilityConfig={viabilityConfig}
                     onViewableItemsChanged={onViewableItemsChanged}*/
-                    data={getListingsApi.data}
-                    keyExtractor={(listing) => listing.id.toString()}
+                    data={getFeedApi.data}
+                    keyExtractor={(item) => item.id.toString()}
                     renderItem={({item, index}) => {
                         return (<Card
+                            post_id={item.id}
                             username={item.username}
+                            profileImage={item.profileImage}
                             caption={item.caption}
                             likes={item.likes}
                             comments={item.comments}
-                            imageUrl={item.images[0].url}
+                            images={item.images}
                             onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/}}
-                            thumbnailUrl={item.images[0].thumbnailUrl}
                             index={index}
+                            onCommentClick={navigateToComments}
                         />);
                     }}
                 />
