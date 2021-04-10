@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import {Alert, StyleSheet} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -52,8 +52,8 @@ function RegisterScreen() {
       <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
       <Screen style={styles.container}>
         <Form
-          initialValues={{ name: "", email: "", password: "" }}
-          onSubmit={handleSubmit}
+          initialValues={{ firstName: "", lastName: "", username:"", email: "", password: "" }}
+          onSubmit={() => {console.log("submitted_hey")}}
           validationSchema={validationSchema}
         >
           <ErrorMessage error={error} visible={error} />
@@ -93,7 +93,7 @@ function RegisterScreen() {
             secureTextEntry
             textContentType="password"
           />
-          <SubmitButton title="Register" />
+          <SubmitButton title="Register"/>
         </Form>
       </Screen>
     </>

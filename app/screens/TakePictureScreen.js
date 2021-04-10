@@ -54,6 +54,7 @@ export default function TakePictureScreen({navigation, sendPropsToParent}) {
         if (!result.cancelled) {
             setImage(result.uri);
             setPictureTaken(true)
+            navigation.push('pictureTaken', {picture: result.uri})
         }
     };
 

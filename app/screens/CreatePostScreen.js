@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Yup from "yup";
 
 import {
@@ -15,6 +15,7 @@ import listingsApi from "../api/listings";
 import useLocation from "../hooks/useLocation";
 import UploadScreen from "./UploadScreen";
 import PostImagePicker from "../components/forms/PostImagePicker";
+import {MaterialIcons} from "@expo/vector-icons";
 
 const validationSchema = Yup.object().shape({
     title: Yup.string().required().min(1).label("Title"),
@@ -109,6 +110,11 @@ function CreatePostScreen({navigation, route}) {
                 progress={progress}
                 visible={uploadVisible}
             />
+            <View style={styles.topButtonContainer}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <MaterialIcons name="arrow-back" size={35} color="black" style={styles.backButton}/>
+                </TouchableOpacity>
+            </View>
             <Form
                 initialValues={{
                     caption: "",
@@ -134,6 +140,10 @@ function CreatePostScreen({navigation, route}) {
 const styles = StyleSheet.create({
     container: {
         padding: 10,
+    },
+    topButtonContainer:{
+        paddingBottom: 30,
+        paddingLeft: 10
     },
 });
 export default CreatePostScreen;
