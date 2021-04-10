@@ -9,7 +9,7 @@ import {
   FormField,
   SubmitButton,
 } from "../components/forms";
-import authApi from "../api/auth";
+import authApi from "../api/login";
 import useAuth from "../auth/useAuth";
 
 const validationSchema = Yup.object().shape({
@@ -23,9 +23,9 @@ function LoginScreen(props) {
 
   const handleSubmit = async ({ username, password }) => {
     const result = await authApi.login(username, password);
-    console.log(result);
     if (!result.ok) return setLoginFailed(true);
     setLoginFailed(false);
+    console.log("result.data", result.data);
     auth.logIn(result.data);
   };
 
@@ -34,7 +34,7 @@ function LoginScreen(props) {
       <Image style={styles.logo} source={require("../assets/logo-red.png")} />
 
       <Form
-        initialValues={{ username: "testusername2", password: "test1234" }}
+        initialValues={{ username: "test", password: "test" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >

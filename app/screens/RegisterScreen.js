@@ -4,7 +4,7 @@ import * as Yup from "yup";
 
 import Screen from "../components/Screen";
 import usersApi from "../api/users";
-import authApi from "../api/auth";
+import authApi from "../api/login";
 import useAuth from "../auth/useAuth";
 import {
   ErrorMessage,

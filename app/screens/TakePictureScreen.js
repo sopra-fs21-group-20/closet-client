@@ -34,10 +34,10 @@ export default function TakePictureScreen({navigation, sendPropsToParent}) {
 
     const takePicture = async () => {
         if(camera){
-            const data = await camera.takePictureAsync(null)
+            const data = await camera.takePictureAsync({base64: true, quality: 0})
             setPictureTaken(true)
             setImage(data.uri)
-            navigation.push('pictureTaken', {picture: data.uri})
+            navigation.push('pictureTaken', {picture: data.uri, base64: data.base64})
         }
     }
 

@@ -5,7 +5,8 @@ const key = "authToken";
 
 const storeToken = async (authToken) => {
   try {
-    await SecureStore.setItemAsync(key, authToken);
+    const truncatedToken = authToken.split(" ")[1];
+    await SecureStore.setItemAsync(key, "Bearer " + truncatedToken);
   } catch (error) {
     console.log("Error storing the auth token", error);
   }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import * as Yup from "yup";
 
@@ -15,6 +15,8 @@ import useLocation from "../hooks/useLocation";
 import UploadScreen from "./UploadScreen";
 import PostImagePicker from "../components/forms/PostImagePicker";
 import {MaterialIcons} from "@expo/vector-icons";
+import feed from "../api/feed";
+import AuthContext from "../auth/context";
 
 const validationSchema = Yup.object().shape({
     caption: Yup.string().label("Caption"),
@@ -25,18 +27,23 @@ function CreatePostScreen({navigation, route}) {
     const location = useLocation();
     const [uploadVisible, setUploadVisible] = useState(false);
     const [progress, setProgress] = useState(0);
+    const {user} = useContext(AuthContext);
+    const {base64} = route.params
 
-    const handleSubmit = async (listing, { resetForm }) => {
+    const handleSubmit = async (listing, {resetForm}) => {
         setProgress(0);
         setUploadVisible(true);
-        const result = await listingsApi.addListing(
-            { ...listing, location },
+        const result = await feed.addFeedItem(
+            {...listing, location, base64}, user,
             (progress) => setProgress(progress)
         );
 
         if (!result.ok) {
             setUploadVisible(false);
-            return alert("Could not save the listing");
+            const testLog = result;
+            testLog.config.data = "";
+            console.log("testlog", testLog);
+            return alert("Could not save the post");
         }
 
         resetForm();
@@ -70,7 +77,7 @@ function CreatePostScreen({navigation, route}) {
                     numberOfLines={3}
                     placeholder="Caption"
                 />
-                <SubmitButton title="Post" />
+                <SubmitButton title="Post"/>
             </Form>
         </Screen>
     );
@@ -80,7 +87,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
     },
-    topButtonContainer:{
+    topButtonContainer: {
         paddingBottom: 30,
         paddingLeft: 10
     },

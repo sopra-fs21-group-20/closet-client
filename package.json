@@ -23,6 +23,7 @@
     "expo-permissions": "~8.1.0",
     "expo-secure-store": "~8.1.0",
     "formik": "^2.1.4",
+    "image-to-base64": "^2.2.0",
     "jwt-decode": "^2.2.0",
     "lottie-react-native": "~2.6.1",
     "moment": "^2.29.1",

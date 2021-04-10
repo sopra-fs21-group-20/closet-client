@@ -10,17 +10,20 @@ import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import AppText from "../components/Text";
 import useApi from "../hooks/useApi";
+import feed from "../api/feed";
 
 function FeedScreen({navigation}) {
-    /*const getFeedApi = useApi(feedApi.getFeed);
+    const [listings, setListings] = useState([])
 
     //default is start=0, end=3
 
-    useEffect(() => {
-      feedApi.request();
-    }, []);*/
+    const getFeedApi = useApi(feed.getFeed());
 
-    const getFeedApi = {
+    useEffect(() => {
+        getFeedApi.request();
+    }, []);
+
+    /*const getFeedApi = {
         loading: false,
         error: null,
         data: [
@@ -67,7 +70,7 @@ function FeedScreen({navigation}) {
                 },]
             }
         ]
-    };
+    };*/
 
     /*const viabilityConfig = {
         waitForInteraction: true,

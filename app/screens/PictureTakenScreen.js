@@ -10,6 +10,7 @@ const windowWidth = Dimensions.get('window').width
 export default function PictureTakenScreen({route, navigation}) {
 
     const pictureUri = route.params.picture
+    const pictureBase64 = route.params.base64
 
     return (
         <SafeAreaView style={styles.container}>
@@ -23,7 +24,7 @@ export default function PictureTakenScreen({route, navigation}) {
                 <Image source={{uri: pictureUri}} style={{width: '100%', height: '100%'}}/>}
             </View>
             <View style={styles.bottomButtonContainer}>
-                <AppButton title={'continue'} onPress={()=> navigation.push('createPost', {picture: pictureUri})}/>
+                <AppButton title={'continue'} onPress={()=> navigation.push('createPost', {picture: pictureUri, base64: pictureBase64})}/>
             </View>
         </SafeAreaView>
     );

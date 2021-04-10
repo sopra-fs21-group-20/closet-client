@@ -24,6 +24,7 @@ const FeedNavigator = ({navigation}) => {
                 }}/>
             )
         }}/>
+        <Stack.Screen name="cameraNavigator" component={CameraNavigator} options={{headerShown: false}}/>
         <Stack.Screen name="Comments" component={CommentScreen} options={{
             headerTitle: "Comments",
             headerBackImage: () => (
