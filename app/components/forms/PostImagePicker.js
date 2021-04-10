@@ -2,9 +2,6 @@ import React, {useEffect} from "react";
 import {useFormikContext} from "formik";
 
 import ErrorMessage from "./ErrorMessage";
-import ImageInputList from "../ImageInputList";
-import {Camera} from "expo-camera";
-import * as ImagePicker from "expo-image-picker";
 import PostInputList from "../PostInputList";
 
 function PostImagePicker({name, picture}) {

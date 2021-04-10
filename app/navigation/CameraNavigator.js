@@ -1,7 +1,6 @@
 import React, {useRef, useState} from "react";
-import {Alert, Platform, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 import {createStackNavigator} from "@react-navigation/stack";
-import routes from "../navigation/routes";
 import PictureTakenScreen from "../screens/PictureTakenScreen";
 import TakePictureScreen from "../screens/TakePictureScreen";
 import CreatePostScreen from "../screens/CreatePostScreen";
