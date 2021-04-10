@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import {Alert, StyleSheet} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -30,6 +30,7 @@ function RegisterScreen() {
   const [error, setError] = useState();
 
   const handleSubmit = async (userInfo) => {
+    console.log(userInfo)
     const result = await registerApi.request(userInfo);
 
     if (!result.ok) {
@@ -98,7 +99,7 @@ function RegisterScreen() {
             secureTextEntry
             textContentType="password"
           />
-          <SubmitButton title="Register" />
+          <SubmitButton title="Register"/>
         </Form>
       </Screen>
     </>

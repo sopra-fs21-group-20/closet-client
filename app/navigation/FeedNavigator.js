@@ -1,16 +1,17 @@
 import React, {useRef, useState} from "react";
 import {Alert, Platform, StyleSheet} from "react-native";
 import {createStackNavigator} from "@react-navigation/stack";
+import routes from "../navigation/routes";
+
 import FeedScreen from "../screens/FeedScreen";
-import ListingDetailsScreen from "../screens/ListingDetailsScreen";
-import {renderToNodeStream} from "react-dom/server";
 import colors from "../config/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import CommentScreen from "../screens/CommentScreen";
+import CameraNavigator from "./CameraNavigator";
 
 const Stack = createStackNavigator();
 
-const FeedNavigator = () => {
+const FeedNavigator = ({navigation}) => {
     return (<Stack.Navigator mode="float" screenOptions={{
         headerStyle: [styles.headerStyle],
         headerTitle: "myOutf.it",
@@ -19,7 +20,7 @@ const FeedNavigator = () => {
         <Stack.Screen name="Feed" component={FeedScreen} options={{
             headerLeft: () => (
                 <MaterialCommunityIcons name="camera-outline" style={styles.headerLeft} onPress={() => {
-                    Alert.alert("Not yet implemented.");
+                    navigation.navigate('cameraNavigator');
                 }}/>
             )
         }}/>

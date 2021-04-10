@@ -5,10 +5,15 @@ import ErrorMessage from "./ErrorMessage";
 import ImageInputList from "../ImageInputList";
 import {Camera} from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
+import PostInputList from "../PostInputList";
 
-function FormImagePicker({name}) {
+function PostImagePicker({name, picture}) {
     const {errors, setFieldValue, touched, values} = useFormikContext();
     const imageUris = values[name];
+
+    useEffect(() => {
+        ( () => {handleAdd(picture)})();
+    }, []);
 
     const handleAdd = (uri) => {
         setFieldValue(name, [...imageUris, uri]);
@@ -23,7 +28,7 @@ function FormImagePicker({name}) {
 
     return (
         <>
-            <ImageInputList
+            <PostInputList
                 imageUris={imageUris}
                 onAddImage={handleAdd}
                 onRemoveImage={handleRemove}
@@ -33,4 +38,4 @@ function FormImagePicker({name}) {
     );
 }
 
-export default FormImagePicker;
+export default PostImagePicker;
