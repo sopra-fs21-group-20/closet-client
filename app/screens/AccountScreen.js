@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {StyleSheet, View, FlatList, Image, Dimensions, ScrollView} from "react-native";
+import {StyleSheet, View, FlatList, Image, Dimensions, ScrollView, Button} from "react-native";
 
 import colors from "../config/colors";
 import Screen from "../components/Screen";
@@ -9,10 +9,11 @@ import ProfileDetails from "../components/profile/ProfileDetails";
 function AccountScreen({ navigation }) {
 
     const [pictures, setPictures] = useState(pictures)
-  // const { user, logOut } = useAuth();
+  const { user, logOut } = useAuth();
   return (
     <Screen style={styles.screen}>
       <ScrollView>
+          <Button title={"logout"} onPress={() => {logOut();}} />
         <ProfileDetails/>
         <Gallery/>
       </ScrollView>

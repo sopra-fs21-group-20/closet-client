@@ -3,7 +3,7 @@ import cache from "../utility/cache";
 import authStorage from "../auth/storage";
 
 const apiClient = create({
-  baseURL: "https://sopra-fs21-group-20-client.herokuapp.com",
+  baseURL: "https://sopra-fs21-group-20-server.herokuapp.com",
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {
