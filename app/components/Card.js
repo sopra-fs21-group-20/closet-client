@@ -9,7 +9,7 @@ import FeedActions from "./FeedActions";
 
 const DOUBLE_PRESS_DELAY = 300;
 
-function Card({username, caption, likes, comments, images, onPress, index}) {
+function Card({post_id, username, profileImage, caption, likes, comments, images, onPress, index, onCommentClick}) {
     const scrollableImages = useRef();
 
     const [isLiked, setIsLiked] = useState(false);
@@ -27,6 +27,7 @@ function Card({username, caption, likes, comments, images, onPress, index}) {
     const handleImageDoublePress = (e) => {
         setIsLiked(true);
     }
+    //ToDo defaultSource of images
     return (
         <View style={[styles.card, (index % 2 === 0 ? null : lightTheme.card)]}>
             <ScrollView horizontal pagingEnabled style={styles.imageScrollView}>
@@ -47,14 +48,22 @@ function Card({username, caption, likes, comments, images, onPress, index}) {
             <View style={styles.detailsContainer}>
                 <UserDisplay
                     username={username}
+                    profileImage={profileImage}
                     caption={caption}
-                    profileImage={require("../assets/mockProfileImage.jpg")}
                     lightTheme={index % 2 !== 0}
+                    onCommentClick={onCommentClick}
+                    post_id={post_id}
+                    caption_attrs={{username, caption, profileImage}}
+                    expandable={false}
                 />
                 <FeedActions likes={likes}
                              comments={comments}
                              isLiked={isLiked}
-                             lightTheme={index % 2 !== 0}/>
+                             lightTheme={index % 2 !== 0}
+                             onCommentClick={onCommentClick}
+                             post_id={post_id}
+                             caption_attrs={{username, caption, profileImage}}
+                />
             </View>
             <View style={[styles.afterCard, (index % 2 === 0 ? null : lightTheme.afterCard)]}/>
         </View>

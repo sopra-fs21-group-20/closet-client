@@ -14,6 +14,8 @@ import useApi from "../hooks/useApi";
 function FeedScreen({navigation}) {
     /*const getFeedApi = useApi(feedApi.getFeed);
 
+    //default is start=0, end=3
+
     useEffect(() => {
       feedApi.request();
     }, []);*/
@@ -24,7 +26,9 @@ function FeedScreen({navigation}) {
         data: [
             {
                 id: 1,
+                creationDate: null,
                 username: "model69",
+                profileImage: "https://cdn.21buttons.com/users/ccbf5acf555b4729be948a118202b688.medium.jpg",
                 caption: "This is caption 1 a very very very long caption that will overflow after two lines of text.",
                 likes: 1236,
                 comments: 234,
@@ -38,7 +42,22 @@ function FeedScreen({navigation}) {
             },
             {
                 id: 2,
+                creationDate: null,
                 username: "ArosaLover123",
+                profileImage: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
+                caption: "This is caption 2.",
+                likes: 249,
+                comments: 100023,
+                images: [{
+                    url: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
+                    thumbnailUrl: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
+                },]
+            },
+            {
+                id: 3,
+                creationDate: null,
+                username: "ArosaLover123",
+                profileImage: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
                 caption: "This is caption 2.",
                 likes: 249,
                 comments: 100023,
@@ -61,6 +80,11 @@ function FeedScreen({navigation}) {
         console.log(color);
     };*/
 
+    const navigateToComments = (post_id, captionAttrs, lightThemeEnabled) => {
+        console.log(post_id, captionAttrs);
+        navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
+    };
+
     return (
         <>
             <ActivityIndicator visible={getFeedApi.loading}/>
@@ -78,13 +102,16 @@ function FeedScreen({navigation}) {
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item, index}) => {
                         return (<Card
+                            post_id={item.id}
                             username={item.username}
+                            profileImage={item.profileImage}
                             caption={item.caption}
                             likes={item.likes}
                             comments={item.comments}
                             images={item.images}
                             onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/}}
                             index={index}
+                            onCommentClick={navigateToComments}
                         />);
                     }}
                 />

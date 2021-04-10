@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Easing, Animated, View, StyleSheet, Image, TouchableWithoutFeedback} from "react-native";
+import {Easing, Animated, View, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity} from "react-native";
 import {Octicons} from "@expo/vector-icons";
 
 import Text from "./Text";
 import colors from "../config/colors";
 import LottieView from "lottie-react-native";
 
-function FeedActions({likes, comments, isLiked, lightTheme,}) {
+function FeedActions({post_id, likes, comments, isLiked, lightTheme, onCommentClick, caption_attrs}) {
     useEffect(() => {
         return () => {
             animationPress();
@@ -31,8 +31,8 @@ function FeedActions({likes, comments, isLiked, lightTheme,}) {
                     </View>
                 </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => {
-
+            <TouchableOpacity onPress={() => {
+                onCommentClick(post_id, caption_attrs, lightTheme);
             }}>
                 <View style={styles.detailsContainer}>
                     <Text
@@ -43,7 +43,7 @@ function FeedActions({likes, comments, isLiked, lightTheme,}) {
                         style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
                     />
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         </View>
     );
 }
