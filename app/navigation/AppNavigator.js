@@ -4,9 +4,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AccountNavigator from "./AccountNavigator";
 import FeedNavigator from "./FeedNavigator";
-import ListingEditScreen from "../screens/ListingEditScreen";
-import NewListingButton from "./NewListingButton";
+import ClosetScreen from "../screens/ClosetScreen";
+import OutfitButton from "./OutfitButton";
 import routes from "./routes";
+import OutfitNavigator from "./OutfitNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +23,7 @@ const AppNavigator = () => {
 
         return true;
     };
-    return (<Tab.Navigator initialRouteName={"Feed"}>
+    return (<Tab.Navigator initialRouteName={"Outfit"}>
         <Tab.Screen
             name="Feed"
             component={FeedNavigator}
@@ -38,11 +39,11 @@ const AppNavigator = () => {
             })}
         />
         <Tab.Screen
-            name="ListingEdit"
-            component={ListingEditScreen}
+            name="Outfit"
+            component={OutfitNavigator}
             options={({navigation}) => ({
                 tabBarButton: () => (
-                    <NewListingButton
+                    <OutfitButton
                         onPress={() => navigation.navigate(routes.LISTING_EDIT)}
                     />
                 ),

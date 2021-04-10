@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 
-function NewListingButton({ onPress }) {
+function OutfitButton({ onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewListingButton;
+export default OutfitButton;
