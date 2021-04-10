@@ -28,6 +28,7 @@ function RegisterScreen() {
   const [error, setError] = useState();
 
   const handleSubmit = async (userInfo) => {
+    console.log(userInfo)
     const result = await registerApi.request(userInfo);
 
     if (!result.ok) {
@@ -40,7 +41,7 @@ function RegisterScreen() {
     }
 
     const { data: authToken } = await loginApi.request(
-      userInfo.email,
+      userInfo.username,
       userInfo.password
     );
     auth.logIn(authToken);
@@ -59,8 +60,20 @@ function RegisterScreen() {
           <FormField
             autoCorrect={false}
             icon="account"
-            name="name"
-            placeholder="Name"
+            name="firstName"
+            placeholder="First Name"
+          />
+          <FormField
+              autoCorrect={false}
+              icon="account"
+              name="lastName"
+              placeholder="Last Name"
+          />
+          <FormField
+              autoCorrect={false}
+              icon="account"
+              name="username"
+              placeholder="Username"
           />
           <FormField
             autoCapitalize="none"

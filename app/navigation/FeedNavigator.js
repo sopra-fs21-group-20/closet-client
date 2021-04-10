@@ -1,27 +1,28 @@
 import React, {useRef, useState} from "react";
 import {Alert, Platform, StyleSheet} from "react-native";
 import {createStackNavigator} from "@react-navigation/stack";
+import routes from "../navigation/routes";
+
 import FeedScreen from "../screens/FeedScreen";
-import ListingDetailsScreen from "../screens/ListingDetailsScreen";
-import {renderToNodeStream} from "react-dom/server";
 import colors from "../config/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import CameraNavigator from "./CameraNavigator";
 
 const Stack = createStackNavigator();
 
-const FeedNavigator = () => {
+const FeedNavigator = ({navigation}) => {
     return (<Stack.Navigator mode="modal" screenOptions={{
         headerStyle: [styles.headerStyle],
         headerTitle: "myOutf.it",
         headerTitleStyle: styles.headerTitle,
         headerLeft: () => (
             <MaterialCommunityIcons name="camera-outline" style={styles.headerLeft} onPress={() => {
-                Alert.alert("Not yet implemented.");
+                navigation.navigate('cameraNavigator')
             }}/>
         )
     }}>
         <Stack.Screen name="Feed" component={FeedScreen}/>
-        <Stack.Screen name="ListingDetails" component={ListingDetailsScreen}/>
+        <Stack.Screen name="cameraNavigator" component={CameraNavigator} options={{headerShown: false}}/>
     </Stack.Navigator>)
 };
 
