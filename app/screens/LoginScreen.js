@@ -13,7 +13,7 @@ import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
+  username: Yup.string().required().label("Username"),
   password: Yup.string().required().min(4).label("Password"),
 });
 
@@ -21,8 +21,9 @@ function LoginScreen(props) {
   const auth = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
 
-  const handleSubmit = async ({ email, password }) => {
-    const result = await authApi.login(email, password);
+  const handleSubmit = async ({ username, password }) => {
+    const result = await authApi.login(username, password);
+    console.log(result);
     if (!result.ok) return setLoginFailed(true);
     setLoginFailed(false);
     auth.logIn(result.data);
@@ -33,22 +34,20 @@ function LoginScreen(props) {
       <Image style={styles.logo} source={require("../assets/logo-red.png")} />
 
       <Form
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ username: "testusername2", password: "test1234" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <ErrorMessage
-          error="Invalid email and/or password."
+          error="Invalid username and/or password."
           visible={loginFailed}
         />
         <FormField
           autoCapitalize="none"
           autoCorrect={false}
           icon="email"
-          keyboardType="email-address"
-          name="email"
-          placeholder="Email"
-          textContentType="emailAddress"
+          name="username"
+          placeholder="Username"
         />
         <FormField
           autoCapitalize="none"
