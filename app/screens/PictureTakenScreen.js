@@ -6,7 +6,7 @@ import AppButton from "../components/Button";
 
 const dimensions = Dimensions.get('window')
 
-//todo pass imageRatio as prop
+
 export default function PictureTakenScreen({route, navigation}) {
 
     const pictureUri = route.params.picture
@@ -14,6 +14,7 @@ export default function PictureTakenScreen({route, navigation}) {
     const topButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.4
     const imageDimensions = dimensions.width * route.params.cameraDimensions
     const bottomButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.6
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -56,14 +57,14 @@ const styles = StyleSheet.create({
     },
     bottomButtonContainer:{
         width: '100%',
-        height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.6,
+        /*height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.6,*/
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
     topButtonContainer:{
         width:'100%',
-        height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4,
+        /*height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4,*/
         justifyContent: 'flex-end',
         paddingLeft: 25,
         paddingBottom: 25

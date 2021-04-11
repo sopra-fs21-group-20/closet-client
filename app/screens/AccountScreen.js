@@ -1,12 +1,24 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {StyleSheet, View, FlatList, Image, Dimensions, ScrollView, Button} from "react-native";
 
 import colors from "../config/colors";
 import Screen from "../components/Screen";
 import Gallery from "../components/profile/Gallery";
 import ProfileDetails from "../components/profile/ProfileDetails";
+import useApi from "../hooks/useApi";
+import feed from "../api/feed";
+import users from "../api/users";
+import profile from "../api/profile";
 
 function AccountScreen() {
+
+    const getFeedApi = useApi(profile.getPosts);
+
+    useEffect(() => {
+        getFeedApi.request();
+    }, []);
+
+    console.log(getFeedApi)
 
     const [pictures, setPictures] = useState(pictures);
     return (
