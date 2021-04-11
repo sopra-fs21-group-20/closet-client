@@ -6,7 +6,7 @@ import AppButton from "../components/Button";
 
 const dimensions = Dimensions.get('window')
 
-//todo pass imageRatio as prop
+
 export default function PictureTakenScreen({route, navigation}) {
 
     const pictureUri = route.params.picture
@@ -15,7 +15,6 @@ export default function PictureTakenScreen({route, navigation}) {
     const imageDimensions = dimensions.width * route.params.cameraDimensions
     const bottomButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.6
 
-    console.log(topButtonContainerHeight, imageDimensions, bottomButtonContainerHeight)
 
     return (
         <SafeAreaView style={styles.container}>
