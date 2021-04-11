@@ -84,8 +84,6 @@ function FeedScreen({navigation}) {
         navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
     };
 
-    console.log("feedApi", getFeedApi);
-
     const onRefresh = () => {
         getFeedApi.request();
     };

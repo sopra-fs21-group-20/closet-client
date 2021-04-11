@@ -1,29 +1,33 @@
-import React, from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, SafeAreaView, Dimensions} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, Text, View, Button, Image, TouchableOpacity, SafeAreaView, Dimensions} from 'react-native';
 import colors from "../config/colors";
 import {Entypo} from "@expo/vector-icons";
 import AppButton from "../components/Button";
 
 const dimensions = Dimensions.get('window')
 
-export default function PictureTakenScreen({route, navigation, cameraDimensions}) {
+//todo pass imageRatio as prop
+export default function PictureTakenScreen({route, navigation}) {
 
     const pictureUri = route.params.picture
     const pictureBase64 = route.params.base64
+    const topButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.4
+    const imageDimensions = dimensions.width * route.params.cameraDimensions
+    const bottomButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.6
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={[styles.topButtonContainer, {height: dimensions.width * cameraDimensions}]}>
+            <View style={[styles.topButtonContainer, topButtonContainerHeight]}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Entypo name="cross" size={35} color="white" />
                 </TouchableOpacity>
             </View>
-            <View style={[styles.imageContainer, {height: dimensions.width * cameraDimensions}]}>
+            <View style={[styles.imageContainer, {height: imageDimensions}]}>
                 {route.params.picture &&
                 <Image source={{uri: pictureUri}} style={{width: '100%', height: '100%'}}/>}
             </View>
-            <View style={[styles.bottomButtonContainer, {height: dimensions.width * cameraDimensions}]}>
-                <AppButton title={'continue'} onPress={()=> navigation.push('createPost', {picture: pictureUri, base64: pictureBase64})}/>
+            <View style={[styles.bottomButtonContainer, {height: bottomButtonContainerHeight}]}>
+                <AppButton title={'continue'} onPress={()=> {navigation.push('createPost', {picture: pictureUri, base64: pictureBase64})}}/>
             </View>
         </SafeAreaView>
     );

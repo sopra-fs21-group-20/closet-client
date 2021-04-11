@@ -16,6 +16,9 @@ import colors from "../config/colors";
 
 const dimensions = Dimensions.get('screen')
 const cameraDimensions = 4/3
+const cameraContainerHeight = dimensions.width * cameraDimensions
+const topButtonContainerHeight = (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4
+const bottomButtonContainerHeight = (dimensions.height-dimensions.width * cameraDimensions)* 0.6
 
 export default function TakePictureScreen({navigation}) {
     const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer:{
         width: '100%',
-        height: (dimensions.height-dimensions.width * cameraDimensions) * 0.6,
+        height: bottomButtonContainerHeight,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
     topButtonContainer:{
         flexDirection: 'row',
         width:'100%',
-        height: (dimensions.height-dimensions.width * cameraDimensions)* 0.4,
+        height: topButtonContainerHeight,
         justifyContent: 'space-between',
         alignItems: 'flex-end',
         padding: 25,
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
     },
     cameraContainer: {
         /*flex: 1,*/
-        height: dimensions.width * cameraDimensions,
+        height: cameraContainerHeight,
         flexDirection: 'row',
     },
     camera: {

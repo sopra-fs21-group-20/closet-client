@@ -1,5 +1,6 @@
 import React, {useContext, useState} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {NavigationActions, StackActions} from "react-navigation";
 import * as Yup from "yup";
 
 import {
@@ -17,6 +18,8 @@ import PostImagePicker from "../components/forms/PostImagePicker";
 import {MaterialIcons} from "@expo/vector-icons";
 import feed from "../api/feed";
 import AuthContext from "../auth/context";
+import FeedContext from "../navigation/FeedContext";
+import {useNavigation} from "@react-navigation/native";
 
 const validationSchema = Yup.object().shape({
     caption: Yup.string().label("Caption"),
@@ -28,7 +31,8 @@ function CreatePostScreen({navigation, route}) {
     const [uploadVisible, setUploadVisible] = useState(false);
     const [progress, setProgress] = useState(0);
     const {user} = useContext(AuthContext);
-    const {base64} = route.params
+    const {base64} = route.params;
+    //const {navigation} = useContext(FeedContext);
 
     const handleSubmit = async (listing, {resetForm}) => {
         setProgress(0);
@@ -42,11 +46,11 @@ function CreatePostScreen({navigation, route}) {
             setUploadVisible(false);
             const testLog = result;
             testLog.config.data = "";
-            console.log("testlog", testLog);
             return alert("Could not save the post");
         }
 
         resetForm();
+        navigation.popToTop();
     };
 
     return (

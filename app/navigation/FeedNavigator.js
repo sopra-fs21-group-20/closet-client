@@ -8,32 +8,37 @@ import colors from "../config/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import CommentScreen from "../screens/CommentScreen";
 import CameraNavigator from "./CameraNavigator";
+import FeedContext from "./FeedContext";
 
 const Stack = createStackNavigator();
 
 const FeedNavigator = ({navigation}) => {
-    return (<Stack.Navigator mode="float" screenOptions={{
-        headerStyle: [styles.headerStyle],
-        headerTitle: "myOutf.it",
-        headerTitleStyle: styles.headerTitle,
-    }}>
-        <Stack.Screen name="Feed" component={FeedScreen} options={{
-            headerLeft: () => (
-                <MaterialCommunityIcons name="camera-outline" style={styles.headerLeft} onPress={() => {
-                    navigation.navigate('cameraNavigator');
+    return (
+
+        <FeedContext.Provider value={{navigation}}>
+            <Stack.Navigator mode="float" screenOptions={{
+                headerStyle: [styles.headerStyle],
+                headerTitle: "myOutf.it",
+                headerTitleStyle: styles.headerTitle,
+            }}>
+                <Stack.Screen name="Feed" component={FeedScreen} options={{
+                    headerLeft: () => (
+                        <MaterialCommunityIcons name="camera-outline" style={styles.headerLeft} onPress={() => {
+                            navigation.navigate('cameraNavigator');
+                        }}/>
+                    )
                 }}/>
-            )
-        }}/>
-        <Stack.Screen name="cameraNavigator" component={CameraNavigator} options={{headerShown: false}}/>
-        <Stack.Screen name="Comments" component={CommentScreen} options={{
-            headerTitle: "Comments",
-            headerBackImage: () => (
-                <MaterialCommunityIcons name="chevron-left" style={styles.headerLeft} onPress={() => {
-                    Alert.alert("Not yet implemented.");
+                <Stack.Screen name="cameraNavigator" component={CameraNavigator} options={{headerShown: false}}/>
+                <Stack.Screen name="Comments" component={CommentScreen} options={{
+                    headerTitle: "Comments",
+                    headerBackImage: () => (
+                        <MaterialCommunityIcons name="chevron-left" style={styles.headerLeft} onPress={() => {
+                            Alert.alert("Not yet implemented.");
+                        }}/>
+                    ),
                 }}/>
-            ),
-        }}/>
-    </Stack.Navigator>)
+            </Stack.Navigator>
+        </FeedContext.Provider>)
 };
 
 const styles = StyleSheet.create({
