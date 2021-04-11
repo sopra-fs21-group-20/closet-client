@@ -6,9 +6,7 @@ import colors from "../config/colors";
 import moment from "moment";
 
 function Comment({user_id, username, comment, creationDate, profileImage, index, lightThemeEnabled}) {
-    const postedAt = moment(creationDate).fromNow();
-
-
+    const postedAt = moment(creationDate).add(2, "hours").fromNow();
 
     return (
         <View style={styles.container}>
@@ -28,10 +26,12 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         marginVertical: 15,
+        width: "100%",
     },
     containerInner: {
         marginLeft: 15,
-        flexDirection: "column"
+        flexDirection: "column",
+        flex: 1,
     },
     profileImage: {
         height: 40,

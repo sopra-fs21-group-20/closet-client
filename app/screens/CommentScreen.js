@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {FlatList, KeyboardAvoidingView, Platform, StyleSheet, View} from "react-native";
+import {FlatList, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, StyleSheet, View} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -10,22 +10,27 @@ import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import AppText from "../components/Text";
 import useApi from "../hooks/useApi";
+import comments from "../api/comments";
 import Comment from "../components/Comment";
 import UserDisplay from "../components/UserDisplay";
 import NewComment from "../components/NewComment";
+import Text from "../components/Text";
+import feed from "../api/feed";
 
 function CommentScreen({route, navigation}) {
     const {post_id, captionAttrs, lightThemeEnabled} = route.params;
 
-    /*const getFeedApi = useApi(feedApi.getFeed);
+    const commentsApi = useApi(comments.getComments);
 
     //default is start=0, end=19 (20 comments)
 
     useEffect(() => {
-      feedApi.request();
-    }, []);*/
+        const response = commentsApi.request(post_id);
 
-    const getCommentsApi = {
+        if (commentsApi.error) console.log(commentsApi);
+    }, []);
+
+    /*const commentsApi = {
         loading: false,
         error: null,
         data: [
@@ -54,51 +59,78 @@ function CommentScreen({route, navigation}) {
                 profileImage: "https://favorite-styles.de/wp-content/uploads/2020/10/blog-post-outfit-2020-10-16-3-735x1102.png",
             },
         ]
+    };*/
+
+    const onRefresh = () => {
+        commentsApi.request(post_id);
     };
+
+    console.log(commentsApi.data);
 
     return (
         <>
-            <ActivityIndicator visible={getCommentsApi.loading}/>
+            <ActivityIndicator visible={commentsApi.loading}/>
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={styles.container}
                 keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
             >
                 <Screen style={styles.screen}>
-                    {getCommentsApi.error && (
-                        <>
-                            <AppText>Couldn't retrieve the comments.</AppText>
-                            <Button title="Retry" onPress={getCommentsApi.request}/>
-                        </>
+                    {commentsApi.error && (
+                        <ScrollView contentContainerStyle={styles.errorView} refreshControl={
+                            <RefreshControl
+                                refreshing={commentsApi.loading}
+                                onRefresh={onRefresh}
+                            />
+                        }>
+                            <View style={styles.errorViewInner}>
+                                <Text
+                                    style={styles.errorText}>There was an error while loading the comments.</Text>
+                                <Button title="Retry" onPress={commentsApi.request}/>
+                            </View>
+                        </ScrollView>
                     )}
-                    <View style={[styles.commentCard, (lightThemeEnabled ? lightTheme.commentCard : null)]}>
-                        <UserDisplay
-                            username={captionAttrs.username}
-                            profileImage={captionAttrs.profileImage}
-                            caption={captionAttrs.caption}
-                            expandable={true}
-                            lightTheme={lightThemeEnabled}
-                        />
-                        <FlatList
-                            style={[styles.commentList, (lightThemeEnabled ? lightTheme.commentList : null)]}
-                            data={getCommentsApi.data}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={({item, index}) => {
-                                return (<Comment
-                                    user_id={item.userId}
-                                    username={item.username}
-                                    comment={item.comment}
-                                    profileImage={item.profileImage}
-                                    creationDate={item.creationDate}
-                                    index={index}
+                    {commentsApi.data && (
+                        <>
+                            <FlatList
+                                style={[styles.commentCard, (lightThemeEnabled ? lightTheme.commentCard : null)]}
+                                data={commentsApi.data}
+                                onRefresh={() => onRefresh()}
+                                refreshing={commentsApi.loading}
+                                ListEmptyComponent={<View style={styles.errorTextContainer}><Text
+                                    style={[styles.errorText, (lightThemeEnabled ? lightTheme.errorText : null)]}>Be the
+                                    first to leave a comment!</Text></View>}
+                                contentContainerStyle={{flex: 1}}
+                                ListHeaderComponent={() => <UserDisplay
+                                    username={captionAttrs.username}
+                                    profileImage={captionAttrs.profileImage}
+                                    caption={captionAttrs.caption}
+                                    expandable={true}
+                                    lightTheme={lightThemeEnabled}
+                                />}
+                                ListHeaderComponentStyle={[styles.commentList, (lightThemeEnabled ? lightTheme.commentList : null)]}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({item, index}) => {
+                                    return (<Comment
+                                        user_id={item.userId}
+                                        username={item.username}
+                                        comment={item.comment}
+                                        profileImage={item.profileImage}
+                                        creationDate={item.creationDate}
+                                        index={index}
+                                        lightThemeEnabled={lightThemeEnabled}
+                                    />);
+                                }}
+                            />
+                            <View style={[styles.commentCardAfter, (lightThemeEnabled ? lightTheme.commentCardAfter : null)]} />
+                            <View style={[styles.footer, (lightThemeEnabled ? lightTheme.footer : null)]}>
+                                <NewComment
                                     lightThemeEnabled={lightThemeEnabled}
-                                />);
-                            }}
-                        />
-                        <NewComment
-                            lightThemeEnabled={lightThemeEnabled}
-                        />
-                    </View>
+                                    post_id={post_id}
+                                    refresh={onRefresh}
+                                />
+                            </View>
+                        </>)}
                 </Screen>
             </KeyboardAvoidingView>
         </>
@@ -108,17 +140,46 @@ function CommentScreen({route, navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        height: "100%",
     },
     screen: {
         padding: 0,
         paddingTop: 0,
         backgroundColor: colors.primary,
     },
+    errorView: {
+        flex: 1,
+        backgroundColor: colors.primary,
+        paddingTop: 20,
+    },
+    errorViewInner: {
+        flex: 1,
+        backgroundColor: colors.dark,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 40,
+        borderTopLeftRadius: 50,
+        shadowColor: colors.black,
+        shadowOffset: {
+            height: -5
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 10,
+    },
+    errorTextContainer: {
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    errorText: {
+        color: colors.white,
+    },
     commentCard: {
         flex: 1,
+        backgroundColor: colors.dark,
         borderRadius: 0,
         borderTopLeftRadius: 50,
-        backgroundColor: colors.dark,
         marginTop: 20,
         padding: 20,
         shadowColor: colors.black,
@@ -128,20 +189,42 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 10,
         elevation: 10,
+        zIndex:10,
+    },
+    commentCardAfter: {
+        position: "absolute",
+        bottom: 0,
+        backgroundColor: colors.dark,
+        height: 300,
+        width: "100%",
     },
     commentList: {
-        borderTopColor: colors.white,
-        borderTopWidth: 1,
+        borderBottomColor: colors.white,
+        borderBottomWidth: 1,
     },
+    footer: {
+        backgroundColor: colors.dark,
+        paddingHorizontal: 20,
+        zIndex: 10,
+    }
 });
 
 const lightTheme = StyleSheet.create({
     commentCard: {
         backgroundColor: colors.white,
     },
-    commentList: {
-        borderTopColor: colors.dark,
+    commentCardAfter: {
+        backgroundColor: colors.white,
     },
+    commentList: {
+        borderBottomColor: colors.dark,
+    },
+    footer: {
+        backgroundColor: colors.white,
+    },
+    errorText: {
+        color: colors.dark
+    }
 });
 
 export default CommentScreen;
