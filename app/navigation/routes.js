@@ -4,6 +4,6 @@ export default Object.freeze({
   LOGIN: "Login",
   MESSAGES: "Messages",
   MIRROR: "Mirror",
-  OUTFIT: "Outfit",
+  OUTFIT: "MirrorScreen",
   REGISTER: "Register",
 });

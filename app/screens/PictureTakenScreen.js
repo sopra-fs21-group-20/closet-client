@@ -15,6 +15,8 @@ export default function PictureTakenScreen({route, navigation}) {
     const imageDimensions = dimensions.width * route.params.cameraDimensions
     const bottomButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.6
 
+    console.log(topButtonContainerHeight, imageDimensions, bottomButtonContainerHeight)
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={[styles.topButtonContainer, topButtonContainerHeight]}>
@@ -56,14 +58,14 @@ const styles = StyleSheet.create({
     },
     bottomButtonContainer:{
         width: '100%',
-        height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.6,
+        /*height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.6,*/
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
     topButtonContainer:{
         width:'100%',
-        height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4,
+        /*height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4,*/
         justifyContent: 'flex-end',
         paddingLeft: 25,
         paddingBottom: 25

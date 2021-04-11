@@ -5,6 +5,7 @@ import ProfilePost from "./ProfilePost";
 import colors from "../../config/colors";
 import useApi from "../../hooks/useApi";
 import feed from "../../api/feed";
+import profile from "../../api/profile";
 
 const paddingBetweenTiles = 3;
 
