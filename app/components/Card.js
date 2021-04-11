@@ -63,6 +63,7 @@ function Card({post_id, username, profileImage, caption, likes, hasBeenLiked, co
                              lightTheme={index % 2 !== 0}
                              onCommentClick={onCommentClick}
                              post_id={post_id}
+                             captionIsEmpty={caption===""}
                              caption_attrs={{username, caption, profileImage}}
                 />
             </View>

@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import LottieView from "lottie-react-native";
 import feed from "../api/feed";
 
-function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightTheme, onCommentClick, caption_attrs}) {
+function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightTheme, onCommentClick, captionIsEmpty, caption_attrs}) {
     const [likesNumber, setLikesNumber] = useState(parseInt(likes));
 
     useEffect(() => {
@@ -32,7 +32,7 @@ function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightThem
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container,{marginTop:(captionIsEmpty ? -20 : -10)}]}>
             <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={() => {
                 if(!hasBeenLiked) animationPress();
             }}>
