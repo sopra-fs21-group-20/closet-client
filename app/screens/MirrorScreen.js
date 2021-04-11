@@ -8,7 +8,7 @@ export default function MirrorScreen() {
 
   return (
     <Screen style={styles.container}>
-      <Text>Closet</Text>
+      <Text>Mirror</Text>
     </Screen>
   );
 }
