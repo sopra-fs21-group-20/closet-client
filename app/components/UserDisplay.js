@@ -15,7 +15,7 @@ import colors from "../config/colors";
 function UserDisplay({
                          username,
                          profileImage,
-                         caption,
+                         caption = "",
                          lightTheme,
                          onCommentClick,
                          post_id,
@@ -55,7 +55,7 @@ function UserDisplay({
                     <Text style={[styles.username, (lightTheme ? lightThemeStyle.username : null)]} numberOfLines={1}>
                         {username}
                     </Text>
-                    {caption && caption.length >= 1 && (
+                    {caption !== "" && (
                         <Text style={[styles.caption, (lightTheme ? lightThemeStyle.caption : null)]}
                               numberOfLines={isOpen ? 0 : 2}>
                             {caption}
