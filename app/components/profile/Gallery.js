@@ -10,20 +10,14 @@ import profile from "../../api/profile";
 const paddingBetweenTiles = 3;
 
 
-export default function Gallery() {
+export default function Gallery({data}) {
 
     const windowWidth = Dimensions.get("window").width-(4*paddingBetweenTiles)
     const itemsOnLine = 3
 
     return (
         <View style={styles.container}>
-            <ProfilePost paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>
-            <ProfilePost paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>
-            <ProfilePost paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>
-            <ProfilePost paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>
-            <ProfilePost paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>
-            <ProfilePost paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>
-            <ProfilePost paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>
+            {data.map((item) => <ProfilePost imageUrl={item.images[0].url} paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>)}
         </View>
     );
 }

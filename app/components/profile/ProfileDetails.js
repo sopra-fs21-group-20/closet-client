@@ -2,12 +2,10 @@ import React from 'react';
 import {Image, StyleSheet, View} from "react-native";
 import Text from "../Text";
 import ProfileBar from "./ProfileBar";
+import useAuth from "../../auth/useAuth";
 
 export default function ProfileDetails() {
-    const user = {
-        name: "myOutfit",
-        email: "is the coolest shit ever"
-    }
+    const {user, logOut} = useAuth();
 
     return (
         <View style={styles.container}>
@@ -16,8 +14,8 @@ export default function ProfileDetails() {
                 style={styles.profilePic}
             />
             <View style={styles.details}>
-                <Text style={styles.username}>{user.name}</Text>
-                <Text style={styles.bio}>{user.email}</Text>
+                <Text style={styles.username}>{user.sub}</Text>
+                <Text style={styles.bio}>test@test.ch</Text>
             </View>
             <ProfileBar/>
         </View>

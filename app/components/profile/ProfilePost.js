@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Image, Dimensions} from 'react-native'
 
-export default function ProfilePost({size, paddingBetweenTiles}) {
+export default function ProfilePost({size, paddingBetweenTiles, imageUrl}) {
 
     return (
         <View style={[styles.container, {
@@ -12,7 +12,7 @@ export default function ProfilePost({size, paddingBetweenTiles}) {
         }]}>
             <Image
                 style={styles.image}
-                source={require('../../assets/corey_nici.jpg')}
+                source={{uri: imageUrl}}
             />
         </View>
 
