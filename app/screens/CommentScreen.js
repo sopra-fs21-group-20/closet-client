@@ -61,7 +61,7 @@ function CommentScreen({route, navigation}) {
             <Screen style={styles.screen}>
                 {getCommentsApi.error && (
                     <>
-                        <AppText>Couldn't retrieve the listings.</AppText>
+                        <AppText>Couldn't retrieve the comments.</AppText>
                         <Button title="Retry" onPress={getCommentsApi.request}/>
                     </>
                 )}

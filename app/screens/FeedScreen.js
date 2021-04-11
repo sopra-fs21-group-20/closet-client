@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {FlatList, StyleSheet} from "react-native";
+import {FlatList, StyleSheet, View} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -11,13 +11,13 @@ import Screen from "../components/Screen";
 import AppText from "../components/Text";
 import useApi from "../hooks/useApi";
 import feed from "../api/feed";
+import Text from "../components/Text";
+import {get} from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 function FeedScreen({navigation}) {
-    const [listings, setListings] = useState([])
-
     //default is start=0, end=3
 
-    const getFeedApi = useApi(feed.getFeed());
+    const getFeedApi = useApi(feed.getFeed);
 
     useEffect(() => {
         getFeedApi.request();
@@ -88,17 +88,21 @@ function FeedScreen({navigation}) {
         navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
     };
 
+    console.log(getFeedApi.data);
+
     return (
         <>
             <ActivityIndicator visible={getFeedApi.loading}/>
             <Screen style={styles.screen}>
-                {getFeedApi.error && (
-                    <>
-                        <AppText>Couldn't retrieve the listings.</AppText>
-                        <Button title="Retry" onPress={getFeedApi.request}/>
-                    </>
+                {(getFeedApi.error || (getFeedApi.data && getFeedApi.data.length === 0)) && (
+                    <View style={styles.errorView}>
+                        <View style={styles.errorViewInner}>
+                            <Text style={styles.errorText}>Couldn't load the feed.</Text>
+                            <Button title="Retry" onPress={getFeedApi.request}/>
+                        </View>
+                    </View>
                 )}
-                <FlatList
+                {getFeedApi.data && getFeedApi.data.length >= 1 && (<FlatList
                     /*viewabilityConfig={viabilityConfig}
                     onViewableItemsChanged={onViewableItemsChanged}*/
                     data={getFeedApi.data}
@@ -112,12 +116,13 @@ function FeedScreen({navigation}) {
                             likes={item.likes}
                             comments={item.comments}
                             images={item.images}
-                            onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/}}
+                            onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/
+                            }}
                             index={index}
                             onCommentClick={navigateToComments}
                         />);
                     }}
-                />
+                />)}
             </Screen>
         </>
     );
@@ -129,6 +134,30 @@ const styles = StyleSheet.create({
         paddingTop: 0,
         backgroundColor: colors.primary,
     },
+    errorView: {
+        flex: 1,
+        backgroundColor: colors.primary,
+        paddingTop: 20,
+    },
+    errorViewInner: {
+        flex: 1,
+        backgroundColor: colors.dark,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 40,
+        borderTopLeftRadius: 50,
+        shadowColor: colors.black,
+        shadowOffset: {
+            height: -5
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 10,
+    },
+    errorText: {
+        color: colors.white,
+        marginBottom: 20,
+    }
 });
 
 export default FeedScreen;

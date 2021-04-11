@@ -1,7 +1,4 @@
 import client from "./client";
-import {useContext} from "react";
-import AuthContext from "../auth/context";
-import imageToBase64 from 'image-to-base64/browser';
 
 const endpoint = "/posts";
 

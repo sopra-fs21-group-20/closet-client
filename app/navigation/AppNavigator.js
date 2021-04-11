@@ -44,7 +44,7 @@ const AppNavigator = () => {
             options={({navigation}) => ({
                 tabBarButton: () => (
                     <OutfitButton
-                        onPress={() => navigation.navigate(routes.LISTING_EDIT)}
+                        onPress={() => navigation.navigate(routes.OUTFIT)}
                     />
                 ),
                 tabBarIcon: ({color, size}) => (
