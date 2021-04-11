@@ -63,12 +63,14 @@ export default function TakePictureScreen({navigation}) {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 0.1,
+            base64: true
         });
 
         if (!result.cancelled) {
+            let cameraDimensions = 1
             setImage(result.uri);
             setPictureTaken(true)
-            navigation.push('pictureTaken', {picture: result.uri})
+            navigation.push('pictureTaken', {picture: result.uri, base64: result.base64, cameraDimensions})
         }
     };
 
