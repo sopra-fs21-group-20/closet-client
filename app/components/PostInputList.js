@@ -10,7 +10,7 @@ function PostInputList({ imageUris = [], onRemoveImage, onAddImage }) {
             <ScrollView
                 ref={scrollView}
                 horizontal
-                onContentSizeChange={() => scrollView.current.scrollToEnd()}
+                /*onContentSizeChange={() => scrollView.current.scrollToEnd()}*/
             >
                 <View style={styles.container}>
                     {imageUris.map((uri) => (

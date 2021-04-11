@@ -1,29 +1,28 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, Button, Image, TouchableOpacity, SafeAreaView} from 'react-native';
-import {Dimensions} from 'react-native';
+import React, from 'react';
+import {StyleSheet, View, Image, TouchableOpacity, SafeAreaView, Dimensions} from 'react-native';
 import colors from "../config/colors";
 import {Entypo} from "@expo/vector-icons";
 import AppButton from "../components/Button";
 
-const windowWidth = Dimensions.get('window').width
+const dimensions = Dimensions.get('window')
 
-export default function PictureTakenScreen({route, navigation}) {
+export default function PictureTakenScreen({route, navigation, cameraDimensions}) {
 
     const pictureUri = route.params.picture
     const pictureBase64 = route.params.base64
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.topButtonContainer}>
+            <View style={[styles.topButtonContainer, {height: dimensions.width * cameraDimensions}]}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Entypo name="cross" size={35} color="white" style={styles.backButton}/>
+                    <Entypo name="cross" size={35} color="white" />
                 </TouchableOpacity>
             </View>
-            <View style={styles.imageContainer}>
+            <View style={[styles.imageContainer, {height: dimensions.width * cameraDimensions}]}>
                 {route.params.picture &&
                 <Image source={{uri: pictureUri}} style={{width: '100%', height: '100%'}}/>}
             </View>
-            <View style={styles.bottomButtonContainer}>
+            <View style={[styles.bottomButtonContainer, {height: dimensions.width * cameraDimensions}]}>
                 <AppButton title={'continue'} onPress={()=> navigation.push('createPost', {picture: pictureUri, base64: pictureBase64})}/>
             </View>
         </SafeAreaView>
@@ -49,17 +48,20 @@ const styles = StyleSheet.create({
         width: '33%',
     },
     imageContainer: {
-        height: windowWidth,
-        width: windowWidth
-    },
-    topButtonContainer:{
-        position: 'absolute',
-        top: 80,
-        left: 15
+        width: dimensions.width
     },
     bottomButtonContainer:{
-        position: 'absolute',
-        bottom: 40,
-        right: 40
+        width: '100%',
+        height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.6,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+    topButtonContainer:{
+        width:'100%',
+        height: (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4,
+        justifyContent: 'flex-end',
+        paddingLeft: 25,
+        paddingBottom: 25
     },
 })

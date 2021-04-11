@@ -1,18 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {FlatList, RefreshControl, ScrollView, StyleSheet, View} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import colors from "../config/colors";
-import listingsApi from "../api/feed";
 import routes from "../navigation/routes";
 import Screen from "../components/Screen";
-import AppText from "../components/Text";
 import useApi from "../hooks/useApi";
 import feed from "../api/feed";
 import Text from "../components/Text";
-import {get} from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 function FeedScreen({navigation}) {
     //default is start=0, end=3
@@ -106,7 +103,8 @@ function FeedScreen({navigation}) {
                         />
                     }>
                         <View style={styles.errorViewInner}>
-                            <Text style={styles.errorText}>{getFeedApi.data && getFeedApi.data.length === 0 ? "There are no current posts in the feed." : "There was an error while loading the feed"}</Text>
+                            <Text
+                                style={styles.errorText}>{getFeedApi.data && getFeedApi.data.length === 0 ? "There are no current posts in the feed." : "There was an error while loading the feed"}</Text>
                             <Button title="Retry" onPress={getFeedApi.request}/>
                         </View>
                     </ScrollView>
@@ -136,6 +134,7 @@ function FeedScreen({navigation}) {
                 />)}
             </Screen>
         </>
+
     );
 }
 
