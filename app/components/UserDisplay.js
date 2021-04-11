@@ -22,7 +22,7 @@ function UserDisplay({
                          caption_attrs,
                          expandable = false
                      }) {
-    const [isOpen, setIsOpen] = useState((!expandable));
+    const [isOpen, setIsOpen] = useState((!expandable && caption !== ""));
     const [spinValue, setSpinValue] = useState(new Animated.Value(0));
 
     const rotate = () => {
@@ -47,7 +47,7 @@ function UserDisplay({
     const [captionHeight, setCaptionHeight] = useState(60);
 
     const onTextLayout = useCallback(e => {
-        e.nativeEvent.lines.length >= 2 ? setCaptionHeight(60) : setCaptionHeight(30);
+        e.nativeEvent.lines.length >= 2 ? setCaptionHeight(60) : setCaptionHeight(35);
     }, []);
 
     return (
@@ -57,12 +57,12 @@ function UserDisplay({
         }}>
             <View style={styles.container}>
                 <Image style={styles.profileImage} source={(profileImage) ? {uri: profileImage} : null}/>
-                <View style={[styles.detailsContainer, {height: isOpen ? null : captionHeight + 40}]}>
+                <View style={[styles.detailsContainer, {height: isOpen ? captionHeight + 40 : null}]}>
                     <Text style={[styles.username, (lightTheme ? lightThemeStyle.username : null)]} numberOfLines={1}>
                         {username}
                     </Text>
                     {caption !== "" && (
-                        <Text style={[styles.caption, (lightTheme ? lightThemeStyle.caption : null), {height: isOpen ? null : captionHeight}]}
+                        <Text style={[styles.caption, (lightTheme ? lightThemeStyle.caption : null), {height: isOpen ? captionHeight : null}]}
                               numberOfLines={isOpen && expandable ? 0 : 2} onTextLayout={onTextLayout}>
                             {caption}
                         </Text>

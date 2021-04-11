@@ -4,14 +4,8 @@ const endpoint = "/posts";
 
 const getFeed = () => client.get(endpoint);
 
-export const addFeedItem = (feedItem, user, onUploadProgress) => {
-    /*const data = new FormData();
-    console.log('anker', data)
-    data.append("username", user.sub);
-    data.append("caption", feedItem.caption);*/
-
-    const data = {
-        "user_id": 1,
+const addFeedItem = (feedItem, user, onUploadProgress) => {
+   const data = {
         "caption": feedItem.caption,
         "image": feedItem.base64
     }
@@ -20,20 +14,10 @@ export const addFeedItem = (feedItem, user, onUploadProgress) => {
             onUploadProgress: (progress) =>
                 onUploadProgress(progress.loaded / progress.total),
         }
-    )
-
-    /*feedItem.images.forEach((image, index) =>
-        data.append("images", {
-            name: "image" + index,
-            type: "image/jpeg",
-            uri: image,
-        })
-    );*/
+    );
 };
 
-const likePost = (post_id) => {
-    return client.post(endpoint + "/" + post_id + "/like");
-};
+const likePost = (post_id) => client.post(endpoint + "/" + post_id + "/like");
 
 export default {
     addFeedItem,
