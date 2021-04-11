@@ -8,6 +8,7 @@ import ClosetScreen from "../screens/ClosetScreen";
 import OutfitButton from "./OutfitButton";
 import routes from "./routes";
 import OutfitNavigator from "./OutfitNavigator";
+import MirrorScreen from "../screens/MirrorScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +24,7 @@ const AppNavigator = () => {
 
         return true;
     };
-    return (<Tab.Navigator initialRouteName={"Feed"}>
+    return (<Tab.Navigator initialRouteName={"Outfit"}>
         <Tab.Screen
             name="Feed"
             component={FeedNavigator}
@@ -40,11 +41,11 @@ const AppNavigator = () => {
         />
         <Tab.Screen
             name="Outfit"
-            component={OutfitNavigator}
+            component={MirrorScreen}
             options={({navigation}) => ({
                 tabBarButton: () => (
                     <OutfitButton
-                        onPress={() => navigation.navigate(routes.OUTFIT)}
+                        onPress={() => navigation.navigate('Outfit')}
                     />
                 ),
                 tabBarIcon: ({color, size}) => (
