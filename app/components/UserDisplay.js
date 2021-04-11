@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     },
     caption: {
         color: colors.white,
-        alignItems: "center"
+        alignItems: "center",
     },
     username: {
         fontWeight: "700",
