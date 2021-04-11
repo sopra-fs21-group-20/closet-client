@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {
     Easing,
     Animated,
@@ -14,7 +14,7 @@ import colors from "../config/colors";
 
 function UserDisplay({
                          username,
-                         profileImage,
+                         profileImage = "",
                          caption = "",
                          lightTheme,
                          onCommentClick,
@@ -22,7 +22,7 @@ function UserDisplay({
                          caption_attrs,
                          expandable = false
                      }) {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState((!expandable));
     const [spinValue, setSpinValue] = useState(new Animated.Value(0));
 
     const rotate = () => {
@@ -44,29 +44,35 @@ function UserDisplay({
         outputRange: ['0deg', '360deg']
     });
 
+    const [captionHeight, setCaptionHeight] = useState(60);
+
+    const onTextLayout = useCallback(e => {
+        e.nativeEvent.lines.length >= 2 ? setCaptionHeight(60) : setCaptionHeight(30);
+    }, []);
+
     return (
         <TouchableOpacity onPress={() => {
 
             expandable ? rotate() : onCommentClick(post_id, caption_attrs, lightTheme);
         }}>
             <View style={styles.container}>
-                {profileImage && <Image style={styles.profileImage} source={{uri: profileImage}}/>}
-                <View style={[styles.detailsContainer, {height: isOpen ? null : 100}]}>
+                <Image style={styles.profileImage} source={(profileImage) ? {uri: profileImage} : null}/>
+                <View style={[styles.detailsContainer, {height: isOpen ? null : captionHeight + 40}]}>
                     <Text style={[styles.username, (lightTheme ? lightThemeStyle.username : null)]} numberOfLines={1}>
                         {username}
                     </Text>
                     {caption !== "" && (
-                        <Text style={[styles.caption, (lightTheme ? lightThemeStyle.caption : null)]}
-                              numberOfLines={isOpen ? 0 : 2}>
+                        <Text style={[styles.caption, (lightTheme ? lightThemeStyle.caption : null), {height: isOpen ? null : captionHeight}]}
+                              numberOfLines={isOpen && expandable ? 0 : 2} onTextLayout={onTextLayout}>
                             {caption}
                         </Text>
                     )}
                 </View>
 
-                {expandable && (<Animated.View style={{transform: [{rotate: spin}]}}>
+                {expandable && captionHeight === 60 && (<Animated.View style={{transform: [{rotate: spin}]}}>
                     <MaterialCommunityIcons
                         color={(lightTheme ? lightThemeStyle.chevron.color : styles.chevron.color)}
-                        name={"chevron-down"}
+                        name={"chevron-up"}
                         size={25}
                     />
                 </Animated.View>)}
@@ -85,22 +91,24 @@ const styles = StyleSheet.create({
     detailsContainer: {
         flex: 1,
         marginLeft: 20,
-        justifyContent: "flex-start",
         paddingBottom: 10,
     },
     profileImage: {
         width: 50,
         height: 50,
         borderRadius: 35,
+        backgroundColor: colors.light,
     },
     caption: {
         color: colors.white,
+        alignItems: "center"
     },
     username: {
         fontWeight: "700",
         color: colors.white,
         fontSize: 24,
-        marginBottom: 5
+        lineHeight: 24,
+        marginBottom: 7,
     },
     chevron: {
         color: colors.white

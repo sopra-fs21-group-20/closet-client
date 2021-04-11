@@ -5,8 +5,11 @@ import {Octicons} from "@expo/vector-icons";
 import Text from "./Text";
 import colors from "../config/colors";
 import LottieView from "lottie-react-native";
+import feed from "../api/feed";
 
-function FeedActions({post_id, likes, comments, isLiked, lightTheme, onCommentClick, caption_attrs}) {
+function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightTheme, onCommentClick, caption_attrs}) {
+    const [likesNumber, setLikesNumber] = useState(parseInt(likes));
+
     useEffect(() => {
         return () => {
             animationPress();
@@ -15,22 +18,32 @@ function FeedActions({post_id, likes, comments, isLiked, lightTheme, onCommentCl
 
     const animation = useRef(null);
     const animationPress = () => {
+        setLikesNumber(likesNumber+1);
         if(animation?.current && !isLiked) {
             animation.current.play();
         }
+        likePost().then(() => {
+
+        });
+    }
+
+    const likePost = async () => {
+        const result = await feed.likePost(post_id);
     }
 
     return (
         <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={animationPress}>
+            <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={() => {
+                if(!hasBeenLiked) animationPress();
+            }}>
                 <View style={styles.detailsContainer}>
                     <Text
-                        style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>{likes}</Text>
+                        style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>{likesNumber}</Text>
                     <View style={styles.lottieContainer}>
-                        <LottieView progress={0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(lightTheme ? require("../assets/animations/like-button-dark.json") : require("../assets/animations/like-button-white.json"))} />
+                        <LottieView progress={(hasBeenLiked) ? 1 : 0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(lightTheme ? require("../assets/animations/like-button-dark.json") : require("../assets/animations/like-button-white.json"))} />
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => {
                 onCommentClick(post_id, caption_attrs, lightTheme);
             }}>
@@ -55,7 +68,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 0,
         width: '100%',
-        marginTop: 20
+        marginTop: 10,
     },
     detailsContainer: {
         justifyContent: "flex-end",
