@@ -65,7 +65,6 @@ function CommentScreen({route, navigation}) {
         commentsApi.request(post_id);
     };
 
-    console.log(commentsApi.data);
 
     return (
         <>

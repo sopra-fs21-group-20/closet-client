@@ -11,14 +11,14 @@ import users from "../api/users";
 import profile from "../api/profile";
 
 function AccountScreen() {
+    console.log("race12")
 
     const getFeedApi = useApi(profile.getPosts);
 
     useEffect(() => {
         getFeedApi.request();
     }, []);
-
-    console.log(getFeedApi)
+    //getFeedApi.data && getFeedApi.data.length > 0 && console.log('details', getFeedApi)
 
     const [pictures, setPictures] = useState(pictures);
     return (

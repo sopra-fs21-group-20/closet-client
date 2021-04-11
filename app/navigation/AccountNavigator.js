@@ -11,6 +11,7 @@ const Stack = createStackNavigator();
 
 const AccountNavigator = () => {
     const {user, logOut} = useAuth();
+    console.log("race3")
     return (
         <Stack.Navigator screenOptions={{
             headerStyle: [styles.headerStyle],
