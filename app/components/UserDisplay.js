@@ -12,7 +12,16 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Text from "./Text";
 import colors from "../config/colors";
 
-function UserDisplay({username, profileImage, caption, lightTheme, onCommentClick, post_id, caption_attrs, expandable = false}) {
+function UserDisplay({
+                         username,
+                         profileImage,
+                         caption,
+                         lightTheme,
+                         onCommentClick,
+                         post_id,
+                         caption_attrs,
+                         expandable = false
+                     }) {
     const [isOpen, setIsOpen] = useState(false);
     const [spinValue, setSpinValue] = useState(new Animated.Value(0));
 
@@ -46,7 +55,7 @@ function UserDisplay({username, profileImage, caption, lightTheme, onCommentClic
                     <Text style={[styles.username, (lightTheme ? lightThemeStyle.username : null)]} numberOfLines={1}>
                         {username}
                     </Text>
-                    {caption && (
+                    {caption && caption.length >= 1 && (
                         <Text style={[styles.caption, (lightTheme ? lightThemeStyle.caption : null)]}
                               numberOfLines={isOpen ? 0 : 2}>
                             {caption}

@@ -58,7 +58,7 @@ function RegisterScreen() {
       <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
       <Screen style={styles.container}>
         <Form
-          initialValues={{ firstName: "Test", lastName: "Test2", username: "testusername", email: "test@test.ch", password: "test1234" }}
+          initialValues={{ firstName: "Test", lastName: "Test2", username: "testusername", email: "test@test.ch", password: "test" }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >

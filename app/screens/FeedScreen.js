@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {FlatList, StyleSheet, View} from "react-native";
+import {FlatList, RefreshControl, ScrollView, StyleSheet, View} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -88,23 +88,34 @@ function FeedScreen({navigation}) {
         navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
     };
 
-    console.log(getFeedApi.data);
+    console.log("feedApi", getFeedApi);
+
+    const onRefresh = () => {
+        getFeedApi.request();
+    };
 
     return (
         <>
             <ActivityIndicator visible={getFeedApi.loading}/>
             <Screen style={styles.screen}>
                 {(getFeedApi.error || (getFeedApi.data && getFeedApi.data.length === 0)) && (
-                    <View style={styles.errorView}>
+                    <ScrollView contentContainerStyle={styles.errorView} refreshControl={
+                        <RefreshControl
+                            refreshing={getFeedApi.loading}
+                            onRefresh={onRefresh}
+                        />
+                    }>
                         <View style={styles.errorViewInner}>
-                            <Text style={styles.errorText}>Couldn't load the feed.</Text>
+                            <Text style={styles.errorText}>{getFeedApi.data && getFeedApi.data.length === 0 ? "There are no current posts in the feed." : "There was an error while loading the feed"}</Text>
                             <Button title="Retry" onPress={getFeedApi.request}/>
                         </View>
-                    </View>
+                    </ScrollView>
                 )}
                 {getFeedApi.data && getFeedApi.data.length >= 1 && (<FlatList
                     /*viewabilityConfig={viabilityConfig}
                     onViewableItemsChanged={onViewableItemsChanged}*/
+                    onRefresh={() => onRefresh()}
+                    refreshing={getFeedApi.loading}
                     data={getFeedApi.data}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item, index}) => {
@@ -113,8 +124,8 @@ function FeedScreen({navigation}) {
                             username={item.username}
                             profileImage={item.profileImage}
                             caption={item.caption}
-                            likes={item.likes}
-                            comments={item.comments}
+                            likes={item.nr_of_likes}
+                            comments={item.nr_of_comments}
                             images={item.images}
                             onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/
                             }}

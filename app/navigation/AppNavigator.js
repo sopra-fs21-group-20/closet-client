@@ -23,7 +23,7 @@ const AppNavigator = () => {
 
         return true;
     };
-    return (<Tab.Navigator initialRouteName={"Outfit"}>
+    return (<Tab.Navigator initialRouteName={"Feed"}>
         <Tab.Screen
             name="Feed"
             component={FeedNavigator}
