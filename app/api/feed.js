@@ -31,7 +31,12 @@ export const addFeedItem = (feedItem, user, onUploadProgress) => {
     );*/
 };
 
+const likePost = (post_id) => {
+    return client.post(endpoint + "/" + post_id + "/like");
+};
+
 export default {
     addFeedItem,
     getFeed,
+    likePost
 };

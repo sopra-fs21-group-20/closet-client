@@ -9,7 +9,7 @@ import FeedActions from "./FeedActions";
 
 const DOUBLE_PRESS_DELAY = 300;
 
-function Card({post_id, username, profileImage, caption, likes, comments, images, onPress, index, onCommentClick}) {
+function Card({post_id, username, profileImage, caption, likes, hasBeenLiked, comments, images, onPress, index, onCommentClick}) {
     const scrollableImages = useRef();
 
     const [isLiked, setIsLiked] = useState(false);
@@ -25,7 +25,7 @@ function Card({post_id, username, profileImage, caption, likes, comments, images
     }
 
     const handleImageDoublePress = (e) => {
-        setIsLiked(true);
+        if(!hasBeenLiked) setIsLiked(true);
     }
     //ToDo defaultSource of images
     return (
@@ -58,6 +58,7 @@ function Card({post_id, username, profileImage, caption, likes, comments, images
                 />
                 <FeedActions likes={likes}
                              comments={comments}
+                             hasBeenLiked={hasBeenLiked}
                              isLiked={isLiked}
                              lightTheme={index % 2 !== 0}
                              onCommentClick={onCommentClick}
@@ -83,8 +84,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.dark
     },
     card: {
-        borderBottomColor: colors.dark,
-        borderBottomWidth: 20,
         borderRadius: 0,
         borderTopLeftRadius: 50,
         backgroundColor: colors.dark,
@@ -127,15 +126,6 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 35,
         borderBottomRightRadius: 35,
     },
-    subTitle: {
-        color: colors.light,
-        fontWeight: "bold",
-    },
-    title: {
-        color: colors.white,
-        marginBottom: 7,
-        fontSize: 24
-    },
 });
 
 
@@ -145,12 +135,6 @@ const lightTheme = StyleSheet.create({
     },
     card: {
         backgroundColor: colors.white,
-    },
-    subTitle: {
-        color: colors.dark,
-    },
-    title: {
-        color: colors.dark,
     },
 });
 

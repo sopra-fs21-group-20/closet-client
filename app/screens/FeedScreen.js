@@ -84,7 +84,6 @@ function FeedScreen({navigation}) {
     };*/
 
     const navigateToComments = (post_id, captionAttrs, lightThemeEnabled) => {
-        console.log(post_id, captionAttrs);
         navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
     };
 
@@ -124,8 +123,9 @@ function FeedScreen({navigation}) {
                             username={item.username}
                             profileImage={item.profileImage}
                             caption={item.caption}
-                            likes={item.nr_of_likes}
-                            comments={item.nr_of_comments}
+                            hasBeenLiked={item.hasLiked}
+                            likes={item.numberOfLikes}
+                            comments={item.numberOfComments}
                             images={item.images}
                             onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/
                             }}

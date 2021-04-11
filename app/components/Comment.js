@@ -6,17 +6,19 @@ import colors from "../config/colors";
 import moment from "moment";
 
 function Comment({user_id, username, comment, creationDate, profileImage, index, lightThemeEnabled}) {
-    const now = moment();
-    const createdAt = moment(creationDate);
+    const postedAt = moment(creationDate).fromNow();
 
-    console.log(profileImage);
+
 
     return (
         <View style={styles.container}>
             <Image style={styles.profileImage} source={{uri: profileImage}}/>
             <View style={styles.containerInner}>
-                <Text style={[styles.username, (lightThemeEnabled ? lightTheme.username : null)]}>{username}</Text>
-                <Text style={[styles.comment, (lightThemeEnabled ? lightTheme.comment : null)]}>{comment}</Text>
+                <Text style={styles.text}>
+                    <Text style={[styles.username, (lightThemeEnabled ? lightTheme.username : null)]}>{username}</Text>
+                    <Text style={[styles.comment, (lightThemeEnabled ? lightTheme.comment : null)]}>  {comment}</Text>
+                </Text>
+                <Text style={styles.postedAt}>{postedAt}</Text>
             </View>
         </View>
     );
@@ -29,6 +31,7 @@ const styles = StyleSheet.create({
     },
     containerInner: {
         marginLeft: 15,
+        flexDirection: "column"
     },
     profileImage: {
         height: 40,
@@ -43,7 +46,12 @@ const styles = StyleSheet.create({
     comment: {
         color: colors.white,
         marginBottom: 7,
-        fontSize: 16
+        marginLeft: 7,
+    },
+    postedAt: {
+        color: colors.white,
+        marginTop: 7,
+        fontSize: 12
     },
 });
 
