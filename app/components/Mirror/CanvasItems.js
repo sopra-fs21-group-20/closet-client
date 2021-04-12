@@ -12,7 +12,7 @@ export default function CanvasItems() {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={[styles.container]}>
             <View style={styles.list}>
                 <Image source={require("../../assets/outfit.jpg")} style={styles.listImage}/>
                 <View style={styles.listInformation}>
@@ -63,39 +63,49 @@ export default function CanvasItems() {
 
 const styles = StyleSheet.create({
     container: {
+        display: 'flex',
         width: '100%',
-        paddingHorizontal: 5,
+        paddingHorizontal: 15,
     },
     list:{
         flex: 1,
         flexDirection:'row',
-        marginTop: 5,
-        backgroundColor: colors.secondary,
-        height: 90,
+        marginTop: 10,
+        backgroundColor: colors.light,
+        height: 70,
         width: '100%',
-        borderRadius:50,
+        borderRadius:20,
         paddingHorizontal: 10,
-        paddingVertical: 5,
-        alignItems: 'center'
+        paddingVertical: 10,
+        alignItems: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+
+        elevation: 7,
     },
     listImage: {
         backgroundColor: 'white',
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        width: 60,
+        height: 60,
+        borderRadius: 10,
     },
     listInformation:{
         flex: 1,
         marginLeft: 20
     },
     title:{
-        color: colors.white,
+        color: colors.dark,
         fontSize: 25,
         fontWeight: '600',
         paddingBottom:5
     },
     description:{
-        color: colors.white,
+        color: colors.dark,
         fontSize: 18
     },
 

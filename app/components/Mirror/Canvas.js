@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     container: {
         width: canvasWidth,
         height: canvasHeight,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.light,
         flexDirection: 'row',
         flexWrap: "wrap",
         justifyContent: 'space-evenly',
