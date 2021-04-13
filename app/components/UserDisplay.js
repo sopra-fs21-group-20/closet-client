@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     container: {
         alignItems: "flex-start",
         flexDirection: "row",
-        padding: 0,
+        paddingHorizontal: 20,
         width: '100%',
     },
     detailsContainer: {
@@ -100,18 +100,18 @@ const styles = StyleSheet.create({
         backgroundColor: colors.light,
     },
     caption: {
-        color: colors.white,
+        color: colors.dark,
         alignItems: "center",
     },
     username: {
         fontWeight: "700",
-        color: colors.white,
+        color: colors.dark,
         fontSize: 24,
         lineHeight: 24,
         marginBottom: 7,
     },
     chevron: {
-        color: colors.white
+        color: colors.dark
     },
 });
 

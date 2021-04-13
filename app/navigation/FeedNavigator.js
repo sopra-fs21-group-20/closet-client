@@ -31,6 +31,7 @@ const FeedNavigator = ({navigation}) => {
                 <Stack.Screen name="cameraNavigator" component={CameraNavigator} options={{headerShown: false}}/>
                 <Stack.Screen name="Comments" component={CommentScreen} options={{
                     headerTitle: "Comments",
+                    headerBackTitle: () => {null},
                     headerBackImage: () => (
                         <MaterialCommunityIcons name="chevron-left" style={styles.headerLeft} onPress={() => {
                             Alert.alert("Not yet implemented.");
@@ -43,7 +44,7 @@ const FeedNavigator = ({navigation}) => {
 
 const styles = StyleSheet.create({
     headerStyle: {
-        backgroundColor: colors.primary,
+        backgroundColor: colors.darker,
         shadowColor: 'transparent'
     },
     headerTitle: {

@@ -40,7 +40,7 @@ function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightThem
                     <Text
                         style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>{likesNumber}</Text>
                     <View style={styles.lottieContainer}>
-                        <LottieView progress={(hasBeenLiked) ? 1 : 0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(lightTheme ? require("../assets/animations/like-button-dark.json") : require("../assets/animations/like-button-white.json"))} />
+                        <LottieView progress={(hasBeenLiked) ? 1 : 0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(require("../assets/animations/like-button-dark.json"))} />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "stretch",
         flexDirection: "row",
-        padding: 0,
+        paddingHorizontal: 20,
         width: '100%',
         marginTop: 10,
     },
@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
         marginLeft: 25,
     },
     text: {
-        color: colors.white,
+        color: colors.dark,
         marginRight: 8,
         fontSize: 14,
     },
     icon: {
-        color: colors.white,
+        color: colors.dark,
         marginLeft: 3,
         height: 24
     },

@@ -35,7 +35,7 @@ function Card({post_id, username, profileImage, caption, likes, hasBeenLiked, co
                     <View style={styles.imageScrollViewContainer}>
                         {images.map((image, index) => (
                             <Image
-                                style={[styles.image, {height:Dimensions.get("screen").width - 40, width:Dimensions.get("screen").width - 40}]}
+                                style={[styles.image, {height:Dimensions.get("screen").width, width:Dimensions.get("screen").width}]}
                                 tint="light"
                                 preview={{uri: image.thumbnailUrl}}
                                 uri={image.url}
@@ -82,14 +82,13 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         position: "absolute",
-        backgroundColor: colors.dark
+        backgroundColor: colors.lighter
     },
     card: {
         borderRadius: 0,
         borderTopLeftRadius: 50,
-        backgroundColor: colors.dark,
+        backgroundColor: colors.lighter,
         marginTop: 20,
-        padding: 20,
         paddingBottom: 0,
         shadowColor: colors.black,
         shadowOffset: {
@@ -101,9 +100,6 @@ const styles = StyleSheet.create({
     },
     imageScrollView: {
         overflow: "hidden",
-        borderRadius: 15,
-        borderTopLeftRadius: 35,
-        borderBottomRightRadius: 35,
         shadowColor: colors.black,
         shadowOffset: {
             height: 5,
@@ -123,9 +119,7 @@ const styles = StyleSheet.create({
     image: {
         height: 400,
         width: 400,
-        borderRadius: 15,
-        borderTopLeftRadius: 35,
-        borderBottomRightRadius: 35,
+        borderTopLeftRadius: 50,
     },
 });
 

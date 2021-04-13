@@ -18,7 +18,10 @@ import Text from "../components/Text";
 import feed from "../api/feed";
 
 function CommentScreen({route, navigation}) {
-    const {post_id, captionAttrs, lightThemeEnabled} = route.params;
+    const {post_id, captionAttrs} = route.params;
+    let {lightThemeEnabled} = route.params;
+    //Todo
+    lightThemeEnabled = true;
 
     const commentsApi = useApi(comments.getComments);
 
@@ -144,11 +147,11 @@ const styles = StyleSheet.create({
     screen: {
         padding: 0,
         paddingTop: 0,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.darker,
     },
     errorView: {
         flex: 1,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.darker,
         paddingTop: 20,
     },
     errorViewInner: {
