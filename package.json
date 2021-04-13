@@ -38,7 +38,9 @@
     "react-native-screens": "~2.2.0",
     "react-native-swiper": "^1.6.0",
     "react-native-web": "~0.11.7",
-    "yup": "^0.28.5"
+    "yup": "^0.28.5",
+    "expo-image-manipulator": "~8.1.0",
+    "expo-file-system": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

@@ -12,6 +12,8 @@ import { Camera } from 'expo-camera';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as FileSystem from 'expo-file-system';
 import colors from "../config/colors";
 
 const dimensions = Dimensions.get('screen')
@@ -50,10 +52,12 @@ export default function TakePictureScreen({navigation}) {
 
     const takePicture = async () => {
         if(camera){
-            const data = await camera.takePictureAsync({base64: true, quality: 0})
+            const data = await camera.takePictureAsync({/*base64: true, */quality: 0})
             setPictureTaken(true)
             setImage(data.uri)
-            navigation.push('pictureTaken', {picture: data.uri, base64: data.base64, cameraDimensions})
+            const imageInfo = await FileSystem.getInfoAsync(data.uri)
+            const manipulatedImg = await compress(data.uri)
+            navigation.push('pictureTaken', {picture: manipulatedImg.uri, base64: manipulatedImg.base64, cameraDimensions})
         }
     }
 
@@ -62,7 +66,7 @@ export default function TakePictureScreen({navigation}) {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 0.1,
+            quality: 0,
             base64: true
         });
 
@@ -70,8 +74,18 @@ export default function TakePictureScreen({navigation}) {
             let cameraDimensions = 1
             setImage(result.uri);
             setPictureTaken(true)
+            const imageInfo = await FileSystem.getInfoAsync(result.uri)
+            console.log('size: ', imageInfo.size)
             navigation.push('pictureTaken', {picture: result.uri, base64: result.base64, cameraDimensions})
         }
+    };
+
+    const compress = async (imgUri) => {
+        return await ImageManipulator.manipulateAsync(
+            imgUri,
+            [{resize: {width: dimensions.width}}],
+            { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG, base64: true}
+        );
     };
 
     const handleTap = (e) => {
