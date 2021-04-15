@@ -6,6 +6,8 @@ import AccountNavigator from "./AccountNavigator";
 import FeedNavigator from "./FeedNavigator";
 import OutfitButton from "./OutfitButton";
 import MirrorScreen from "../screens/MirrorScreen";
+import {StyleSheet} from "react-native";
+import colors from "../config/colors";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +23,12 @@ const AppNavigator = () => {
 
         return true;
     };
-    return (<Tab.Navigator initialRouteName={"Feed"}>
+    return (<Tab.Navigator initialRouteName={"Feed"} tabBarOptions={{
+        showLabel: false,
+        tabBarIcon: {
+            size: 32
+        }
+    }}>
         <Tab.Screen
             name="Feed"
             component={FeedNavigator}
@@ -31,7 +38,8 @@ const AppNavigator = () => {
                     <MaterialCommunityIcons
                         name="home"
                         color={color}
-                        size={size}/>
+                        style={styles.icon}
+                        size={32}/>
                 ),
 
             })}
@@ -49,7 +57,8 @@ const AppNavigator = () => {
                     <MaterialCommunityIcons
                         name="plus-circle"
                         color={color}
-                        size={size}
+                        style={styles.icon}
+                        size={32}
                     />
                 ),
             })}
@@ -59,11 +68,21 @@ const AppNavigator = () => {
             component={AccountNavigator}
             options={{
                 tabBarIcon: ({color, size}) => (
-                    <MaterialCommunityIcons name="account" color={color} size={size}/>
+                    <MaterialCommunityIcons
+                        name="account"
+                        color={color}
+                        style={styles.icon}
+                        size={32}/>
                 ),
             }}
         />
     </Tab.Navigator>);
 };
+
+const styles = StyleSheet.create({
+    icon: {
+        top: 5,
+    }
+});
 
 export default AppNavigator;

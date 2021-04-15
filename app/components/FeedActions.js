@@ -40,7 +40,7 @@ function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightThem
                     <Text
                         style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>{likesNumber}</Text>
                     <View style={styles.lottieContainer}>
-                        <LottieView progress={(hasBeenLiked) ? 1 : 0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(require("../assets/animations/like-button-dark.json"))} />
+                        <LottieView progress={(hasBeenLiked) ? 1 : 0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(require("../assets/animations/like-button-white.json"))} />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -52,7 +52,7 @@ function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightThem
                         style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>{comments}</Text>
                     <Octicons
                         name={"comment"}
-                        size={25}
+                        size={22}
                         style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
                     />
                 </View>
@@ -66,29 +66,28 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "stretch",
         flexDirection: "row",
-        paddingHorizontal: 20,
         width: '100%',
-        marginTop: 10,
+        marginVertical: 10,
     },
     detailsContainer: {
         justifyContent: "flex-end",
-        alignItems: "center",
+        alignItems: "flex-start",
         flexDirection: "row",
         marginLeft: 25,
     },
     text: {
-        color: colors.dark,
+        color: colors.white,
         marginRight: 8,
         fontSize: 14,
     },
     icon: {
-        color: colors.dark,
+        color: colors.white,
         marginLeft: 3,
         height: 24
     },
     lottieContainer: {
-        width: 30,
-        height: 30,
+        width: 24,
+        height: 24,
         alignItems: "center",
         justifyContent: "center",
     },
@@ -101,10 +100,10 @@ const styles = StyleSheet.create({
 
 const lightThemeStyle = StyleSheet.create({
     text: {
-        color: colors.dark,
+        color: colors.white,
     },
     icon: {
-        color: colors.dark,
+        color: colors.white,
     },
 });
 

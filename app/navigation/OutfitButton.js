@@ -11,7 +11,8 @@ function OutfitButton({ onPress }) {
         <MaterialCommunityIcons
           name="tshirt-crew"
           color={colors.white}
-          size={40}
+          size={32}
+          style={{top:2}}
         />
       </View>
     </TouchableOpacity>

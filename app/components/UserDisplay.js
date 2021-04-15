@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     container: {
         alignItems: "flex-start",
         flexDirection: "row",
-        paddingHorizontal: 20,
         width: '100%',
     },
     detailsContainer: {
@@ -100,30 +99,30 @@ const styles = StyleSheet.create({
         backgroundColor: colors.light,
     },
     caption: {
-        color: colors.dark,
+        color: colors.lighter,
         alignItems: "center",
     },
     username: {
-        fontWeight: "700",
-        color: colors.dark,
+        fontWeight: "400",
+        color: colors.white,
         fontSize: 24,
         lineHeight: 24,
         marginBottom: 7,
     },
     chevron: {
-        color: colors.dark
+        color: colors.white
     },
 });
 
 const lightThemeStyle = StyleSheet.create({
     caption: {
-        color: colors.dark,
+        color: colors.white,
     },
     username: {
-        color: colors.dark,
+        color: colors.white,
     },
     chevron: {
-        color: colors.dark,
+        color: colors.white,
     },
 });
 

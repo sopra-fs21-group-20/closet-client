@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     containerInner: {
-        marginLeft: 15,
+        marginLeft: 30,
         flexDirection: "column",
         flex: 1,
     },

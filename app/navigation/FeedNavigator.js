@@ -9,10 +9,19 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import CommentScreen from "../screens/CommentScreen";
 import CameraNavigator from "./CameraNavigator";
 import FeedContext from "./FeedContext";
+import { useFonts, Damion_400Regular } from '@expo-google-fonts/damion';
+import ActivityIndicator from "../components/ActivityIndicator";
 
 const Stack = createStackNavigator();
 
 const FeedNavigator = ({navigation}) => {
+    let [fontsLoaded] = useFonts({
+        Damion_400Regular,
+    });
+
+    if (!fontsLoaded) {
+        return <ActivityIndicator visible={true} />;
+    }
     return (
 
         <FeedContext.Provider value={{navigation}}>
@@ -49,9 +58,11 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         color: colors.white,
-        fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
-        fontSize: 28,
-        fontWeight: "400"
+        fontFamily: "Damion_400Regular",
+        fontSize: 40,
+        fontWeight: "400",
+        paddingHorizontal: 10,
+        lineHeight: 44,
     },
     headerLeft: {
         color: colors.white,

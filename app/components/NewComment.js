@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         width: '100%',
         borderTopWidth: 1,
-        borderTopColor: colors.white,
+        borderTopColor: colors.medium,
     },
     comment: {
         color: colors.white,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
 
 const lightThemeStyle = StyleSheet.create({
     container: {
-        borderTopColor: colors.dark,
+        borderTopColor: colors.medium,
     },
     comment: {
         color: colors.dark,

@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {FlatList, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, StyleSheet, View} from "react-native";
+import {
+    Dimensions,
+    FlatList,
+    KeyboardAvoidingView,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    View
+} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -21,7 +30,7 @@ function CommentScreen({route, navigation}) {
     const {post_id, captionAttrs} = route.params;
     let {lightThemeEnabled} = route.params;
     //Todo
-    lightThemeEnabled = true;
+    lightThemeEnabled = false;
 
     const commentsApi = useApi(comments.getComments);
 
@@ -68,6 +77,7 @@ function CommentScreen({route, navigation}) {
         commentsApi.request(post_id);
     };
 
+    console.log(lightThemeEnabled);
 
     return (
         <>
@@ -175,14 +185,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     errorText: {
-        color: colors.white,
+        color: colors.lighter,
     },
     commentCard: {
         flex: 1,
         backgroundColor: colors.dark,
-        borderRadius: 0,
-        borderTopLeftRadius: 50,
+        borderRadius: 50,
         marginTop: 20,
+        marginHorizontal: 10,
         padding: 20,
         shadowColor: colors.black,
         shadowOffset: {
@@ -195,19 +205,26 @@ const styles = StyleSheet.create({
     },
     commentCardAfter: {
         position: "absolute",
-        bottom: 0,
+        bottom: 20,
         backgroundColor: colors.dark,
         height: 300,
-        width: "100%",
+        width: Dimensions.get("window").width - 20,
+        marginHorizontal: 10,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
     },
     commentList: {
-        borderBottomColor: colors.white,
+        borderBottomColor: colors.medium,
         borderBottomWidth: 1,
     },
     footer: {
         backgroundColor: colors.dark,
         paddingHorizontal: 20,
         zIndex: 10,
+        marginHorizontal: 10,
+        marginBottom: 20,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
     }
 });
 
@@ -219,7 +236,7 @@ const lightTheme = StyleSheet.create({
         backgroundColor: colors.white,
     },
     commentList: {
-        borderBottomColor: colors.dark,
+        borderBottomColor: colors.medium,
     },
     footer: {
         backgroundColor: colors.white,

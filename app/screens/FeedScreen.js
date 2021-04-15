@@ -97,6 +97,8 @@ function FeedScreen({navigation}) {
                         <RefreshControl
                             refreshing={getFeedApi.loading}
                             onRefresh={onRefresh}
+                            colors={[colors.light]}
+                            tintColor={colors.light}
                         />
                     }>
                         <View style={styles.errorViewInner}>
@@ -109,8 +111,13 @@ function FeedScreen({navigation}) {
                 {getFeedApi.data && getFeedApi.data.length >= 1 && (<FlatList
                     /*viewabilityConfig={viabilityConfig}
                     onViewableItemsChanged={onViewableItemsChanged}*/
-                    onRefresh={() => onRefresh()}
-                    refreshing={getFeedApi.loading}
+                    contentContainerStyle={styles.flatList}
+                    refreshControl={<RefreshControl
+                        refreshing={getFeedApi.loading}
+                        onRefresh={onRefresh}
+                        colors={[colors.light]}
+                        tintColor={colors.light}
+                    />}
                     data={getFeedApi.data}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item, index}) => {
@@ -138,9 +145,12 @@ function FeedScreen({navigation}) {
 
 const styles = StyleSheet.create({
     screen: {
-        padding: 0,
+        paddingHorizontal: 5,
         paddingTop: 0,
         backgroundColor: colors.darker,
+    },
+    flatList: {
+        paddingBottom: 40,
     },
     errorView: {
         flex: 1,
@@ -149,11 +159,11 @@ const styles = StyleSheet.create({
     },
     errorViewInner: {
         flex: 1,
-        backgroundColor: colors.white,
+        backgroundColor: colors.dark,
         alignItems: "center",
         justifyContent: "center",
         padding: 40,
-        borderTopLeftRadius: 50,
+        borderRadius: 50,
         shadowColor: colors.black,
         shadowOffset: {
             height: -5
