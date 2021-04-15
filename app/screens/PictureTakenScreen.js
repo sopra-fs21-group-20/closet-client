@@ -3,6 +3,8 @@ import {StyleSheet, Text, View, Button, Image, TouchableOpacity, SafeAreaView, D
 import colors from "../config/colors";
 import {Entypo} from "@expo/vector-icons";
 import AppButton from "../components/Button";
+import * as FileSystem from 'expo-file-system';
+
 
 const dimensions = Dimensions.get('window')
 
@@ -14,7 +16,7 @@ export default function PictureTakenScreen({route, navigation}) {
     const topButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.4
     const imageDimensions = dimensions.width * route.params.cameraDimensions
     const bottomButtonContainerHeight = (dimensions.height-dimensions.width * route.params.cameraDimensions) * 0.6
-
+    const imageSize = FileSystem.getInfoAsync(route.params.picture)
 
     return (
         <SafeAreaView style={styles.container}>
