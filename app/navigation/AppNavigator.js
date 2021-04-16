@@ -7,21 +7,14 @@ import FeedNavigator from "./FeedNavigator";
 import OutfitButton from "./OutfitButton";
 import MirrorScreen from "../screens/MirrorScreen";
 import {StyleSheet} from "react-native";
-import colors from "../config/colors";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
     const getTabBarVisibility = (route) => {
-        const routeName = route.state
-            ? route.state.routes[route.state.index].name
-            : '';
-
-        if (routeName === 'cameraNavigator') {
-            return false;
-        }
-
-        return true;
+        const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
+        return routeName !== 'cameraNavigator';
     };
     return (<Tab.Navigator initialRouteName={"Feed"} tabBarOptions={{
         showLabel: false,
