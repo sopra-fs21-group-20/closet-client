@@ -14,8 +14,6 @@ import Card from "../components/Card";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 function AccountScreen() {
-    console.log("race12")
-
     const getFeedApi = useApi(profile.getPosts);
 
     useEffect(() => {
@@ -25,8 +23,6 @@ function AccountScreen() {
     const onRefresh = () => {
         getFeedApi.request();
     };
-
-    console.log(getFeedApi.data);
 
     const [pictures, setPictures] = useState(pictures);
     return (
@@ -53,7 +49,7 @@ function AccountScreen() {
                             refreshing={getFeedApi.loading}
                             onRefresh={onRefresh}
                         />
-                    }>
+                    } contentContainerStyle={styles.flatList}>
                         <ProfileDetails/>
                         <Gallery data={getFeedApi.data}/>
                     </ScrollView>
@@ -67,12 +63,12 @@ const styles = StyleSheet.create({
     screen: {
         padding: 0,
         paddingTop: 0,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.darker,
     },
     screenInner: {
         flex: 1,
-        backgroundColor: colors.white,
-        borderTopLeftRadius: 50,
+        backgroundColor: colors.dark,
+        borderRadius: 50,
         shadowColor: colors.black,
         shadowOffset: {
             height: -5
@@ -80,10 +76,15 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 10,
         elevation: 10,
+        marginVertical: 20,
+        marginHorizontal: 10,
+    },
+    flatList: {
+
     },
     errorView: {
         flex: 1,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.darker,
         paddingTop: 20,
     },
     errorViewInner: {

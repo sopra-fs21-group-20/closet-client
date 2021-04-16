@@ -3,6 +3,7 @@ import {Image, StyleSheet, View} from "react-native";
 import Text from "../Text";
 import ProfileBar from "./ProfileBar";
 import useAuth from "../../auth/useAuth";
+import colors from "../../config/colors";
 
 export default function ProfileDetails() {
     const {user, logOut} = useAuth();
@@ -40,6 +41,7 @@ const styles = StyleSheet.create({
     },
     username:{
         fontWeight: "800",
-        fontSize: 20
+        fontSize: 20,
+        color: colors.white,
     },
 });

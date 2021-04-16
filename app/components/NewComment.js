@@ -27,25 +27,27 @@ function NewComment({lightThemeEnabled, post_id, refresh}) {
     }
 
     return (
-        <Form
-            initialValues={{comment: ""}}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-            style
-        >
-            <View style={[styles.container, (lightThemeEnabled ? lightThemeStyle.container : null)]}>
-                <FormField
-                    autoCorrect={false}
-                    name="comment"
-                    placeholder="Leave a comment..."
-                    containerStyle={[styles.comment, (lightThemeEnabled ? lightThemeStyle.comment : null)]}
-                    textStyle={[styles.commentText, (lightThemeEnabled ? lightThemeStyle.commentText : null)]}
-                    multiline={true}
-                    showErrorMessage={false}
-                />
-                <SubmitButton title="Send" buttonStyle={styles.buttonStyle} textStyle={styles.textStyle}/>
-            </View>
-        </Form>
+        <>
+            <Form
+                initialValues={{comment: ""}}
+                onSubmit={handleSubmit}
+                validationSchema={validationSchema}
+                style
+            >
+                <View style={[styles.container, (lightThemeEnabled ? lightThemeStyle.container : null)]}>
+                    <FormField
+                        autoCorrect={false}
+                        name="comment"
+                        placeholder="Leave a comment..."
+                        containerStyle={[styles.comment, (lightThemeEnabled ? lightThemeStyle.comment : null)]}
+                        textStyle={[styles.commentText, (lightThemeEnabled ? lightThemeStyle.commentText : null)]}
+                        multiline={true}
+                        showErrorMessage={false}
+                    />
+                    <SubmitButton title="Send" buttonStyle={styles.buttonStyle} textStyle={styles.textStyle}/>
+                </View>
+            </Form>
+        </>
     );
 }
 
@@ -70,9 +72,7 @@ const styles = StyleSheet.create({
     buttonStyle: {
         width: 100,
     },
-    textStyle: {
-
-    }
+    textStyle: {}
 });
 
 const lightThemeStyle = StyleSheet.create({
@@ -86,12 +86,8 @@ const lightThemeStyle = StyleSheet.create({
     commentText: {
         color: colors.dark
     },
-    buttonStyle: {
-
-    },
-    textStyle: {
-
-    }
+    buttonStyle: {},
+    textStyle: {}
 });
 
 export default NewComment;

@@ -40,9 +40,11 @@ const styles = StyleSheet.create({
     },
     numbers:{
         fontWeight: 'bold',
+        color: colors.light,
     },
     tagline:{
         fontSize: 16,
+        color: colors.lighter,
     },
 })
 

@@ -6,9 +6,9 @@ export default {
   colors: {
     ...DefaultTheme.colors,
     primary: colors.primary,
-    background: colors.white,
+    background: colors.darker,
     card: colors.darker,
     text: colors.white,
-    border: colors.dark,
+    border: colors.darker,
   },
 };

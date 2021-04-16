@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     icon: {
-        color: colors.white,
+        color: colors.lighter,
         marginLeft: 3,
         height: 24
     },
