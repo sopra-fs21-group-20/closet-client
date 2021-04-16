@@ -1,19 +1,24 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
+import {ImageBackground, StyleSheet, View, Image, Text, Dimensions} from "react-native";
 
 import Button from "../components/Button";
 import routes from "../navigation/routes";
+import { useFonts, Damion_400Regular } from '@expo-google-fonts/damion';
+import colors from "../config/colors";
 
 function WelcomeScreen({ navigation }) {
+  let [fontsLoaded] = useFonts({
+    Damion_400Regular,
+  });
   return (
     <ImageBackground
-      blurRadius={10}
+        blurRadius={3}
       style={styles.background}
-      source={require("../assets/background.jpg")}
+      source={require("../assets/triangle_background.jpg")}
     >
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require("../assets/logo-red.png")} />
-        <Text style={styles.tagline}>Sell What You Don't Need</Text>
+        <Image style={styles.logo} source={require("../assets/logo-primary.png")} resizeMode={"contain"} />
+        <Text style={styles.tagline}>myOutf.it</Text>
       </View>
       <View style={styles.buttonsContainer}>
         <Button
@@ -22,7 +27,7 @@ function WelcomeScreen({ navigation }) {
         />
         <Button
           title="Register"
-          color="secondary"
+          color="dark"
           onPress={() => navigation.navigate(routes.REGISTER)}
         />
       </View>
@@ -41,18 +46,23 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: "100%",
+    height: 130,
   },
   logoContainer: {
     position: "absolute",
-    top: 70,
+    top: 100,
+    bottom: 100,
+    height: Dimensions.get("window").height - 200,
+    width: Dimensions.get("window").width - 40,
     alignItems: "center",
+    justifyContent: "center",
   },
   tagline: {
-    fontSize: 25,
-    fontWeight: "600",
-    paddingVertical: 20,
+    fontSize: 50,
+    padding: 20,
+    fontFamily: "Damion_400Regular",
+    color: colors.dark,
   },
 });
 
