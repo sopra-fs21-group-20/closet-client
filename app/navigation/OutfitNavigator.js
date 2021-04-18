@@ -12,27 +12,19 @@ import ClosetScreen from "../screens/ClosetScreen";
 import MirrorScreen from "../screens/MirrorScreen";
 import OutfitDropdown from "./OutfitDropdown";
 import Text from "../components/Text";
-import { useHeaderHeight } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
 const OutfitNavigator = ({navigation}) => {
-    //const headerHeight = useHeaderHeight();
-
-    return (<>
-        <Stack.Navigator mode="modal" screenOptions={{
+    return (<Stack.Navigator mode="modal" screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown/>
         }}>
-            <Stack.Screen name="Closet" component={ClosetScreen} options={{}}/>
+            <Stack.Screen name="Closet" options={{}} component={ClosetScreen} />
             <Stack.Screen name="Mirror" component={MirrorScreen} options={{}}/>
-        </Stack.Navigator>
-        <SafeAreaView style={[styles.dropdown, {top: 40/*headerHeight*/}]}>
-            <Text>Test</Text>
-        </SafeAreaView>
-    </>)
-};
+        </Stack.Navigator>)
+}
 
 const styles = StyleSheet.create({
     headerStyle: {
@@ -50,10 +42,6 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingHorizontal: 15
     },
-    dropdown: {
-        position: "absolute",
-        backgroundColor: colors.primary
-    }
 });
 
 
