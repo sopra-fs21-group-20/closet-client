@@ -5,11 +5,15 @@ import Button from "../components/Button";
 import routes from "../navigation/routes";
 import { useFonts, Damion_400Regular } from '@expo-google-fonts/damion';
 import colors from "../config/colors";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 function WelcomeScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
     Damion_400Regular,
   });
+
+  if(!fontsLoaded) return (<ActivityIndicator visible={true}/>);
+
   return (
     <ImageBackground
         blurRadius={3}

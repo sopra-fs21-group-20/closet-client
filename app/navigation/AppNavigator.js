@@ -8,6 +8,8 @@ import OutfitButton from "./OutfitButton";
 import MirrorScreen from "../screens/MirrorScreen";
 import {StyleSheet} from "react-native";
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import ClosetScreen from "../screens/ClosetScreen";
+import OutfitNavigator from "./OutfitNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +19,7 @@ const AppNavigator = () => {
         return routeName !== 'cameraNavigator';
     };
     return (<Tab.Navigator initialRouteName={"Feed"} tabBarOptions={{
+        keyboardHidesTabBar: true,
         showLabel: false,
         tabBarIcon: {
             size: 32
@@ -39,7 +42,7 @@ const AppNavigator = () => {
         />
         <Tab.Screen
             name="Outfit"
-            component={MirrorScreen}
+            component={OutfitNavigator}
             options={({navigation}) => ({
                 tabBarButton: () => (
                     <OutfitButton

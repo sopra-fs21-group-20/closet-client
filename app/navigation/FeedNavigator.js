@@ -42,9 +42,7 @@ const FeedNavigator = ({navigation}) => {
                     headerTitle: "Comments",
                     headerBackTitle: () => {null},
                     headerBackImage: () => (
-                        <MaterialCommunityIcons name="chevron-left" style={styles.headerLeft} onPress={() => {
-                            Alert.alert("Not yet implemented.");
-                        }}/>
+                        <MaterialCommunityIcons name="chevron-left" style={styles.headerLeft} />
                     ),
                 }}/>
             </Stack.Navigator>

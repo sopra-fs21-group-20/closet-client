@@ -8,6 +8,7 @@ import OfflineNotice from "./app/components/OfflineNotice";
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import AuthNavigator from "./app/navigation/AuthNavigator";
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
     const [user, setUser] = useState();
@@ -30,6 +31,7 @@ export default function App() {
                 {user ? <AppNavigator /> : <AuthNavigator />}
                 {/*<AppNavigator/>*/}
             </NavigationContainer>
+            <StatusBar style={"light"} />
         </AuthContext.Provider>
     );
 }

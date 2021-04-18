@@ -36,7 +36,7 @@ const OutfitNavigator = ({navigation}) => {
 
 const styles = StyleSheet.create({
     headerStyle: {
-        backgroundColor: colors.primary,
+        backgroundColor: colors.darker,
         shadowColor: 'transparent'
     },
     headerTitle: {

@@ -42,7 +42,8 @@
     "react-native-web": "~0.13.12",
     "yup": "^0.28.5",
     "expo-image-manipulator": "~9.1.0",
-    "expo-file-system": "~11.0.2"
+    "expo-file-system": "~11.0.2",
+    "expo-status-bar": "~1.0.4"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

@@ -77,15 +77,13 @@ function CommentScreen({route, navigation}) {
         commentsApi.request(post_id);
     };
 
-    console.log(lightThemeEnabled);
-
     return (
         <>
             <ActivityIndicator visible={commentsApi.loading}/>
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={styles.container}
-                keyboardVerticalOffset={Platform.OS === "ios" ? 60 : 0}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 85 : 60}
             >
                 <Screen style={styles.screen}>
                     {commentsApi.error && (
@@ -177,7 +175,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 10,
-        elevation: 10,
     },
     errorTextContainer: {
         height: "100%",
@@ -200,7 +197,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 10,
-        elevation: 10,
         zIndex:10,
     },
     commentCardAfter: {
@@ -212,10 +208,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
+        zIndex: -1,
     },
     commentList: {
         borderBottomColor: colors.medium,
         borderBottomWidth: 1,
+        zIndex: 10,
     },
     footer: {
         backgroundColor: colors.dark,

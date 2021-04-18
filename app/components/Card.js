@@ -50,8 +50,8 @@ function Card({
                         {images.map((image, index) => (
                             <Image
                                 style={[styles.image, {
-                                    height: Dimensions.get("screen").width - 10,
-                                    width: Dimensions.get("screen").width - 10
+                                    height: Dimensions.get("window").width - 20,
+                                    width: Dimensions.get("window").width - 20,
                                 }]}
                                 preview={{uri: image.thumbnailUrl}}
                                 uri={image.url}
@@ -127,25 +127,26 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.2,
         shadowRadius: 10,
-        elevation: 10,
+        //elevation: 10, //ToDo clashes with zIndex
         overflow: "hidden",
         borderRadius: 50,
         borderBottomLeftRadius: 0,
+        zIndex: 2,
     },
     imageScrollViewContainer: {
         flexDirection: "row",
     },
     detailsContainer: {
         padding: 20,
+        paddingTop: 30,
         flexDirection: "column",
         marginTop: -50,
         backgroundColor: colors.dark,
         borderRadius: 50,
         borderTopRightRadius: 0,
+        zIndex: 10,
     },
     image: {
-        height: 400,
-        width: 400,
         borderRadius: 50,
         borderBottomLeftRadius: 0,
         tintColor: colors.medium,
