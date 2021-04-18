@@ -22,7 +22,7 @@ export default function CanvasItems() {
             id: 2,
             name: 'Diesel Jeans Jacket',
             attributes: ['retro'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/007d1365eb863a0ba2dcee421a1d3de7/9fd16a1750534fb0aedf07e5317a4aa7.jpg?imwidth=762'
+            uri: 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
         },
     ]
 
@@ -50,7 +50,7 @@ export default function CanvasItems() {
             <View style={styles.list}>
                 <Image source={{uri: imageUrl}} style={styles.listImage}/>
                 <View style={styles.listInformation}>
-                    <Text style={styles.title}>{imgName}</Text>
+                    <Text style={styles.itemName}>{imgName}</Text>
                     <Text style={styles.description}>{imgAttributes}</Text>
                 </View>
             </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: '100%',
         paddingVertical: 15,
-        backgroundColor: colors.dark,
+        backgroundColor: colors.darker,
         borderRadius: 40,
         paddingHorizontal: 10,
     },
@@ -105,15 +105,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 10,
         alignItems: 'center',
-        shadowColor: "#FFF",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-
-        elevation: 4,
     },
     listImage: {
         width: 60,
@@ -130,9 +121,16 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         paddingBottom: 5
     },
+    itemName:{
+        color: colors.white,
+        fontSize: 22,
+        fontWeight: '500',
+        paddingBottom: 5
+    },
     description: {
         color: colors.white,
-        fontSize: 18
+        fontSize: 18,
+        fontStyle: 'italic'
     },
     specs: {
         padding: 10,

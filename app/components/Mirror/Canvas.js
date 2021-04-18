@@ -31,7 +31,7 @@ export default function Canvas() {
             id: 2,
             name: 'Diesel Jeans Jacket',
             attributes: ['retro'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/007d1365eb863a0ba2dcee421a1d3de7/9fd16a1750534fb0aedf07e5317a4aa7.jpg?imwidth=762'
+            uri: 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
         },
     ]
 
