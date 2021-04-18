@@ -21,10 +21,11 @@ const OutfitNavigator = ({navigation}) => {
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown/>
         }}>
-            <Stack.Screen name="Closet" options={{}} component={ClosetScreen} />
             <Stack.Screen name="Mirror" component={MirrorScreen} options={{}}/>
-        </Stack.Navigator>)
-}
+            <Stack.Screen name="Closet" component={ClosetScreen} options={{}}/>
+        </Stack.Navigator>
+    </>)
+};
 
 const styles = StyleSheet.create({
     headerStyle: {
