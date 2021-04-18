@@ -2,6 +2,7 @@
   "expo": {
     "name": "MyOutfit",
     "slug": "myoutfit",
+    "privacy": "public",
     "platforms": [
       "ios",
       "android",
@@ -24,6 +25,6 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "A marketplace for selling the stuff you don't need anymore."
+    "description": "Your Digital Closet"
   }
 }

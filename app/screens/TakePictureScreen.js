@@ -52,7 +52,7 @@ export default function TakePictureScreen({navigation}) {
 
     const takePicture = async () => {
         if(camera){
-            const data = await camera.takePictureAsync({/*base64: true, */quality: 0})
+            const data = await camera.takePictureAsync(/*{base64: true, quality: 0}*/)
             setPictureTaken(true)
             setImage(data.uri)
             const imageInfo = await FileSystem.getInfoAsync(data.uri)
