@@ -83,12 +83,13 @@ export default function Canvas() {
 const styles = StyleSheet.create({
     container: {
         width: canvasWidth,
-        height: canvasHeight,
+        height: canvasHeight + 50,
         flexDirection: 'row',
         flexWrap: "wrap",
         justifyContent: 'space-evenly',
         paddingVertical: paddingItem / 2,
-        borderRadius: 20,
+        backgroundColor: colors.white,
+        marginBottom: -50
     },
     image: {
         width: '100%',

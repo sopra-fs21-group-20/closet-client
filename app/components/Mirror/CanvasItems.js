@@ -90,36 +90,32 @@ const styles = StyleSheet.create({
         display: 'flex',
         width: '100%',
         paddingVertical: 15,
-        backgroundColor: colors.white,
+        backgroundColor: colors.dark,
         borderRadius: 40,
         paddingHorizontal: 10,
-    },
-    flatList: {
-        padding: 10
     },
     list: {
         flex: 1,
         flexDirection: 'row',
         marginTop: 10,
-        backgroundColor: colors.white,
+        backgroundColor: colors.dark,
         height: 70,
         width: '100%',
         borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 10,
         alignItems: 'center',
-        shadowColor: "#000",
+        shadowColor: "#FFF",
         shadowOffset: {
             width: 0,
-            height: 3,
+            height: 1,
         },
-        shadowOpacity: 0.29,
-        shadowRadius: 4.65,
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
 
-        elevation: 7,
+        elevation: 4,
     },
     listImage: {
-        backgroundColor: 'white',
         width: 60,
         height: 60,
         borderRadius: 10,
@@ -129,13 +125,13 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     title: {
-        color: colors.dark,
+        color: colors.white,
         fontSize: 25,
         fontWeight: '600',
         paddingBottom: 5
     },
     description: {
-        color: colors.dark,
+        color: colors.white,
         fontSize: 18
     },
     specs: {

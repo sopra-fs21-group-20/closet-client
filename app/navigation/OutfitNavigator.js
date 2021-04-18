@@ -16,7 +16,8 @@ import Text from "../components/Text";
 const Stack = createStackNavigator();
 
 const OutfitNavigator = ({navigation}) => {
-    return (<Stack.Navigator mode="modal" screenOptions={{
+    return (<>
+        <Stack.Navigator mode="modal" screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown/>
