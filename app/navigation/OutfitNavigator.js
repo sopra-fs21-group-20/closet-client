@@ -25,12 +25,9 @@ const OutfitNavigator = ({navigation}) => {
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown/>
         }}>
-            <Stack.Screen name="Closet" component={ClosetScreen} options={{}}/>
             <Stack.Screen name="Mirror" component={MirrorScreen} options={{}}/>
+            <Stack.Screen name="Closet" component={ClosetScreen} options={{}}/>
         </Stack.Navigator>
-        <SafeAreaView style={[styles.dropdown, {top: 40/*headerHeight*/}]}>
-            <Text>Test</Text>
-        </SafeAreaView>
     </>)
 };
 

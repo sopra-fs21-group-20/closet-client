@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Image, StyleSheet, Text, View} from "react-native";
+import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -10,17 +10,31 @@ import colors from "../config/colors";
 export default function MirrorScreen() {
 
     return (
-        <Screen style={styles.container}>
+        <ScrollView style={styles.container}>
             <Canvas/>
             <CanvasItems/>
-        </Screen>
+            {/*<View style ={styles.itemsContainer}>
+                <Text>CanvasItems</Text>
+            </View>*/}
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%'
+        width: '100%',
     },
+    canvasContainer:{
+        backgroundColor: colors.dark,
+        height: '100%',
+        width: '100%',
+    },
+    itemsContainer:{
+        marginTop: -60,
+        bottom: 0,
+        width: '100%',
+        backgroundColor: colors.lighter,
+        borderRadius: 50,
+        padding: 25,
+    }
 });
