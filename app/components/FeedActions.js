@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import LottieView from "lottie-react-native";
 import feed from "../api/feed";
 
-function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightTheme, onCommentClick, captionIsEmpty, caption_attrs}) {
+function FeedActions({post_id, likes, comments, isLiked, setIsLiked, hasBeenLiked, lightTheme, onCommentClick, captionIsEmpty, caption_attrs}) {
     const [likesNumber, setLikesNumber] = useState(parseInt(likes));
 
     useEffect(() => {
@@ -19,6 +19,7 @@ function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightThem
     const animation = useRef(null);
     const animationPress = () => {
         setLikesNumber(likesNumber+1);
+        setIsLiked(true);
         if(animation?.current && !isLiked) {
             animation.current.play();
         }
@@ -34,7 +35,7 @@ function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightThem
     return (
         <View style={[styles.container,{marginTop:(captionIsEmpty ? -20 : -10)}]}>
             <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={() => {
-                if(!hasBeenLiked) animationPress();
+                if(!hasBeenLiked && !isLiked) animationPress();
             }}>
                 <View style={styles.detailsContainer}>
                     <Text
@@ -45,7 +46,7 @@ function FeedActions({post_id, likes, comments, isLiked, hasBeenLiked, lightThem
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-                onCommentClick(post_id, caption_attrs, lightTheme);
+                if(!hasBeenLiked && !isLiked) onCommentClick(post_id, caption_attrs, lightTheme);
             }}>
                 <View style={styles.detailsContainer}>
                     <Text

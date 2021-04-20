@@ -23,6 +23,7 @@ function Card({
                   index,
                   onCommentClick
               }) {
+
     const scrollableImages = useRef();
 
     const [isLiked, setIsLiked] = useState(false);
@@ -81,6 +82,7 @@ function Card({
                              comments={comments}
                              hasBeenLiked={hasBeenLiked}
                              isLiked={isLiked}
+                             setIsLiked={setIsLiked}
                              lightTheme={false/*index % 2 !== 0*/}
                              onCommentClick={onCommentClick}
                              post_id={post_id}
