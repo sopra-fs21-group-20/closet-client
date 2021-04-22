@@ -16,14 +16,21 @@ import Text from "../components/Text";
 const Stack = createStackNavigator();
 
 const OutfitNavigator = ({navigation}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const isOpenChanged = (isOpenTemp) => {
+        setIsOpen(isOpenTemp);
+        navigation.navigate('Closet',{menuOpen: isOpenTemp})
+    }
+
     return (<>
-        <Stack.Navigator mode="modal" screenOptions={{
+        <Stack.Navigator mode="modal" initialRouteName={"Closet"} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
-            headerTitle: () => <OutfitDropdown/>
+            headerTitle: () => <OutfitDropdown isOpenChanged={isOpenChanged}/>
         }}>
             <Stack.Screen name="Mirror" component={MirrorScreen} options={{}}/>
-            <Stack.Screen name="Closet" component={ClosetScreen} options={{}}/>
+            <Stack.Screen name="Closet" component={ClosetScreen} options={{}} initialParams={{menuOpen: isOpen}}/>
         </Stack.Navigator>
     </>)
 };
