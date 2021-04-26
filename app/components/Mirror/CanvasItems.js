@@ -3,46 +3,7 @@ import {StyleSheet, Text, Dimensions, View, Image, ScrollView, FlatList} from "r
 import colors from "../../config/colors";
 
 
-export default function CanvasItems() {
-
-    const clothingItems = {
-        items: [{url: '\'../../assets/outfit.jpg\''},
-            {url: '\'../../assets/outfit.jpg\''},
-            {url: '\'../../assets/outfit.jpg\''},]
-    }
-
-    const topRow = [
-        {
-            id: 1,
-            name: 'Dsquared Shirt',
-            attributes: ['expensive ', 'oversize fit'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
-        },
-        {
-            id: 2,
-            name: 'Diesel Jeans Jacket',
-            attributes: ['retro'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
-        },
-    ]
-
-    const middleRow = [
-        {
-            id: 3,
-            name: "Jack & Jones' Pants",
-            attributes: ['slim fit'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
-        },
-    ]
-
-    const bottomRow = [
-        {
-            id: 1,
-            name: 'Polo Shoes',
-            attributes: ['comfortable'],
-            uri: 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
-        },
-    ]
+export default function CanvasItems({outfit}) {
 
     function CanvasListItem({imgName, imgAttributes, imageUrl}) {
         return (
@@ -65,18 +26,9 @@ export default function CanvasItems() {
                 <Text style={styles.description}>First outfit on MyOutf.it</Text>
                 <Text style={styles.description}>Worn 10 times </Text>
             </View>
-            {topRow.map((item) =>
+            {outfit.filter( item=> item).map((item) =>
                 <CanvasListItem
-                    imgName={item.name}
-                    imgAttributes={item.attributes}
-                    imageUrl={item.uri}/>)}
-            {middleRow.map((item) =>
-                <CanvasListItem
-                    imgName={item.name}
-                    imgAttributes={item.attributes}
-                    imageUrl={item.uri}/>)}
-            {bottomRow.map((item) =>
-                <CanvasListItem
+                    key={item.id}
                     imgName={item.name}
                     imgAttributes={item.attributes}
                     imageUrl={item.uri}/>)}
