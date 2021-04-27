@@ -1,20 +1,46 @@
 import React, {useState} from "react";
-import {StyleSheet, Text, Dimensions, View, Image, ScrollView, FlatList} from "react-native";
+import {StyleSheet, Text, Dimensions, View, Image, ScrollView, FlatList, TouchableOpacity} from "react-native";
 import colors from "../../config/colors";
 
 
 export default function CanvasItems({outfit}) {
 
-    function CanvasListItem({imgName, imgAttributes, imageUrl}) {
+    function getAtrributes(attributes) {
+        const attr = []
+        for (let [key, value] of Object.entries(attributes)) {
+            attr.push(value)
+        }
+        return attr
+    }
+
+    function CanvasAttr({attrName}) {
+        return (
+            <View style={{
+                backgroundColor: colors.lighter,
+                marginRight: 10,
+                paddingHorizontal: 5,
+                paddingVertical: 2,
+                borderRadius: 20
+            }}>
+                <Text style={{color: colors.dark}}>
+                    {attrName}
+                </Text>
+            </View>
+        )
+    }
+
+    function CanvasListItem({imgName, imgAttributes, imageUrl, outfitId}) {
         return (
 
-            <View style={styles.list}>
+            <TouchableOpacity style={styles.list}>
                 <Image source={{uri: imageUrl}} style={styles.listImage}/>
                 <View style={styles.listInformation}>
                     <Text style={styles.itemName}>{imgName}</Text>
-                    <Text style={styles.description}>{imgAttributes}</Text>
+                    <View style={styles.attributes}>
+                        {imgAttributes.map(attr => <CanvasAttr key={(_, index) => index} attrName={attr}/>)}
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
 
         )
     }
@@ -22,22 +48,27 @@ export default function CanvasItems({outfit}) {
     return (
         <View style={[styles.container]}>
             <View style={styles.specs}>
-                <Text style={styles.title}>Drip Too Hard</Text>
-                <Text style={styles.description}>First outfit on MyOutf.it</Text>
-                <Text style={styles.description}>Worn 10 times </Text>
+                <Text style={styles.title}>{outfit.name}</Text>
+                <Text style={styles.description}>{'Belongs to user ' + outfit.userId}</Text>
+                <Text style={styles.description}>{'Outfit Id: ' + outfit.id}</Text>
             </View>
-            {outfit.filter( item=> item).map((item) =>
+            {outfit.outfitItems.filter(item => item).map((item) =>
                 <CanvasListItem
+                    outfitId={outfit.id}
                     key={item.id}
                     imgName={item.name}
-                    imgAttributes={item.attributes}
-                    imageUrl={item.uri}/>)}
+                    imgAttributes={getAtrributes(item.attributes)}
+                    imageUrl={item.signedUrl}/>)}
+
         </View>
 
     )
 }
 
 const styles = StyleSheet.create({
+    attributes: {
+        flexDirection: 'row'
+    },
     container: {
         display: 'flex',
         width: '100%',
@@ -73,7 +104,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         paddingBottom: 5
     },
-    itemName:{
+    itemName: {
         color: colors.white,
         fontSize: 22,
         fontWeight: '500',

@@ -10,7 +10,89 @@ import colors from "../config/colors";
 export default function MirrorScreen() {
 
     const outfit = [
-        [
+        {
+            "id": 3,
+            "name": "My 1st outfit",
+            "userId": "1",
+            "outfitItems": [
+                {
+                    "id": 1,
+                    "name": "Gucci Belt",
+                    "price": 349.0,
+                    "attributes": {
+                        "color": "black",
+                        "pattern": "matte"
+                    },
+                    "signedUrl": "https://cdn-images.farfetch-contents.com/12/14/71/16/12147116_10105896_480.jpg"
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ],
+            "collectionIds": [
+                2
+            ]
+        },
+        {
+            "id": 4,
+            "name": "My 2nd outfit",
+            "userId": "1",
+            "outfitItems": [
+                {
+                    "id": 1,
+                    "name": 'Dsquared Shirt',
+                    "price": 349.0,
+                    "attributes": {
+                        "color": "black",
+                        "pattern": "white"
+                    },
+                    "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
+                },
+                {
+                    "id": 2,
+                    "name": 'Diesel Jeans Jacket',
+                    "price": 349.0,
+                    "attributes": {
+                        "color": "dark blue",
+                    },
+                    "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
+                },
+                null,
+                {
+                    "id": 3,
+                    "name": "Jack & Jones' Pants",
+                    "price": 349.0,
+                    "attributes": {
+                        "color": "light blue",
+                        "pattern": "slim fit"
+                    },
+                    "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
+                },
+                null,
+                null,
+                {
+                    "id": 4,
+                    "name": 'Polo Shoes',
+                    "price": 349.0,
+                    "attributes": {
+                        "color": "black",
+                        "pattern": "gloss"
+                    },
+                    "signedUrl": 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
+                },
+                null,
+                null
+            ],
+            "collectionIds": [
+                2
+            ]
+        },
+        /*[
             {
                 id: 1,
                 name: 'Dsquared Shirt',
@@ -66,7 +148,7 @@ export default function MirrorScreen() {
             },
             null,
             null
-        ]
+        ]*/
     ]
 
     /*const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
@@ -83,19 +165,17 @@ export default function MirrorScreen() {
     return (
         <ScrollView style={styles.container}>
             <Animated.FlatList
-                /*viewabilityConfig={viewabilityConfig}
-                onViewableItemsChanged={onViewableItemsChanged}*/
                 horizontal={true}
                 scrollEventThrottle={32}
                 onScroll={Animated.event(
                     [{nativeEvent: {contentOffset: {x: scrollX}}}],
                     {useNativeDriver: false})}
                 data={outfit}
-                keyExtractor={item => item.id}
+                keyExtractor={(_, index) => index.toString()}
                 pagingEnabled={true}
                 renderItem={({item}) => {
                     return <View>
-                        <Canvas outfit={item} key={`canvas-${item.id}`}/>
+                        <Canvas outfit={item.outfitItems} key={`canvas-${item.id}`}/>
                         <CanvasItems outfit={item} key={`canvasItem-${item.id}`}/>
                     </View>
                 }}/>
@@ -107,12 +187,12 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
     },
-    canvasContainer:{
+    canvasContainer: {
         backgroundColor: colors.dark,
         height: '100%',
         width: '100%',
     },
-    itemsContainer:{
+    itemsContainer: {
         marginTop: -60,
         bottom: 0,
         width: '100%',

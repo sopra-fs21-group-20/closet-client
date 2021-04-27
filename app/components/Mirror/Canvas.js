@@ -61,7 +61,7 @@ export default function Canvas({outfit, edit}) {
                     topRowItems === 0 ?
                     <View style={{height: itemHeight + paddingItem}}/> :
                     outfit.slice(0, 3).filter(item => item).map((item) => <CanvasItem currItem={item} key={item.id}
-                                                                                          imageUrl={item.uri}/>)
+                                                                                          imageUrl={item.signedUrl}/>)
                 }
             </View>
             <View style={styles.row}>
@@ -69,14 +69,14 @@ export default function Canvas({outfit, edit}) {
                     middleRowItems === 0 ?
                     <View style={{height: itemHeight + paddingItem}}/> :
                     outfit.slice(3, 6).filter(item => item).map((item) => <CanvasItem currItem={item} key={item.id}
-                                                                                   imageUrl={item.uri}/>)}
+                                                                                   imageUrl={item.signedUrl}/>)}
             </View>
             <View style={styles.row}>
                 {
                     bottomRowItems === 0 ?
                         <View style={{height: itemHeight + paddingItem}}/> :
                     outfit.slice(6, 9).filter(item => item).map((item) => <CanvasItem currItem={item} key={item.id}
-                                                                                   imageUrl={item.uri}/>)}
+                                                                                   imageUrl={item.signedUrl}/>)}
             </View>
         </View>
 
