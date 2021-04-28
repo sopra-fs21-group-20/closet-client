@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Animated, Image, ScrollView, StyleSheet, Text, View} from "react-native";
 import * as Yup from "yup";
 
@@ -6,10 +6,22 @@ import Screen from "../components/Screen";
 import Canvas from "../components/Mirror/Canvas";
 import CanvasItems from "../components/Mirror/CanvasItems";
 import colors from "../config/colors";
+import useApi from "../hooks/useApi";
+import outfit from "../api/outfit";
+import feed from "../api/feed";
 
 export default function MirrorScreen() {
 
-    const outfit = [
+    const getOutfitApi = useApi(outfit.getOutfit)
+
+    useEffect(() => {
+        getOutfitApi.request();
+    }, []);
+
+    console.log('yay69', getOutfitApi.data)
+
+
+    /*const outfits = [
         {
             "id": 3,
             "name": "My 1st outfit",
@@ -17,6 +29,27 @@ export default function MirrorScreen() {
             "outfitItems": [
                 {
                     "id": 1,
+                    "name": "Mystic Sun & Moon T-Shirt",
+                    "price": 49.90,
+                    "attributes": {
+                        "color": "black",
+                        "size": "M"
+                    },
+                    "signedUrl": "https://img01.ztat.net/article/spp-media-p1/26e07279febb37bea3330484f52a05a3/b93b6bc6aa2347ca940607e4620d9e4e.jpg?imwidth=1800&filter=packshot"
+                },
+                null,
+                null,
+                {
+                    "id": 3,
+                    "name": "Chino-Bermuda Shorts",
+                    "price": 29,
+                    "attributes": {
+                        "color": "beige",
+                    },
+                    "signedUrl": "https://img01.ztat.net/article/spp-media-p1/08cbec480caf3077954f24e83f8970aa/2dc250c943084129858923cba4bab5db.jpg?imwidth=1800&filter=packshot"
+                },
+                {
+                    "id": 2,
                     "name": "Gucci Belt",
                     "price": 349.0,
                     "attributes": {
@@ -26,11 +59,16 @@ export default function MirrorScreen() {
                     "signedUrl": "https://cdn-images.farfetch-contents.com/12/14/71/16/12147116_10105896_480.jpg"
                 },
                 null,
-                null,
-                null,
-                null,
-                null,
-                null,
+                {
+                    "id": 4,
+                    "name": "The Roger",
+                    "price": 499,
+                    "attributes": {
+                        "color": "beige",
+                        "attr": "limited"
+                    },
+                    "signedUrl": "https://images.ctfassets.net/od02wyo8cgm5/1jVSrUcc6lGmRy9sGZQFZF/a38da5e8270e59a6f6833902c0956f07/theroger_centre_court-fw20-white_gum-m-t.png?w=150&q=80"
+                },
                 null,
                 null
             ],
@@ -92,7 +130,7 @@ export default function MirrorScreen() {
                 2
             ]
         },
-        /*[
+        /!*[
             {
                 id: 1,
                 name: 'Dsquared Shirt',
@@ -148,8 +186,8 @@ export default function MirrorScreen() {
             },
             null,
             null
-        ]*/
-    ]
+        ]*!/
+    ]*/
 
     /*const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
         console.log("Visible items are", viewableItems);
@@ -170,13 +208,13 @@ export default function MirrorScreen() {
                 onScroll={Animated.event(
                     [{nativeEvent: {contentOffset: {x: scrollX}}}],
                     {useNativeDriver: false})}
-                data={outfit}
+                data={getOutfitApi.data}
                 keyExtractor={(_, index) => index.toString()}
                 pagingEnabled={true}
                 renderItem={({item}) => {
                     return <View>
                         <Canvas outfit={item.outfitItems} key={`canvas-${item.id}`}/>
-                        <CanvasItems outfit={item} key={`canvasItem-${item.id}`}/>
+                        <CanvasItems outfitID={item.id} outfit={item} key={`canvasItem-${item.id}`}/>
                     </View>
                 }}/>
         </ScrollView>

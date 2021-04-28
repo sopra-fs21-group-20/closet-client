@@ -15,7 +15,7 @@ import useLocation from "../../hooks/useLocation";
 
 const {width} = Dimensions.get('screen')
 
-const DATA =
+let DATA =
         {
             "name": "My 2nd outfit",
             "items": [
@@ -82,15 +82,50 @@ export default function CreateOutfit() {
     const [selectedLanguage, setSelectedLanguage] = useState();
 
     const addItem = () => {
-        DATA.items[2] = {
-            "id": 1,
-            "name": 'Dsquared Shirt',
-            "price": 99,
-            "attributes": {'price': 'expensive', 'fit': 'oversize fit'},
-            "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
-        };
+        let row = DATA.items.slice(0, 3).filter(item => item).length
+        if (row<3){
+            DATA.items[row] = {
+                "id": 1,
+                "name": 'Dsquared Shirt',
+                "price": 99,
+                "attributes": {'price': 'expensive', 'fit': 'oversize fit'},
+                "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
+            };
+        }
         setOutfit(DATA)
-        console.log('set Outfit', outfit)
+        /*console.log('set Outfit', outfit)*/
+        forceUpdate()
+    }
+
+    const addMidItem = () => {
+        let row = DATA.items.slice(3, 6).filter(item => item).length
+        if (row<3){
+            DATA.items[3+row] = {
+                "id": 1,
+                "name": 'Dsquared Shirt',
+                "price": 99,
+                "attributes": {'price': 'expensive', 'fit': 'oversize fit'},
+                "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
+            };
+        }
+        setOutfit(DATA)
+        /*console.log('set Outfit', outfit)*/
+        forceUpdate()
+    }
+
+    const addbottomItem = () => {
+        let row = DATA.items.slice(6,9).filter(item => item).length
+        if (row<3){
+            DATA.items[6+row] = {
+                "id": 1,
+                "name": 'Dsquared Shirt',
+                "price": 99,
+                "attributes": {'price': 'expensive', 'fit': 'oversize fit'},
+                "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
+            };
+        }
+        setOutfit(DATA)
+        /*console.log('set Outfit', outfit)*/
         forceUpdate()
     }
 
@@ -117,7 +152,6 @@ export default function CreateOutfit() {
                     items: DATA,
                 }}
                 onSubmit={handleSubmit}
-                validationSchema={validationSchema}
             >
                 <Canvas style={styles.canvas} outfit={outfit.items} edit={true}/>
                 <FormField
@@ -135,10 +169,10 @@ export default function CreateOutfit() {
                     <TouchableOpacity onPress={addItem} style={styles.view}>
                         <Text style={styles.text}>Top</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.view}>
+                    <TouchableOpacity onPress={addMidItem} style={styles.view}>
                         <Text style={styles.text}>Middle</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.view}>
+                    <TouchableOpacity onPress={addbottomItem} style={styles.view}>
                         <Text style={styles.text}>Bottom</Text>
                     </TouchableOpacity>
                 </View>

@@ -30,11 +30,35 @@ export default function Canvas({outfit, edit}) {
     const bottomRowItems = outfit.slice(6, 9).filter(item => item).length
 
     function CanvasItem({currItem, imageUrl}) {
+
         const deleteItem = () => {
             outfit.indexOf(currItem)
             const index = outfit.indexOf(currItem)
             outfit[index] = null
+            if ([0,1,2].includes(index)){
+                let newItems = outfit.slice(0,3).filter(item => item)
+                let nullToInsert = 3 - newItems.length
+                for (let i = 0; i < nullToInsert; i++){
+                    newItems.push(null)
+                }
+                outfit.splice(0, 3, newItems[0], newItems[1], newItems[2] )
+            } else if ([3,4,5].includes(index)){
+                let newItems = outfit.slice(3,6).filter(item => item)
+                let nullToInsert = 3 - newItems.length
+                for (let i = 0; i < nullToInsert; i++){
+                    newItems.push(null)
+                }
+                outfit.splice(3, 3, newItems[0], newItems[1], newItems[2] )
+            } else if ([6,7,8].includes(index)){
+                let newItems = outfit.slice(6,9).filter(item => item)
+                let nullToInsert = 3 - newItems.length
+                for (let i = 0; i < nullToInsert; i++){
+                    newItems.push(null)
+                }
+                outfit.splice(6, 3, newItems[0], newItems[1], newItems[2] )
+            }
             forceUpdate()
+
         }
 
         return (
