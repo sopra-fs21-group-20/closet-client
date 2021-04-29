@@ -1,18 +1,12 @@
-import React, {useState} from "react";
+import React from "react";
 import {
     StyleSheet,
-    Text,
     Dimensions,
     View,
     Image,
-    FlatList,
     TouchableWithoutFeedback,
-    TouchableHighlight
 } from "react-native";
-import * as Yup from "yup";
-import Screen from "../Screen";
 import colors from "../../config/colors";
-import ProfilePost from "../profile/ProfilePost";
 
 const paddingItem = 10
 const canvasMargin = 0
@@ -84,7 +78,7 @@ export default function Canvas({outfit, edit}) {
                 {
                     topRowItems === 0 ?
                     <View style={{height: itemHeight + paddingItem}}/> :
-                    outfit.slice(0, 3).filter(item => item).map((item) => <CanvasItem currItem={item} key={item.id}
+                    outfit.slice(0, 3).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'top' + item.id + index}
                                                                                           imageUrl={item.signedUrl}/>)
                 }
             </View>
@@ -92,14 +86,14 @@ export default function Canvas({outfit, edit}) {
                 {
                     middleRowItems === 0 ?
                     <View style={{height: itemHeight + paddingItem}}/> :
-                    outfit.slice(3, 6).filter(item => item).map((item) => <CanvasItem currItem={item} key={item.id}
+                    outfit.slice(3, 6).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'mid' + item.id + index}
                                                                                    imageUrl={item.signedUrl}/>)}
             </View>
             <View style={styles.row}>
                 {
                     bottomRowItems === 0 ?
                         <View style={{height: itemHeight + paddingItem}}/> :
-                    outfit.slice(6, 9).filter(item => item).map((item) => <CanvasItem currItem={item} key={item.id}
+                    outfit.slice(6, 9).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'bot' + item.id + index}
                                                                                    imageUrl={item.signedUrl}/>)}
             </View>
         </View>

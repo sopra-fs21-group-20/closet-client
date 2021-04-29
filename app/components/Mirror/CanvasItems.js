@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {StyleSheet, Text, Dimensions, View, Image, ScrollView, FlatList, TouchableOpacity} from "react-native";
+import React from "react";
+import {StyleSheet, Text, View, Image, TouchableOpacity} from "react-native";
 import colors from "../../config/colors";
 
 
@@ -7,7 +7,7 @@ export default function CanvasItems({outfit}) {
 
     function getAtrributes(attributes) {
         const attr = []
-        for (let [key, value] of Object.entries(attributes)) {
+        for (let [value] of Object.entries(attributes)) {
             attr.push(value)
         }
         return attr
@@ -29,7 +29,7 @@ export default function CanvasItems({outfit}) {
         )
     }
 
-    function CanvasListItem({imgName, imgAttributes, imageUrl, outfitId}) {
+    function CanvasListItem({imgName, imgAttributes, imageUrl}) {
         return (
 
             <TouchableOpacity style={styles.list}>
@@ -37,7 +37,7 @@ export default function CanvasItems({outfit}) {
                 <View style={styles.listInformation}>
                     <Text style={styles.itemName}>{imgName}</Text>
                     <View style={styles.attributes}>
-                        {imgAttributes.map(attr => <CanvasAttr key={(attr, index) => `canvasItems-${outfit.id + attr+ index}`} attrName={attr}/>)}
+                        {imgAttributes.map((attr,index) => <CanvasAttr key={index} attrName={attr}/>)}
                     </View>
                 </View>
             </TouchableOpacity>
