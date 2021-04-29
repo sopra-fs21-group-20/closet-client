@@ -37,7 +37,7 @@ export default function CanvasItems({outfit}) {
                 <View style={styles.listInformation}>
                     <Text style={styles.itemName}>{imgName}</Text>
                     <View style={styles.attributes}>
-                        {imgAttributes.map(attr => <CanvasAttr key={(_, index) => outfitId + index} attrName={attr}/>)}
+                        {imgAttributes.map(attr => <CanvasAttr key={(attr, index) => `canvasItems-${outfit.id + attr+ index}`} attrName={attr}/>)}
                     </View>
                 </View>
             </TouchableOpacity>

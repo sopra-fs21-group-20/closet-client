@@ -12,15 +12,18 @@ import * as Yup from "yup";
 import feed from "../../api/feed";
 import {StackActions as navigation} from "react-navigation";
 import useLocation from "../../hooks/useLocation";
+import outfitApi from "../../api/outfitApi";
+import collection from "../../api/collection";
 
 const {width} = Dimensions.get('screen')
 
+const collectionId = 2
+
 let DATA =
         {
-            "name": "My 2nd outfit",
             "items": [
                 {
-                    "id": 1,
+                    "id": 10,
                     "name": 'Dsquared Shirt',
                     "price": 349.0,
                     "attributes": {
@@ -30,7 +33,7 @@ let DATA =
                     "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
                 },
                 {
-                    "id": 2,
+                    "id": 9,
                     "name": 'Diesel Jeans Jacket',
                     "price": 349.0,
                     "attributes": {
@@ -40,7 +43,7 @@ let DATA =
                 },
                 null,
                 {
-                    "id": 3,
+                    "id": 6,
                     "name": "Jack & Jones' Pants",
                     "price": 349.0,
                     "attributes": {
@@ -52,7 +55,7 @@ let DATA =
                 null,
                 null,
                 {
-                    "id": 4,
+                    "id": 8,
                     "name": 'Polo Shoes',
                     "price": 349.0,
                     "attributes": {
@@ -65,21 +68,19 @@ let DATA =
                 null
             ],
             "collectionIds": [
-                2
+                collectionId
             ]
         }
 
 
 export default function CreateOutfit() {
     const location = useLocation();
-    const [selectedValue, setSelectedValue] = useState("java");
     const [outfit, setOutfit] = useState(DATA)
     const [title, onChangeTitle] = useState(null)
     const [uploadVisible, setUploadVisible] = useState(false);
     const [progress, setProgress] = useState(0);
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
-    const [selectedLanguage, setSelectedLanguage] = useState();
 
     const addItem = () => {
         let row = DATA.items.slice(0, 3).filter(item => item).length
@@ -133,9 +134,41 @@ export default function CreateOutfit() {
         outfitTitle: Yup.string().label("OUTFIT NAME"),
     });
 
-    const handleSubmit = async (listing, {resetForm}) => {
-        console.log(listing)
-        alert(listing.outfitTitle)
+    const transformObject = (outfit) => {
+        const items = []
+        for (const [index, element] of Object.entries(outfit.items.items)) {
+            if (element){
+                items.push({
+                    "itemId": element.id,
+                    "position": parseInt(index)
+                })
+            }
+        }
+        console.log(items)
+        return ({
+            "name": outfit.outfitTitle,
+            "items": items,
+            "collectionIds": outfit.items.collectionIds
+        })
+    }
+
+
+    const handleSubmit = async (outfit, {resetForm}) => {
+        setProgress(0);
+        setUploadVisible(true);
+        const transformed = transformObject(outfit)
+        const result = await outfitApi.addOutfit(
+            transformed,
+            (progress) => setProgress(progress))
+
+        console.log('69',result)
+
+        if (!result.ok) {
+            setUploadVisible(false);
+            return alert("Could not save the outfit");
+        }
+
+        alert(outfit.outfitTitle)
         resetForm();
     };
 

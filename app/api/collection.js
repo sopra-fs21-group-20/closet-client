@@ -1,26 +1,18 @@
 import client from "./client";
 
-const endpoint = "/users/";
+const endpoint = "/collections";
 
-const getOutfits = () => client.get(endpoint);
+const getCollections = () => client.get(endpoint);
 
-const addOutfit = (feedItem, user, onUploadProgress) => {
+const addCollection = () => {
     const data = {
-        "caption": feedItem.caption,
-        "image": feedItem.base64
+        "name": "first API collection"
     }
 
-    return client.post(endpoint, data, {
-            onUploadProgress: (progress) =>
-                onUploadProgress(progress.loaded / progress.total),
-        }
-    );
+    return client.post(endpoint, data);
 };
 
-const likePost = (post_id) => client.post(endpoint + "/" + post_id + "/like");
-
 export default {
-    addFeedItem,
-    getFeed,
-    likePost
+    getCollections,
+    addCollection
 };

@@ -7,18 +7,15 @@ import Canvas from "../components/Mirror/Canvas";
 import CanvasItems from "../components/Mirror/CanvasItems";
 import colors from "../config/colors";
 import useApi from "../hooks/useApi";
-import outfit from "../api/outfit";
-import feed from "../api/feed";
+import outfitApi from "../api/outfitApi";
 
 export default function MirrorScreen() {
 
-    const getOutfitApi = useApi(outfit.getOutfit)
+    const getOutfitApi = useApi(outfitApi.getOutfit)
 
     useEffect(() => {
         getOutfitApi.request();
     }, []);
-
-    console.log('yay69', getOutfitApi.data)
 
 
     /*const outfits = [
@@ -209,7 +206,7 @@ export default function MirrorScreen() {
                     [{nativeEvent: {contentOffset: {x: scrollX}}}],
                     {useNativeDriver: false})}
                 data={getOutfitApi.data}
-                keyExtractor={(_, index) => index.toString()}
+                keyExtractor={(item) => item.id}
                 pagingEnabled={true}
                 renderItem={({item}) => {
                     return <View>
