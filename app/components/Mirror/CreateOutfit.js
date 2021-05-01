@@ -6,14 +6,13 @@ import TextInput from "../TextInput";
 import AppButton from "../Button";
 import Form from "../forms/Form";
 import UploadScreen from "../../screens/UploadScreen";
-import PostImagePicker from "../forms/PostImagePicker";
 import {FormField, SubmitButton} from "../forms";
 import * as Yup from "yup";
-import feed from "../../api/feed";
 import {StackActions as navigation} from "react-navigation";
 import useLocation from "../../hooks/useLocation";
 import outfitApi from "../../api/outfitApi";
-import collection from "../../api/collection";
+import { StackActions } from '@react-navigation/native';
+
 
 const {width} = Dimensions.get('screen')
 
@@ -73,7 +72,7 @@ let DATA =
         }
 
 
-export default function CreateOutfit() {
+export default function CreateOutfit({navigation}) {
     const location = useLocation();
     const [outfit, setOutfit] = useState(DATA)
     const [title, onChangeTitle] = useState(null)
@@ -151,7 +150,6 @@ export default function CreateOutfit() {
             "collectionIds": outfit.items.collectionIds
         })
     }
-
 
     const handleSubmit = async (outfit, {resetForm}) => {
         setProgress(0);

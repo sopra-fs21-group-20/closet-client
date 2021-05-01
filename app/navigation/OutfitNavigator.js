@@ -13,6 +13,7 @@ import MirrorScreen from "../screens/MirrorScreen";
 import OutfitDropdown from "./OutfitDropdown";
 import Text from "../components/Text";
 import CreateOutfit from "../components/Mirror/CreateOutfit";
+import { StackActions } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ const OutfitNavigator = ({navigation}) => {
     }
 
     const [editMode, setEditMode] = useState(false);
+    const pushAction = StackActions.push('Closet');
 
     return (<>
         <Stack.Navigator mode="modal" initialRouteName={"Closet"} screenOptions={{
@@ -47,11 +49,11 @@ const OutfitNavigator = ({navigation}) => {
             <Stack.Screen name="Mirror" component={MirrorScreen} options={{
                 headerRight: () => (
                     <MaterialCommunityIcons name="plus" style={styles.headerRight} onPress={() => {
-                        navigation.navigate('createOutfit');
+                        navigation.navigate('createOutfit', {navigation: navigation});
                     }}/>
                 )
             }}/>
-            <Stack.Screen name="createOutfit" component={CreateOutfit} options={{headerShown: false}}/>
+            <Stack.Screen name="createOutfit" component={CreateOutfit}/>
         </Stack.Navigator>
     </>)
 }

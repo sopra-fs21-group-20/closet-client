@@ -41,8 +41,8 @@ function OutfitDropdown({navigation, isOpenChanged}) {
                 <View style={[styles.dropDown, {display: isOpen ? "flex": "none"}]} >
                     {
                         dropdownOptions.map(({navigateTo, title}, index) =>
-                            <TouchableWithoutFeedback onPress={() => navigation.navigate(navigateTo)}>
-                                <Text style={styles.text} key={index}>{title}</Text>
+                            <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate(navigateTo)}>
+                                <Text style={styles.text}>{title}</Text>
                             </TouchableWithoutFeedback>)
                     }
                 </View>

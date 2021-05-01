@@ -11,7 +11,7 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import OutfitItem from "../components/OutfitItem";
 import fabrics from "../config/fabrics";
 
-export default function ClosetScreen({editMode, menuOpen}) {
+export default function ClosetScreenPicker({editMode, menuOpen}) {
     const categories = [
         {
             categoryId: 0,
@@ -113,27 +113,6 @@ export default function ClosetScreen({editMode, menuOpen}) {
 
     const [closetItems, setClosetItems] = useState(closet);
 
-    const deleteFromCloset = (id, isModal = false) => {
-        Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
-            {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-            },
-            {
-                text: 'Delete',
-                onPress: () => {
-                    const index = findById(closetItems, 'id', id);
-                    if (index >= 0) setClosetItems(closetItems.splice(index, 1));
-                    if (isModal) {
-                        setModalIsShown(false);
-                        setModalData(null);
-                    }
-                },
-            },
-        ]);
-    }
-
     const findById = (array, attr, value) => {
         let index = -1;
         array.forEach((item, i) => {
@@ -145,32 +124,6 @@ export default function ClosetScreen({editMode, menuOpen}) {
     };
 
     const [activeSection, setActiveSection] = useState([]);
-
-    // Popup visible
-    const [modalIsShown, setModalIsShown] = useState(false);
-
-    // Data from item for popup
-    const [modalData, setModalData] = useState({});
-
-    // Data from item for popup
-    const [modalState, setModalState] = useState(3);
-
-
-    // Renders panel header (always shown)
-    const _renderHeader = section => {
-        return (
-            <View style={styles.sectionHeader}>
-                <Text style={styles.sectionHeaderText}>{section.title}</Text>
-                <View style={styles.sectionHeaderIcon}>
-                    <MaterialCommunityIcons
-                        name={'chevron-down'}
-                        size={30}
-                        color={colors.light}
-                    />
-                </View>
-            </View>
-        );
-    };
 
     //Renders panel content
     const _renderContent = section => {
