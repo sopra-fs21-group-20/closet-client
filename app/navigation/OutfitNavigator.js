@@ -17,12 +17,33 @@ import CreateOutfit from "../components/Mirror/CreateOutfit";
 const Stack = createStackNavigator();
 
 const OutfitNavigator = ({navigation}) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const isOpenChanged = (isOpenTemp) => {
+        setIsOpen(isOpenTemp);
+        navigation.navigate('Closet',{menuOpen: isOpenTemp})
+    }
+
+    const [editMode, setEditMode] = useState(false);
+
     return (<>
-        <Stack.Navigator mode="modal" screenOptions={{
+        <Stack.Navigator mode="modal" initialRouteName={"Closet"} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
-            headerTitle: () => <OutfitDropdown/>
+            headerTitle: () => <OutfitDropdown isOpenChanged={isOpenChanged}/>
         }}>
+            <Stack.Screen name="Closet" options={{
+                headerLeft: () => (
+                    <MaterialCommunityIcons name="filter-outline" style={styles.headerLeft} onPress={() => {
+                        console.log("Filter");
+                    }}/>
+                ),
+                headerRight: () => (
+                    <MaterialCommunityIcons name={editMode ? "pencil-off-outline" : "pencil-outline"} style={styles.headerLeft} onPress={() => {
+                        setEditMode(!editMode);
+                    }}/>
+                )
+            }} children={() => <ClosetScreen editMode={editMode} menuOpen={isOpen} />}/>
             <Stack.Screen name="Mirror" component={MirrorScreen} options={{
                 headerRight: () => (
                     <MaterialCommunityIcons name="plus" style={styles.headerRight} onPress={() => {
@@ -30,11 +51,10 @@ const OutfitNavigator = ({navigation}) => {
                     }}/>
                 )
             }}/>
-            <Stack.Screen name="Closet" component={ClosetScreen} options={{}}/>
             <Stack.Screen name="createOutfit" component={CreateOutfit} options={{headerShown: false}}/>
         </Stack.Navigator>
     </>)
-};
+}
 
 const styles = StyleSheet.create({
     headerStyle: {

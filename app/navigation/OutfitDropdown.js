@@ -6,7 +6,7 @@ import colors from "../config/colors";
 import routes from "./routes";
 import Text from "../components/Text";
 
-function OutfitDropdown() {
+function OutfitDropdown({isOpenChanged}) {
     const dropdownOptions = [{
         title: "Closet",
         navigateTo: routes.CLOSET
@@ -23,10 +23,12 @@ function OutfitDropdown() {
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                    setIsOpen(!isOpen)
+                    setIsOpen(!isOpen);
+                    isOpenChanged(!isOpen);
                 }}
+                style={styles.container}
             >
-                <View style={styles.container}>
+                <View style={styles.title}>
                     <Text style={styles.text}>{activeOption.title}</Text>
                     <View style={styles.iconWrap}>
                         <MaterialCommunityIcons
@@ -36,6 +38,11 @@ function OutfitDropdown() {
                         />
                     </View>
                 </View>
+                <View style={[styles.dropDown, {display: isOpen ? "flex": "none"}]} >
+                    {
+                        dropdownOptions.map((option, index) => <Text style={styles.text} key={index}>{option.title}</Text>)
+                    }
+                </View>
             </TouchableOpacity>
         </>
     );
@@ -43,9 +50,18 @@ function OutfitDropdown() {
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: "center",
+    },
+    title: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingLeft: 31,
+    },
+    dropDown: {
+        position: "absolute",
+        top: "150%",
     },
     text: {
         display: 'flex',
