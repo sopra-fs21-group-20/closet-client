@@ -44,8 +44,8 @@ function CreatePostScreen({navigation, route}) {
 
         if (!result.ok) {
             setUploadVisible(false);
-            const testLog = result;
-            testLog.config.data = "";
+            /*const testLog = result;
+            testLog.config.data = "";*/
             return alert("Could not save the post");
         }
 

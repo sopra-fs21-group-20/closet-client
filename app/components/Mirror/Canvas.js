@@ -1,9 +1,12 @@
-import React, {useState} from "react";
-import {StyleSheet, Text, Dimensions, View, Image, FlatList} from "react-native";
-import * as Yup from "yup";
-import Screen from "../Screen";
+import React from "react";
+import {
+    StyleSheet,
+    Dimensions,
+    View,
+    Image,
+    TouchableWithoutFeedback,
+} from "react-native";
 import colors from "../../config/colors";
-import ProfilePost from "../profile/ProfilePost";
 
 const paddingItem = 10
 const canvasMargin = 0
@@ -12,67 +15,86 @@ const canvasHeight = canvasWidth
 const itemWidth = (canvasWidth - 4 * paddingItem - 2 * canvasMargin) / 3
 const itemHeight = itemWidth
 
-export default function Canvas() {
+export default function Canvas({outfit, edit}) {
+    const [, updateState] = React.useState();
+    const forceUpdate = React.useCallback(() => updateState({}), []);
 
-    const clothingItems = {
-        items: [{url: '\'../../assets/outfit.jpg\''},
-            {url: '\'../../assets/outfit.jpg\''},
-            {url: '\'../../assets/outfit.jpg\''},]
-    }
+    const topRowItems = outfit.slice(0, 3).filter(item => item).length
+    const middleRowItems = outfit.slice(3, 6).filter(item => item).length
+    const bottomRowItems = outfit.slice(6, 9).filter(item => item).length
 
-    const topRow = [
-        {
-            id: 1,
-            name: 'Dsquared Shirt',
-            attributes: ['expensive ', 'oversize fit'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
-        },
-        {
-            id: 2,
-            name: 'Diesel Jeans Jacket',
-            attributes: ['retro'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
-        },
-    ]
+    function CanvasItem({currItem, imageUrl}) {
 
-    const middleRow = [
-        {
-            id: 3,
-            name: "Jack & Jones' Pants",
-            attributes: ['slim fit'],
-            uri: 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
-        },
-    ]
+        const deleteItem = () => {
+            outfit.indexOf(currItem)
+            const index = outfit.indexOf(currItem)
+            outfit[index] = null
+            if ([0,1,2].includes(index)){
+                let newItems = outfit.slice(0,3).filter(item => item)
+                let nullToInsert = 3 - newItems.length
+                for (let i = 0; i < nullToInsert; i++){
+                    newItems.push(null)
+                }
+                outfit.splice(0, 3, newItems[0], newItems[1], newItems[2] )
+            } else if ([3,4,5].includes(index)){
+                let newItems = outfit.slice(3,6).filter(item => item)
+                let nullToInsert = 3 - newItems.length
+                for (let i = 0; i < nullToInsert; i++){
+                    newItems.push(null)
+                }
+                outfit.splice(3, 3, newItems[0], newItems[1], newItems[2] )
+            } else if ([6,7,8].includes(index)){
+                let newItems = outfit.slice(6,9).filter(item => item)
+                let nullToInsert = 3 - newItems.length
+                for (let i = 0; i < nullToInsert; i++){
+                    newItems.push(null)
+                }
+                outfit.splice(6, 3, newItems[0], newItems[1], newItems[2] )
+            }
+            forceUpdate()
 
-    const bottomRow = [
-        {
-            id: 1,
-            name: 'Polo Shoes',
-            attributes: ['comfortable'],
-            uri: 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
-        },
-    ]
+        }
 
-    function CanvasItem({imageUrl}) {
         return (
+            <TouchableWithoutFeedback onPress={edit ? deleteItem : null}>
+                <View style={styles.imageContainer}>
 
-            <View style={styles.imageContainer}>
-                <Image source={{uri: imageUrl}} style={styles.image}/>
-            </View>
-
+                    <Image
+                        source={{uri: imageUrl}}
+                        style={styles.image}
+                    />
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.row}>
-                {topRow.map((item) => <CanvasItem imageUrl={item.uri}/>)}
+        <View style={[styles.container, {
+            height: edit ? canvasHeight : canvasHeight + 50,
+            marginBottom: edit ? 0 : -50,
+            borderRadius: edit ? 50 : 0
+        }]}>
+            <View style={[styles.row]}>
+                {
+                    topRowItems === 0 ?
+                    <View style={{height: itemHeight + paddingItem}}/> :
+                    outfit.slice(0, 3).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'top' + item.id + index}
+                                                                                          imageUrl={item.signedUrl}/>)
+                }
             </View>
             <View style={styles.row}>
-                {middleRow.map((item) => <CanvasItem imageUrl={item.uri}/>)}
+                {
+                    middleRowItems === 0 ?
+                    <View style={{height: itemHeight + paddingItem}}/> :
+                    outfit.slice(3, 6).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'mid' + item.id + index}
+                                                                                   imageUrl={item.signedUrl}/>)}
             </View>
             <View style={styles.row}>
-                {bottomRow.map((item) => <CanvasItem imageUrl={item.uri}/>)}
+                {
+                    bottomRowItems === 0 ?
+                        <View style={{height: itemHeight + paddingItem}}/> :
+                    outfit.slice(6, 9).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'bot' + item.id + index}
+                                                                                   imageUrl={item.signedUrl}/>)}
             </View>
         </View>
 
@@ -104,6 +126,6 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        width: '100%'
+        width: '100%',
     },
 });
