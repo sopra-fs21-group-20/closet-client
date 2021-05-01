@@ -47,7 +47,7 @@ function OutfitItem({state = 0, data, modalCloseFunc, editMode, index, deleteFun
                             <View style={[styles.container, stylesPopup.container]}>
                                 <Form
                                     initialValues={{
-                                        images: [],
+                                        image: [],
                                         title: "",
                                         brand: "",
                                         badges: [],
@@ -55,8 +55,10 @@ function OutfitItem({state = 0, data, modalCloseFunc, editMode, index, deleteFun
                                     onSubmit={handleSubmit}
                                     validationSchema={validationSchema}
                                 >
-                                    <Image style={stylesPopup.image} resizeMode={"cover"}/>
-                                    {/*<PostImagePicker name="image"/>*/}
+{/*
+                                    <Image source={{uri: "https://m.media-amazon.com/images/I/A13usaonutL._CLa%7C2140%2C2000%7C410QkIAyiRL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"}} style={stylesPopup.image} resizeMode={"cover"}/>
+*/}
+                                    <PostImagePicker name="image"/>
                                     <FormField
                                         maxLength={100}
                                         name="title"
@@ -204,7 +206,6 @@ const stylesPopup = StyleSheet.create({
     image: {
         width: (Dimensions.get("window").width - 110),
         height: (Dimensions.get("window").width - 110),
-        tintColor: colors.dark,
     },
     textContainer: {
         flexDirection: "column",
