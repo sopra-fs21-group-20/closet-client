@@ -30,7 +30,7 @@ const OutfitNavigator = ({navigation}) => {
         <Stack.Navigator mode="modal" initialRouteName={"Closet"} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
-            headerTitle: () => <OutfitDropdown isOpenChanged={isOpenChanged}/>
+            headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}/>
         }}>
             <Stack.Screen name="Closet" options={{
                 headerLeft: () => (

@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import {View, StyleSheet, TouchableOpacity} from "react-native";
+import {View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import routes from "./routes";
 import Text from "../components/Text";
 
-function OutfitDropdown({isOpenChanged}) {
+function OutfitDropdown({navigation, isOpenChanged}) {
     const dropdownOptions = [{
         title: "Closet",
         navigateTo: routes.CLOSET
@@ -40,7 +40,10 @@ function OutfitDropdown({isOpenChanged}) {
                 </View>
                 <View style={[styles.dropDown, {display: isOpen ? "flex": "none"}]} >
                     {
-                        dropdownOptions.map((option, index) => <Text style={styles.text} key={index}>{option.title}</Text>)
+                        dropdownOptions.map(({navigateTo, title}, index) =>
+                            <TouchableWithoutFeedback onPress={() => navigation.navigate(navigateTo)}>
+                                <Text style={styles.text} key={index}>{title}</Text>
+                            </TouchableWithoutFeedback>)
                     }
                 </View>
             </TouchableOpacity>
