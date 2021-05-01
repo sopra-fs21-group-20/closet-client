@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useHeaderHeight} from '@react-navigation/stack';
 
 import Screen from "../components/Screen";
@@ -8,151 +8,156 @@ import Carousel, {Pagination} from "react-native-snap-carousel";
 import Accordion from "react-native-collapsible/Accordion";
 import defaultStyles from "../config/styles";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import OutfitItem from "../components/OutfitItem";
+import fabrics from "../config/fabrics";
 
-export default function ClosetScreen({route}) {
-    let menuOpen = route.params?.menuOpen;
-
-    const SECTIONS = [
+export default function ClosetScreen({route, editMode, menuOpen}) {
+    const categories = [
         {
-            title: 'First',
-            content: 'Lorem ipsum...',
+            categoryId: 0,
+            title: "Headwear",
         },
         {
-            title: 'Second',
-            content: 'Lorem ipsum...',
+            categoryId: 1,
+            title: "Jackets",
         },
-    ];
+        {
+            categoryId: 2,
+            title: "T-Shirts",
+        },
+        {
+            categoryId: 3,
+            title: "Pullovers",
+        },
+        {
+            categoryId: 4,
+            title: "Pants",
+        },
+        {
+            categoryId: 5,
+            title: "Footwear",
+        },
+        {
+            categoryId: 6,
+            title: "Underwear",
+        },
+    ]
 
     const closet = [
         {
-            title: "Headwear",
-            activeItem: 0,
-            carouselItems: [
-                {
-                    title: "Jeans",
-                    text: "Armani",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Joggers",
-                    text: "Nike",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Jeans",
-                    text: "Carhardt",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Shorts",
-                    text: "Pull&Bear",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Jeans",
-                    text: "Pull&Bear",
-                    imageUrl: "jacket.jpg",
-                },
-            ]
+            id: 0,
+            categoryId: 4,
+            name: "Jeans",
+            brand: "Armani",
+            attributes: {
+                color: "rgb(54,120,183)",
+                fabric: fabrics.DENIM,
+            },
+            signedUrl: "https://img01.ztat.net/article/spp-media-p1/c13f661615af36ebb5cbacd662f10719/81535596902346689bfd3ac5de2ebddf.jpg?imwidth=765&filter=packshot",
         },
         {
-            title: "Jackets",
-            activeItem: 0,
-            carouselItems: [
-                {
-                    title: "Jeans",
-                    text: "Armani",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Joggers",
-                    text: "Nike",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Jeans",
-                    text: "Carhardt",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Shorts",
-                    text: "Pull&Bear",
-                    imageUrl: "jacket.jpg",
-                },
-                {
-                    title: "Jeans",
-                    text: "Pull&Bear",
-                    imageUrl: "jacket.jpg",
-                },
-            ]
+            id: 1,
+            categoryId: 4,
+            name: "Joggers",
+            brand: "Nike",
+            attributes: {
+                color: "rgb(224,224,224)",
+                fabric: fabrics.WOOL,
+            },
+            signedUrl: "https://cdn-img.prettylittlething.com/d/9/a/a/d9aad4733cf939f38dafaa3a2f27cd8300df4ea5_CLW0864_3.JPG",
         },
         {
-            title: "T-Shirts",
-            activeItem: 0,
-            carouselItems: [
-                {
-                    title: "Jeans",
-                    text: "Armani",
-                    imageUrl: "jacket.jpg",
-                },
-            ]
+            id: 2,
+            categoryId: 4,
+            name: "Jeans",
+            brand: "Carhardt",
+            attributes: {
+                color: "rgb(50,65,119)",
+                fabric: fabrics.DENIM,
+            },
+            signedUrl: "https://cdn.skatedeluxe.com/thumb/tJv6tn26l8Ds_vgese0QoUdV3XI=/fit-in/420x490/filters:fill(white):brightness(-4)/product/112940-1-CarharttWIP-WPiercePantMaverick.jpg",
         },
         {
-            title: "Pullovers",
-            activeItem: 0,
-            carouselItems: [
-                {
-                    title: "Jeans",
-                    text: "Armani",
-                    imageUrl: "jacket.jpg",
-                },
-            ]
+            id: 3,
+            categoryId: 4,
+            name: "Shorts",
+            brand: "Pull&Bear",
+            attributes: {
+                color: "rgb(145,145,145)",
+                fabric: fabrics.WOOL,
+            },
+            signedUrl: "https://static.pullandbear.net/2/photos/2021/V/0/2/p/4695/500/802/4695500802_1_1_3.jpg?t=1618923076619",
         },
         {
-            title: "Pants",
-            activeItem: 0,
-            carouselItems: [
-                {
-                    title: "Jeans",
-                    text: "Armani",
-                    imageUrl: "jacket.jpg",
-                },
-            ]
+            id: 4,
+            categoryId: 4,
+            name: "Jeans",
+            brand: "Pull&Bear",
+            attributes: {
+                color: "rgb(55,92,148)",
+                fabric: fabrics.DENIM,
+            },
+            signedUrl: "https://static.pullandbear.net/2/photos/2021/V/0/1/p/4681/309/427/4681309427_1_1_3.jpg?t=1618572622717",
         },
         {
-            title: "Footwear",
-            activeItem: 0,
-            carouselItems: [
-                {
-                    title: "Jeans",
-                    text: "Armani",
-                    imageUrl: "jacket.jpg",
-                },
-            ]
-        },
-        {
-            title: "Underwear",
-            activeItem: 0,
-            carouselItems: [
-                {
-                    title: "Jeans",
-                    text: "Armani",
-                    imageUrl: "jacket.jpg",
-                },
-            ]
+            id: 5,
+            categoryId: 1,
+            name: "Leather Jacket",
+            brand: "Armani",
+            attributes: {
+                color: "rgb(33,33,33)",
+                fabric: fabrics.LEATHER,
+            },
+            signedUrl: "https://www.plein.com/dw/image/v2/BBKQ_PRD/on/demandware.static/-/Sites-plein-master-catalog/default/dwd79b4722/images/large/A17C-MLB0255-PLE046C_02_sf.jpg?sw=603&sh=768",
         },
     ];
 
+    const [closetItems, setClosetItems] = useState(closet);
+
+    const deleteFromCloset = (id, isModal = false) => {
+        Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            {
+                text: 'Delete',
+                onPress: () => {
+                    const index = findById(closetItems, 'id', id);
+                    if (index >= 0) setClosetItems(closetItems.splice(index, 1));
+                    if (isModal) {
+                        setModalIsShown(false);
+                        setModalData(null);
+                    }
+                },
+            },
+        ]);
+    }
+
+    const findById = (array, attr, value) => {
+        let index = -1;
+        array.forEach((item, i) => {
+            if (parseInt(item[attr]) === parseInt(value)) {
+                index = i;
+            }
+        });
+        return index;
+    };
+
     const [activeSection, setActiveSection] = useState([]);
 
-    /*const _renderSectionTitle = section => {
-        return (
-            <View style={styles.sectionTitle}>
-                <Text>{section.content}</Text>
-            </View>
-        );
-    };*/
+    // Popup visible
+    const [modalIsShown, setModalIsShown] = useState(false);
 
+    // Data from item for popup
+    const [modalData, setModalData] = useState({});
+
+    // Data from item for popup
+    const [modalState, setModalState] = useState(3);
+
+
+    // Renders panel header (always shown)
     const _renderHeader = section => {
         return (
             <View style={styles.sectionHeader}>
@@ -168,65 +173,84 @@ export default function ClosetScreen({route}) {
         );
     };
 
+    //Renders panel content
     const _renderContent = section => {
+        const carouselItems = closetItems.filter(item => item.categoryId === section.categoryId);
         return (
-            <View style={styles.sectionContent}>
+            <View
+                style={carouselItems.length ? styles.sectionContent : [styles.sectionContent, styles.sectionContentRel]}>
+                <TouchableOpacity onPress={() => {
+                    setModalData({});
+                    setModalState(3);
+                    setModalIsShown(true);
+                }}>
+                    <View style={carouselItems.length ? styles.newItem : [styles.newItem, styles.newItemRel]}>
+                        <MaterialCommunityIcons
+                            name="plus"
+                            color={colors.white}
+                            style={styles.newItemIcon}
+                            size={70}/>
+                    </View>
+                </TouchableOpacity>
+                {carouselItems.length ? (
+                    <TouchableOpacity onPress={() => {
+                        setModalData({});
+                        setModalState(3);
+                        setModalIsShown(true);
+                    }} style={{zIndex: 10}}>
+                        <View style={styles.newItemOverlay}>
+                        </View>
+                    </TouchableOpacity>
+                ) : null}
                 <Carousel
-                    // ref={() => {}}
-                    data={section.carouselItems}
+                    data={carouselItems}
                     renderItem={renderItem}
-                    sliderWidth={Dimensions.get('window').width - 40}
+                    sliderWidth={Dimensions.get('window').width - 10}
                     itemWidth={200}
                     layout={'stack'}
-                    layoutCardOffset={18}
-                    // onSnapToItem={(index) => setActiveItem(index)}
+                    layoutCardOffset={100}
                 />
-                {/*<Pagination
-                        dotsLength={carouselItems.length}
-                        activeDotIndex={activeItem}
-                        containerStyle={{ backgroundColor: 'rgba(200, 200, 200, 0.75)' }}
-                        dotStyle={{
-                            width: 10,
-                            height: 10,
-                            borderRadius: 5,
-                            marginHorizontal: 8,
-                            backgroundColor: 'rgba(255, 255, 255, 0.92)'
-                        }}
-                        inactiveDotStyle={{
-                            // Define styles for inactive dots here
-                        }}
-                        inactiveDotOpacity={0.4}
-                        inactiveDotScale={0.6}
-                    />*/}
             </View>
         );
     };
 
+    // Renders carousel item
     const renderItem = ({item, index}) => {
         return (
-            <View style={styles.item}>
-                {/*<Text style={{fontSize: 30, color: colors.dark}}>{item.title}</Text>
-                <Text style={{color: colors.darker}}>{item.text}</Text>*/}
-                <Image style={styles.itemImage} source={require('../assets/jacket.jpg')} resizeMode={"cover"}/>
-            </View>
-
+            <TouchableOpacity onPress={() => {
+                setModalIsShown(true);
+                setModalData(item);
+                setModalState(2);
+            }}>
+                <OutfitItem data={item} editMode={editMode} deleteFunc={deleteFromCloset}/>
+            </TouchableOpacity>
         )
     }
 
+    // Renders whole screen
     return (
         <Screen>
-            <View style={[styles.container, {marginTop: menuOpen ? 100 : 0,}]}>
+            <ScrollView style={[styles.container, {marginTop: menuOpen ? 100 : 20,}]}>
                 <Accordion
-                    sections={closet}
+                    sections={categories}
                     activeSections={activeSection}
-                    // renderSectionTitle={_renderSectionTitle}
                     renderHeader={_renderHeader}
                     renderContent={_renderContent}
                     onChange={newActiveSection => setActiveSection(newActiveSection)}
                     underlayColor={'rgba(0,0,0,0.3)'}
                     sectionContainerStyle={styles.sectionContainer}
                 />
-            </View>
+            </ScrollView>
+            <Modal
+                animationType={'fade'}
+                transparent={true}
+                visible={modalIsShown}
+                onRequestClose={() => {
+                    console.log('Modal has been closed.');
+                }}>
+                <OutfitItem data={modalData} state={modalState} modalCloseFunc={setModalIsShown}
+                            deleteFunc={deleteFromCloset}/>
+            </Modal>
         </Screen>
     );
 }
@@ -239,7 +263,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.medium,
         overflow: 'hidden',
     },
-    sectionContainer:{
+    sectionContainer: {
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(255,255,255,0.2)',
     },
@@ -261,23 +285,43 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     sectionContent: {
-        paddingVertical: 25,
+        paddingTop: 5,
+        paddingBottom: 25,
+    },
+    sectionContentRel: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     text: {
         color: colors.lighter,
         fontSize: 24,
         textAlign: 'center',
     },
-    item: {
-        backgroundColor: 'floralwhite',
-        borderRadius: 5,
-        height: 160,
-        padding: 10,
-        marginLeft: 25,
-        marginRight: 25,
-    },
-    itemImage: {
-        width: 130,
+    newItem: {
+        width: 140,
         height: 140,
-    }
+        backgroundColor: 'rgba(255,255,255,0.6)',
+        borderRadius: 5,
+        position: "absolute",
+        left: 20,
+        top: 25,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    newItemRel: {
+        position: "relative",
+        left: null,
+        top: null,
+    },
+    newItemOverlay: {
+        width: 107,
+        height: 140,
+        backgroundColor: 'transparent',
+        position: "absolute",
+        left: 20,
+        top: 25,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    newItemIcon: {},
 });

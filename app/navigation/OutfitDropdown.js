@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     title: {
         flexDirection: 'row',
         alignItems: 'center',
+        paddingLeft: 31,
     },
     dropDown: {
         position: "absolute",

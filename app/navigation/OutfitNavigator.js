@@ -23,6 +23,8 @@ const OutfitNavigator = ({navigation}) => {
         navigation.navigate('Closet',{menuOpen: isOpenTemp})
     }
 
+    const [editMode, setEditMode] = useState(false);
+
     return (<>
         <Stack.Navigator mode="modal" initialRouteName={"Closet"} screenOptions={{
             headerStyle: [styles.headerStyle],
@@ -30,10 +32,21 @@ const OutfitNavigator = ({navigation}) => {
             headerTitle: () => <OutfitDropdown isOpenChanged={isOpenChanged}/>
         }}>
             <Stack.Screen name="Mirror" component={MirrorScreen} options={{}}/>
-            <Stack.Screen name="Closet" component={ClosetScreen} options={{}} initialParams={{menuOpen: isOpen}}/>
+            <Stack.Screen name="Closet" options={{
+                headerLeft: () => (
+                    <MaterialCommunityIcons name="filter-outline" style={styles.headerLeft} onPress={() => {
+                        console.log("Filter");
+                    }}/>
+                ),
+                headerRight: () => (
+                    <MaterialCommunityIcons name={editMode ? "pencil-off-outline" : "pencil-outline"} style={styles.headerLeft} onPress={() => {
+                        setEditMode(!editMode);
+                    }}/>
+                )
+            }} children={() => <ClosetScreen editMode={editMode} menuOpen={isOpen} />}/>
         </Stack.Navigator>
     </>)
-};
+}
 
 const styles = StyleSheet.create({
     headerStyle: {
