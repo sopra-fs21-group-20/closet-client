@@ -12,6 +12,7 @@ import ClosetScreen from "../screens/ClosetScreen";
 import MirrorScreen from "../screens/MirrorScreen";
 import OutfitDropdown from "./OutfitDropdown";
 import Text from "../components/Text";
+import CreateOutfit from "../components/Mirror/CreateOutfit";
 
 const Stack = createStackNavigator();
 
@@ -31,7 +32,6 @@ const OutfitNavigator = ({navigation}) => {
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown isOpenChanged={isOpenChanged}/>
         }}>
-            <Stack.Screen name="Mirror" component={MirrorScreen} options={{}}/>
             <Stack.Screen name="Closet" options={{
                 headerLeft: () => (
                     <MaterialCommunityIcons name="filter-outline" style={styles.headerLeft} onPress={() => {
@@ -44,6 +44,14 @@ const OutfitNavigator = ({navigation}) => {
                     }}/>
                 )
             }} children={() => <ClosetScreen editMode={editMode} menuOpen={isOpen} />}/>
+            <Stack.Screen name="Mirror" component={MirrorScreen} options={{
+                headerRight: () => (
+                    <MaterialCommunityIcons name="plus" style={styles.headerRight} onPress={() => {
+                        navigation.navigate('createOutfit');
+                    }}/>
+                )
+            }}/>
+            <Stack.Screen name="createOutfit" component={CreateOutfit} options={{headerShown: false}}/>
         </Stack.Navigator>
     </>)
 }
@@ -59,7 +67,7 @@ const styles = StyleSheet.create({
         fontSize: 28,
         fontWeight: "400"
     },
-    headerLeft: {
+    headerRight: {
         color: colors.white,
         fontSize: 30,
         paddingHorizontal: 15
