@@ -23,12 +23,7 @@ const addOutfit = (outfit, onUploadProgress) => {
         ]
     }*/
 
-    const actual =  {
-        "name": outfit.name,
-        "items": outfit.items,
-        "collectionIds": outfit.collectionIds
-    }
-
+    console.log(data)
 
     return client.post(endpoint, data, {
             onUploadProgress: (progress) =>

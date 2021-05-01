@@ -17,13 +17,13 @@ import collection from "../../api/collection";
 
 const {width} = Dimensions.get('screen')
 
-const collectionId = 2
+const collectionId = 3
 
 let DATA =
         {
             "items": [
                 {
-                    "id": 10,
+                    "id": 19,
                     "name": 'Dsquared Shirt',
                     "price": 349.0,
                     "attributes": {
