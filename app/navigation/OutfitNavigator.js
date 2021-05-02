@@ -29,7 +29,7 @@ const OutfitNavigator = ({navigation}) => {
     const pushAction = StackActions.push('Closet');
 
     return (<>
-        <Stack.Navigator mode="modal" initialRouteName={"Closet"} screenOptions={{
+        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={"Closet"} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}/>
@@ -41,7 +41,7 @@ const OutfitNavigator = ({navigation}) => {
                     }}/>
                 ),
                 headerRight: () => (
-                    <MaterialCommunityIcons name={editMode ? "pencil-off-outline" : "pencil-outline"} style={styles.headerLeft} onPress={() => {
+                    <MaterialCommunityIcons name={editMode ? "pencil-off-outline" : "pencil-outline"} style={styles.headerRight} onPress={() => {
                         setEditMode(!editMode);
                     }}/>
                 )
@@ -68,6 +68,11 @@ const styles = StyleSheet.create({
         fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
         fontSize: 28,
         fontWeight: "400"
+    },
+    headerLeft: {
+        color: colors.darker,
+        fontSize: 30,
+        paddingHorizontal: 15
     },
     headerRight: {
         color: colors.white,

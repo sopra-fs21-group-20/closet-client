@@ -1,26 +1,38 @@
 import React, {useCallback, useState} from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 import defaultStyles from "../config/styles";
 import colors from "../config/colors";
 
-function Badge({children, type = "", color = "rgb(0,0,0)"}) {
+function Badge({children, type = "", color = "rgb(72,69,69)"}) {
+    const [colorString, setColorString] = useState(color);
+    const [childrenString, setChildrenString] = useState(children);
+
     const luminate = string => {
         const rgb = string.replace(/[^\d,]/g, '').split(',');
-        const Y = 0.2126*rgb[0] + 0.7152*rgb[1] + 0.0722*rgb[2];
+        const Y = 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
         return Y < 128 ? colors.white : colors.dark;
     }
 
     console.log(children);
 
     return (
-        <View style={styles.badgeContainer}>
-            <View style={[styles.badge, {backgroundColor: color}]}>
-                <Text style={[styles.badgeText, {color: luminate(color)}]}>
-                    {children}
-                </Text>
+        <TouchableOpacity onPress={() => {
+            /*Alert.prompt("Delete", "Are you sure you want to delete this image?", [
+                { text: "Yes", onPress: () => onChangeImage(null) },
+                { text: "No" },
+            ]);*/
+            setColorString("rgb(150,150,150)");
+            setChildrenString("Grey");
+        }}>
+            <View style={styles.badgeContainer}>
+                <View style={[styles.badge, {backgroundColor: colorString}]}>
+                    <Text style={[styles.badgeText, {color: luminate(colorString)}]}>
+                        {childrenString}
+                    </Text>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 

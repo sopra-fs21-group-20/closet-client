@@ -46,7 +46,7 @@ function FeedActions({post_id, likes, comments, isLiked, setIsLiked, hasBeenLike
                 </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-                if(!hasBeenLiked && !isLiked) onCommentClick(post_id, caption_attrs, lightTheme);
+                onCommentClick(post_id, caption_attrs, lightTheme);
             }}>
                 <View style={styles.detailsContainer}>
                     <Text

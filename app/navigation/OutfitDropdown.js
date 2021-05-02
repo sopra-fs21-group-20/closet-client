@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import {View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {useRoute} from '@react-navigation/native';
 
 import colors from "../config/colors";
 import routes from "./routes";
 import Text from "../components/Text";
 
 function OutfitDropdown({navigation, isOpenChanged}) {
+    const route = useRoute();
     const dropdownOptions = [{
         title: "Closet",
         navigateTo: routes.CLOSET
@@ -16,20 +18,20 @@ function OutfitDropdown({navigation, isOpenChanged}) {
     }];
 
     const [isOpen, setIsOpen] = useState(false);
-    const [activeOption, setActiveOption] = useState(dropdownOptions[0]);
 
     return (
         <>
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                    setIsOpen(!isOpen);
-                    isOpenChanged(!isOpen);
+                    /*setIsOpen(!isOpen);
+                    isOpenChanged(!isOpen);*/
+                    (route.name === "Closet") ? navigation.navigate(routes.MIRROR) : navigation.navigate(routes.CLOSET);
                 }}
                 style={styles.container}
             >
                 <View style={styles.title}>
-                    <Text style={styles.text}>{activeOption.title}</Text>
+                    <Text style={styles.text}>{route.name}</Text>
                     <View style={styles.iconWrap}>
                         <MaterialCommunityIcons
                             name={isOpen ? 'chevron-up' : 'chevron-down'}

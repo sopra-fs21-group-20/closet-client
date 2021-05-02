@@ -109,6 +109,17 @@ export default function ClosetScreen({editMode, menuOpen}) {
             },
             signedUrl: "https://www.plein.com/dw/image/v2/BBKQ_PRD/on/demandware.static/-/Sites-plein-master-catalog/default/dwd79b4722/images/large/A17C-MLB0255-PLE046C_02_sf.jpg?sw=603&sh=768",
         },
+        {
+            id: 6,
+            categoryId: 3,
+            name: "Hoodie",
+            brand: "Hollister",
+            attributes: {
+                color: "rgb(33,33,33)",
+                fabric: fabrics.WOOL,
+            },
+            signedUrl: "https://img01.ztat.net/article/spp-media-p1/81884809114745e1a95320958231ae31/e6dfeb1165834e6aaff00ad40a8fff41.jpg?imwidth=1800&filter=packshot",
+        },
     ];
 
     const [closetItems, setClosetItems] = useState(closet);
@@ -123,8 +134,7 @@ export default function ClosetScreen({editMode, menuOpen}) {
             {
                 text: 'Delete',
                 onPress: () => {
-                    const index = findById(closetItems, 'id', id);
-                    if (index >= 0) setClosetItems(closetItems.splice(index, 1));
+                    if (closetItems.find(item => item.id === id)) setClosetItems(closetItems.filter(item => item.id !== id));
                     if (isModal) {
                         setModalIsShown(false);
                         setModalData(null);
@@ -132,6 +142,10 @@ export default function ClosetScreen({editMode, menuOpen}) {
                 },
             },
         ]);
+    }
+
+    const addToCloset = (item) => {
+        setClosetItems(closetItems => [...closetItems, item]);
     }
 
     const findById = (array, attr, value) => {
@@ -248,7 +262,7 @@ export default function ClosetScreen({editMode, menuOpen}) {
                     console.log('Modal has been closed.');
                 }}>
                 <OutfitItem data={modalData} state={modalState} modalCloseFunc={setModalIsShown}
-                            deleteFunc={deleteFromCloset}/>
+                            deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
             </Modal>
         </Screen>
     );
@@ -290,6 +304,8 @@ const styles = StyleSheet.create({
     sectionContentRel: {
         justifyContent: "center",
         alignItems: "center",
+        paddingTop: 5,
+        paddingBottom: 25,
     },
     text: {
         color: colors.lighter,

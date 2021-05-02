@@ -7,7 +7,7 @@ import {
     TouchableWithoutFeedback,
     Dimensions,
     TouchableOpacity,
-    Alert
+    Alert, Platform, KeyboardAvoidingView
 } from "react-native";
 import Text from "./Text";
 import colors from "../config/colors";
@@ -17,6 +17,7 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import PostImagePicker from "./forms/PostImagePicker";
 import {Form, FormField, SubmitButton} from "./forms";
 import * as Yup from "yup";
+import fabrics from "../config/fabrics";
 
 const validationSchema = Yup.object().shape({
     image: Yup.array().min(1, "Please select at least one image."),
@@ -25,7 +26,7 @@ const validationSchema = Yup.object().shape({
     badges: Yup.array().min(1, "Please select at least one image."),
 });
 
-function OutfitItem({state = 0, data, modalCloseFunc, editMode, index, deleteFunc}) {
+function OutfitItem({state = 0, data, modalCloseFunc, editMode, index, deleteFunc, addFunc}) {
 
     let badgeColor = "";
     if (data.attributes) {
@@ -33,7 +34,8 @@ function OutfitItem({state = 0, data, modalCloseFunc, editMode, index, deleteFun
     }
 
     const handleSubmit = async (listing, {resetForm}) => {
-        console.log('Submit');
+        console.log(listing);
+        console.log("listing");
     };
 
     switch (state) {
@@ -45,45 +47,63 @@ function OutfitItem({state = 0, data, modalCloseFunc, editMode, index, deleteFun
                     <View style={stylesPopup.background}>
                         <TouchableWithoutFeedback>
                             <View style={[styles.container, stylesPopup.container]}>
-                                <Form
-                                    initialValues={{
-                                        image: [],
-                                        title: "",
-                                        brand: "",
-                                        badges: [],
-                                    }}
-                                    onSubmit={handleSubmit}
-                                    validationSchema={validationSchema}
+                                <KeyboardAvoidingView
+                                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                                    keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
                                 >
-{/*
+                                    <Form
+                                        initialValues={{
+                                            image: [],
+                                            title: "",
+                                            brand: "",
+                                            badges: [],
+                                        }}
+                                        onSubmit={handleSubmit}
+                                        validationSchema={validationSchema}
+                                    >
+                                        {/*
                                     <Image source={{uri: "https://m.media-amazon.com/images/I/A13usaonutL._CLa%7C2140%2C2000%7C410QkIAyiRL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"}} style={stylesPopup.image} resizeMode={"cover"}/>
 */}
-                                    <PostImagePicker name="image"/>
-                                    <FormField
-                                        maxLength={100}
-                                        name="title"
-                                        numberOfLines={1}
-                                        placeholder="Title"
-                                    />
-                                    <FormField
-                                        maxLength={100}
-                                        name="brand"
-                                        numberOfLines={1}
-                                        placeholder="Brand"
-                                    />
-                                    <View style={stylesPopup.badgeContainer}>
-                                        <Text>
-                                            <Badge>Test</Badge>
-                                            <Badge>Test</Badge>
-                                        </Text>
-                                    </View>
-                                    <View style={stylesPopup.buttonContainer}>
-                                        <Button title="Delete" buttonStyle={stylesPopup.buttonAbort} onPress={() => {
-                                            modalCloseFunc(false);
-                                        }}/>
-                                        <SubmitButton title="Save" buttonStyle={stylesPopup.buttonSave}/>
-                                    </View>
-                                </Form>
+                                        <PostImagePicker name="image"/>
+                                        <FormField
+                                            maxLength={100}
+                                            name="title"
+                                            numberOfLines={1}
+                                            placeholder="Title"
+                                        />
+                                        <FormField
+                                            maxLength={100}
+                                            name="brand"
+                                            numberOfLines={1}
+                                            placeholder="Brand"
+                                        />
+                                        <View style={stylesPopup.badgeContainer}>
+                                            <Text>
+                                                <Badge type={"color"}>Color...</Badge>
+                                            </Text>
+                                        </View>
+                                        <View style={stylesPopup.buttonContainer}>
+                                            <Button title="Delete" buttonStyle={stylesPopup.buttonAbort}
+                                                    onPress={() => {
+                                                        modalCloseFunc(false);
+                                                    }}/>
+                                            <Button title="Save" buttonStyle={stylesPopup.buttonSave} onPress={() => {
+                                                addFunc({
+                                                    id: 7,
+                                                    categoryId: 3,
+                                                    name: "Pullover",
+                                                    brand: "Champion",
+                                                    attributes: {
+                                                        color: "rgb(150,150,150)",
+                                                        fabric: fabrics.WOOL,
+                                                    },
+                                                    signedUrl: "https://www.houseofkids.com/media/catalog/product/cache/1/image/960x/9df78eab33525d08d6e5fb8d27136e95/5/f/5f292d079c742Champion-sweat-305379-em031_-1_Front_website.webp",
+                                                });
+                                                modalCloseFunc(false);
+                                            }}/>
+                                        </View>
+                                    </Form>
+                                </KeyboardAvoidingView>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
