@@ -4,6 +4,8 @@ const endpoint = "/outfits";
 
 const getOutfit = () => client.get(endpoint);
 
+const getCloset = () => client.get("/users/closet");
+
 const addOutfit = (outfit, onUploadProgress) => {
     const data = {
         "name": outfit.name,
@@ -34,5 +36,6 @@ const addOutfit = (outfit, onUploadProgress) => {
 
 export default {
     getOutfit,
-    addOutfit
+    addOutfit,
+    getCloset
 };

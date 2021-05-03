@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {useHeaderHeight} from '@react-navigation/stack';
 
 import Screen from "../components/Screen";
 import colors from "../config/colors";
@@ -10,39 +9,24 @@ import defaultStyles from "../config/styles";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import OutfitItem from "../components/OutfitItem";
 import fabrics from "../config/fabrics";
+import categories from "../config/categories";
+import useApi from "../hooks/useApi";
+import outfitApi from "../api/outfitApi";
 
 export default function ClosetScreen({editMode, menuOpen}) {
-    const categories = [
-        {
-            categoryId: 0,
-            title: "Headwear",
-        },
-        {
-            categoryId: 1,
-            title: "Jackets",
-        },
-        {
-            categoryId: 2,
-            title: "T-Shirts",
-        },
-        {
-            categoryId: 3,
-            title: "Pullovers",
-        },
-        {
-            categoryId: 4,
-            title: "Pants",
-        },
-        {
-            categoryId: 5,
-            title: "Footwear",
-        },
-        {
-            categoryId: 6,
-            title: "Underwear",
-        },
-    ]
-    const closet = [
+
+    const getClosetApi = useApi(outfitApi.getCloset);
+
+    useEffect(() => {
+        getClosetApi.request().catch(() => {
+            console.log(getClosetApi.error);
+        }).then(() => {
+            console.log("working", getClosetApi.data);
+            setClosetItems(getClosetApi.data);
+        });
+    }, []);
+
+    /*const closet = [
         {
             id: 0,
             categoryId: 4,
@@ -120,9 +104,9 @@ export default function ClosetScreen({editMode, menuOpen}) {
             },
             signedUrl: "https://img01.ztat.net/article/spp-media-p1/81884809114745e1a95320958231ae31/e6dfeb1165834e6aaff00ad40a8fff41.jpg?imwidth=1800&filter=packshot",
         },
-    ];
+    ];*/
 
-    const [closetItems, setClosetItems] = useState(closet);
+    const [closetItems, setClosetItems] = useState([]);
 
     const deleteFromCloset = (id, isModal = false) => {
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
@@ -147,16 +131,6 @@ export default function ClosetScreen({editMode, menuOpen}) {
     const addToCloset = (item) => {
         setClosetItems(closetItems => [...closetItems, item]);
     }
-
-    const findById = (array, attr, value) => {
-        let index = -1;
-        array.forEach((item, i) => {
-            if (parseInt(item[attr]) === parseInt(value)) {
-                index = i;
-            }
-        });
-        return index;
-    };
 
     const [activeSection, setActiveSection] = useState([]);
 

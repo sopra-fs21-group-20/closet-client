@@ -13,6 +13,7 @@ function ItemImagePicker({name, picture}) {
     }, []);
 
     const handleAdd = (uri) => {
+        console.log("Working");
         setFieldValue(name, [...imageUris, uri]);
     };
 
