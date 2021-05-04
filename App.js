@@ -37,8 +37,8 @@ export default function App() {
         <AuthContext.Provider value={{user, setUser}}>
             <OfflineNotice/>
             <NavigationContainer theme={navigationTheme}>
-                {user ? <AppNavigator/> : <AuthNavigator/>}
-                {/*{<AppNavigator/>}*/}
+                {/*{user ? <AppNavigator/> : <AuthNavigator/>}*/}
+                {<AppNavigator/>}
             </NavigationContainer>
             <StatusBar style={"light"} />
         </AuthContext.Provider>

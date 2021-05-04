@@ -41,108 +41,92 @@ function OutfitItem({state = 0, data, modalCloseFunc, editMode, index, deleteFun
     switch (state) {
         case 3: // Modal edit view
             return (
-                <TouchableWithoutFeedback onPress={() => {
-                    modalCloseFunc(false);
-                }}>
-                    <View style={stylesPopup.background}>
-                        <TouchableWithoutFeedback>
-                            <View style={[styles.container, stylesPopup.container]}>
-                                <KeyboardAvoidingView
-                                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                                    keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-                                >
-                                    <Form
-                                        initialValues={{
-                                            image: [],
-                                            title: "",
-                                            brand: "",
-                                            badges: [],
-                                        }}
-                                        onSubmit={handleSubmit}
-                                        validationSchema={validationSchema}
-                                    >
-                                        {/*
+                <View style={[styles.container, stylesPopup.container]}>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "padding" : "height"}
+                        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+                    >
+                        <Form
+                            initialValues={{
+                                image: [],
+                                title: "",
+                                brand: "",
+                                badges: [],
+                            }}
+                            onSubmit={handleSubmit}
+                            validationSchema={validationSchema}
+                        >
+                            {/*
                                     <Image source={{uri: "https://m.media-amazon.com/images/I/A13usaonutL._CLa%7C2140%2C2000%7C410QkIAyiRL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"}} style={stylesPopup.image} resizeMode={"cover"}/>
 */}
-                                        <PostImagePicker name="image"/>
-                                        <FormField
-                                            maxLength={100}
-                                            name="title"
-                                            numberOfLines={1}
-                                            placeholder="Title"
-                                        />
-                                        <FormField
-                                            maxLength={100}
-                                            name="brand"
-                                            numberOfLines={1}
-                                            placeholder="Brand"
-                                        />
-                                        <View style={stylesPopup.badgeContainer}>
-                                            <Text>
-                                                <Badge type={"color"}>Color...</Badge>
-                                            </Text>
-                                        </View>
-                                        <View style={stylesPopup.buttonContainer}>
-                                            <Button title="Delete" buttonStyle={stylesPopup.buttonAbort}
-                                                    onPress={() => {
-                                                        modalCloseFunc(false);
-                                                    }}/>
-                                            <Button title="Save" buttonStyle={stylesPopup.buttonSave} onPress={() => {
-                                                addFunc({
-                                                    id: 7,
-                                                    categoryId: 3,
-                                                    name: "Pullover",
-                                                    brand: "Champion",
-                                                    attributes: {
-                                                        color: "rgb(150,150,150)",
-                                                        fabric: fabrics.WOOL,
-                                                    },
-                                                    signedUrl: "https://www.houseofkids.com/media/catalog/product/cache/1/image/960x/9df78eab33525d08d6e5fb8d27136e95/5/f/5f292d079c742Champion-sweat-305379-em031_-1_Front_website.webp",
-                                                });
-                                                modalCloseFunc(false);
-                                            }}/>
-                                        </View>
-                                    </Form>
-                                </KeyboardAvoidingView>
+                            <PostImagePicker name="image"/>
+                            <FormField
+                                maxLength={100}
+                                name="title"
+                                numberOfLines={1}
+                                placeholder="Title"
+                            />
+                            <FormField
+                                maxLength={100}
+                                name="brand"
+                                numberOfLines={1}
+                                placeholder="Brand"
+                            />
+                            <View style={stylesPopup.badgeContainer}>
+                                <Text>
+                                    <Badge type={"color"}>Color...</Badge>
+                                </Text>
                             </View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                </TouchableWithoutFeedback>
+                            <View style={stylesPopup.buttonContainer}>
+                                <Button title="Delete" buttonStyle={stylesPopup.buttonAbort}
+                                        onPress={() => {
+                                            modalCloseFunc(false);
+                                        }}/>
+                                <Button title="Save" buttonStyle={stylesPopup.buttonSave} onPress={() => {
+                                    addFunc({
+                                        id: 7,
+                                        categoryId: 3,
+                                        name: "Pullover",
+                                        brand: "Champion",
+                                        attributes: {
+                                            color: "rgb(150,150,150)",
+                                            fabric: fabrics.WOOL,
+                                        },
+                                        signedUrl: "https://www.houseofkids.com/media/catalog/product/cache/1/image/960x/9df78eab33525d08d6e5fb8d27136e95/5/f/5f292d079c742Champion-sweat-305379-em031_-1_Front_website.webp",
+                                    });
+                                    modalCloseFunc(false);
+                                }}/>
+                            </View>
+                        </Form>
+                    </KeyboardAvoidingView>
+                </View>
             );
         case 2: // Modal view
             return (
-                <TouchableWithoutFeedback onPress={() => {
-                    modalCloseFunc(false);
-                }}>
-                    <View style={stylesPopup.background}>
-                        <TouchableWithoutFeedback>
-                            <View style={[styles.container, stylesPopup.container]}>
-                                <Image style={stylesPopup.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
-                                <View style={stylesPopup.textContainer}>
-                                    <Text style={stylesPopup.title}>{data.name}</Text>
-                                    <Text style={stylesPopup.text}>{data.brand}</Text>
-                                </View>
-                                <View style={stylesPopup.badgeContainer}>
-                                    <Text>
-                                        {
-                                            Object.entries(data.attributes).map(([key, value], i) => {
-                                                if (key !== "color") return (
-                                                    <Badge key={i} color={badgeColor}>{value}</Badge>);
-                                            })
-                                        }
-                                    </Text>
-                                </View>
-                                <View style={stylesPopup.buttonContainer}>
-                                    <Button title="Delete" buttonStyle={stylesPopup.buttonDelete} onPress={() => {
-                                        deleteFunc(data.id, true)
-                                    }}/>
-                                    <Button title="Edit" buttonStyle={stylesPopup.buttonEdit} onPress={() => {
-                                    }}/>
-                                </View>
-                            </View>
-                        </TouchableWithoutFeedback>
+                <View style={[styles.container, stylesPopup.container]}>
+                    <Image style={stylesPopup.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
+                    <View style={stylesPopup.textContainer}>
+                        <Text style={stylesPopup.title}>{data.name}</Text>
+                        <Text style={stylesPopup.text}>{data.brand}</Text>
                     </View>
-                </TouchableWithoutFeedback>
+                    <View style={stylesPopup.badgeContainer}>
+                        <Text>
+                            {
+                                Object.entries(data.attributes).map(([key, value], i) => {
+                                    if (key !== "color") return (
+                                        <Badge key={i} color={badgeColor}>{value}</Badge>);
+                                })
+                            }
+                        </Text>
+                    </View>
+                    <View style={stylesPopup.buttonContainer}>
+                        <Button title="Delete" buttonStyle={stylesPopup.buttonDelete} onPress={() => {
+                            deleteFunc(data.id, true)
+                        }}/>
+                        <Button title="Edit" buttonStyle={stylesPopup.buttonEdit} onPress={() => {
+                        }}/>
+                    </View>
+                </View>
             );
         case 1: // List view
             return (

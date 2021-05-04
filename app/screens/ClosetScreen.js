@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Dimensions, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+    Alert,
+    Dimensions,
+    Image,
+    ImageBackground,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
+import Modal from 'react-native-modal';
 
 import Screen from "../components/Screen";
 import colors from "../config/colors";
@@ -143,19 +154,27 @@ export default function ClosetScreen({editMode, menuOpen}) {
     // Data from item for popup
     const [modalState, setModalState] = useState(3);
 
+    // Height of closet container
+    const [containerHeight, setContainerHeight] = useState(0);
+
 
     // Renders panel header (always shown)
     const _renderHeader = section => {
         return (
             <View style={styles.sectionHeader}>
-                <Text style={styles.sectionHeaderText}>{section.title}</Text>
-                <View style={styles.sectionHeaderIcon}>
-                    <MaterialCommunityIcons
-                        name={'chevron-down'}
-                        size={30}
-                        color={colors.light}
-                    />
-                </View>
+                <ImageBackground source={section.url} resizeMode={'cover'}
+                                 style={styles.sectionHeaderBackground}>
+                    <View style={[styles.sectionHeaderBackgroundOpacity, {paddingVertical: containerHeight !== 0 ? ((containerHeight / categories.length) - 26) / 2 : 25}]}>
+                        <Text style={styles.sectionHeaderText}>{section.title}</Text>
+                        <View style={styles.sectionHeaderIcon}>
+                            <MaterialCommunityIcons
+                                name={'chevron-down'}
+                                size={30}
+                                color={colors.light}
+                            />
+                        </View>
+                    </View>
+                </ImageBackground>
             </View>
         );
     };
@@ -217,7 +236,10 @@ export default function ClosetScreen({editMode, menuOpen}) {
     // Renders whole screen
     return (
         <Screen>
-            <ScrollView style={[styles.container, {marginTop: menuOpen ? 100 : 20,}]}>
+            <ScrollView style={[styles.container, {marginTop: menuOpen ? 100 : 20,}]} onLayout={(event) => {
+                const {height} = event.nativeEvent.layout;
+                setContainerHeight(height);
+            }}>
                 <Accordion
                     sections={categories}
                     activeSections={activeSection}
@@ -229,12 +251,8 @@ export default function ClosetScreen({editMode, menuOpen}) {
                 />
             </ScrollView>
             <Modal
-                animationType={'fade'}
-                transparent={true}
-                visible={modalIsShown}
-                onRequestClose={() => {
-                    console.log('Modal has been closed.');
-                }}>
+                isVisible={modalIsShown}
+                onBackdropPress={() => setModalIsShown(false)}>
                 <OutfitItem data={modalData} state={modalState} modalCloseFunc={setModalIsShown}
                             deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
             </Modal>
@@ -256,11 +274,19 @@ const styles = StyleSheet.create({
     },
     sectionHeader: {
         width: '100%',
-        paddingVertical: 25,
+        position: 'relative',
+    },
+    sectionHeaderBackground: {
+        /*width: '100%',
+        height: '100%',*/
+    },
+    sectionHeaderBackgroundOpacity: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.6)',
     },
     sectionHeaderText: {
         color: colors.light,
-        fontSize: 20,
+        fontSize: 26,
         textTransform: 'uppercase',
         textAlign: 'center',
     },
@@ -272,13 +298,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     sectionContent: {
-        paddingTop: 5,
+        paddingTop: 25,
         paddingBottom: 25,
     },
     sectionContentRel: {
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: 5,
+        paddingTop: 25,
         paddingBottom: 25,
     },
     text: {

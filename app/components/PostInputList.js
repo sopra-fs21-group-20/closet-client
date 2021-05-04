@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         height: 350,//(Dimensions.get("window").width - 110),
         width: 350,//(Dimensions.get("window").width - 110),
         marginRight: 10,
+        zIndex: 10,
     },
 });
 
