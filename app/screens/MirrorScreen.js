@@ -11,14 +11,14 @@ import outfitApi from "../api/outfitApi";
 
 export default function MirrorScreen() {
 
-    const getOutfitApi = useApi(outfitApi.getOutfit)
+    /*const getOutfitApi = useApi(outfitApi.getOutfit)
 
     useEffect(() => {
         getOutfitApi.request();
-    }, []);
+    }, []);*/
 
 
-    /*const outfits = [
+    const outfits = [
         {
             "id": 3,
             "name": "My 1st outfit",
@@ -127,7 +127,7 @@ export default function MirrorScreen() {
                 2
             ]
         },
-        /!*[
+        /*[
             {
                 id: 1,
                 name: 'Dsquared Shirt',
@@ -183,8 +183,8 @@ export default function MirrorScreen() {
             },
             null,
             null
-        ]*!/
-    ]*/
+        ]*/
+    ]
 
     /*const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
         console.log("Visible items are", viewableItems);
@@ -205,7 +205,8 @@ export default function MirrorScreen() {
                 onScroll={Animated.event(
                     [{nativeEvent: {contentOffset: {x: scrollX}}}],
                     {useNativeDriver: false})}
-                data={getOutfitApi.data}
+                /*data={getOutfitApi.data}*/
+                data={outfits}
                 keyExtractor={(item) => item.id}
                 pagingEnabled={true}
                 renderItem={({item}) => {

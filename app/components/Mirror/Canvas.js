@@ -4,7 +4,7 @@ import {
     Dimensions,
     View,
     Image,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback, SafeAreaView,
 } from "react-native";
 import colors from "../../config/colors";
 
@@ -15,7 +15,7 @@ const canvasHeight = canvasWidth
 const itemWidth = (canvasWidth - 4 * paddingItem - 2 * canvasMargin) / 3
 const itemHeight = itemWidth
 
-export default function Canvas({outfit, edit}) {
+export default function Canvas({outfit, edit, modal}) {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
 
@@ -69,10 +69,10 @@ export default function Canvas({outfit, edit}) {
     }
 
     return (
-        <View style={[styles.container, {
-            height: edit ? canvasHeight : canvasHeight + 50,
+        <SafeAreaView style={[styles.container, {
+            height: edit || modal ? canvasHeight : canvasHeight + 50,
             marginBottom: edit ? 0 : -50,
-            borderRadius: edit ? 50 : 0
+            borderRadius: edit || modal  ? 50 : 0,
         }]}>
             <View style={[styles.row]}>
                 {
@@ -96,7 +96,7 @@ export default function Canvas({outfit, edit}) {
                     outfit.slice(6, 9).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'bot' + item.id + index}
                                                                                    imageUrl={item.signedUrl}/>)}
             </View>
-        </View>
+        </SafeAreaView>
 
     )
         ;
@@ -111,7 +111,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         paddingVertical: paddingItem / 2,
         backgroundColor: colors.white,
-        marginBottom: -50
+        marginBottom: -50,
+        alignSelf:'center'
     },
     image: {
         width: '100%',

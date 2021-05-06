@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {FlatList, RefreshControl, ScrollView, StyleSheet, View} from "react-native";
+import React, {useEffect, useState} from "react";
+import {FlatList, Image, RefreshControl, ScrollView, StyleSheet, View} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -10,9 +10,71 @@ import Screen from "../components/Screen";
 import useApi from "../hooks/useApi";
 import feed from "../api/feed";
 import Text from "../components/Text";
+import Modal from "react-native-modal";
+import OutfitItem from "../components/OutfitItem";
+import Canvas from "../components/Mirror/Canvas";
+import CanvasItems from "../components/Mirror/CanvasItems";
 
 function FeedScreen({navigation}) {
     //default is start=0, end=3
+
+    const modalData = {
+        "id": 3,
+        "name": "My 1st outfit",
+        "userId": "1",
+        "outfitItems": [
+            {
+                "id": 1,
+                "name": "Mystic Sun & Moon T-Shirt",
+                "price": 49.90,
+                "attributes": {
+                    "color": "black",
+                    "size": "M"
+                },
+                "signedUrl": "https://img01.ztat.net/article/spp-media-p1/26e07279febb37bea3330484f52a05a3/b93b6bc6aa2347ca940607e4620d9e4e.jpg?imwidth=1800&filter=packshot"
+            },
+            null,
+            null,
+            {
+                "id": 3,
+                "name": "Chino-Bermuda Shorts",
+                "price": 29,
+                "attributes": {
+                    "color": "beige",
+                },
+                "signedUrl": "https://img01.ztat.net/article/spp-media-p1/08cbec480caf3077954f24e83f8970aa/2dc250c943084129858923cba4bab5db.jpg?imwidth=1800&filter=packshot"
+            },
+            {
+                "id": 2,
+                "name": "Gucci Belt",
+                "price": 349.0,
+                "attributes": {
+                    "color": "black",
+                    "pattern": "matte"
+                },
+                "signedUrl": "https://cdn-images.farfetch-contents.com/12/14/71/16/12147116_10105896_480.jpg"
+            },
+            null,
+            {
+                "id": 4,
+                "name": "The Roger",
+                "price": 499,
+                "attributes": {
+                    "color": "beige",
+                    "attr": "limited"
+                },
+                "signedUrl": "https://images.ctfassets.net/od02wyo8cgm5/1jVSrUcc6lGmRy9sGZQFZF/a38da5e8270e59a6f6833902c0956f07/theroger_centre_court-fw20-white_gum-m-t.png?w=150&q=80"
+            },
+            null,
+            null
+        ],
+        "collectionIds": [
+            2
+        ]
+    }
+
+    const [showModal, setShowModal] = useState(false)
+    console.log(showModal)
 
     const getFeedApi = useApi(feed.getFeed);
 
@@ -80,6 +142,14 @@ function FeedScreen({navigation}) {
         console.log(color);
     };*/
 
+    const handleModal = () => {
+        if (showModal === false) {
+            setShowModal(true)
+        } else {
+            setShowModal(false)
+        }
+    }
+
     const navigateToComments = (post_id, captionAttrs, lightThemeEnabled) => {
         navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
     };
@@ -134,10 +204,21 @@ function FeedScreen({navigation}) {
                             }}
                             index={index}
                             onCommentClick={navigateToComments}
+                            handleModal={handleModal}
                         />);
                     }}
                 />)}
             </Screen>
+            <Modal propagateSwipe
+                   style={{margin: 0}}
+                   isVisible={showModal}
+                   onBackdropPress={() => setShowModal(false)}
+                   onSwipeComplete={() => setShowModal(false)}
+                   swipeDirection={"down"}
+            >
+
+                <Canvas outfit={modalData.outfitItems} modal={true}/>
+            </Modal>
         </>
 
     );

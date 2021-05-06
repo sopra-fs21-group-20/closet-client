@@ -21,7 +21,8 @@ function Card({
                   images,
                   onPress,
                   index,
-                  onCommentClick
+                  onCommentClick,
+                  handleModal
               }) {
 
     const scrollableImages = useRef();
@@ -29,13 +30,14 @@ function Card({
     const [isLiked, setIsLiked] = useState(false);
 
     const handleImagePress = (e) => {
-        const now = new Date().getTime();
+        handleModal()
+        /*const now = new Date().getTime();
         if (this.lastImagePress && (now - this.lastImagePress) < DOUBLE_PRESS_DELAY) {
             delete this.lastImagePress;
             handleImageDoublePress(e);
         } else {
             this.lastImagePress = now;
-        }
+        }*/
     }
 
     const handleImageDoublePress = (e) => {
@@ -63,9 +65,10 @@ function Card({
                 </TouchableWithoutFeedback>
             </ScrollView>
             <View style={styles.detailsContainer}>
-                <View style={{ width: 50, height: 50, right: 0, top: -50, position: "absolute" }}>
+                <View style={{width: 50, height: 50, right: 0, top: -50, position: "absolute"}}>
                     <Svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-                        <Path fill-rule="evenodd" clip-rule="evenodd" d="M50 50V0C50 27.6142 27.6142 50 0 50H50Z" fill="#292929"/>
+                        <Path fill-rule="evenodd" clip-rule="evenodd" d="M50 50V0C50 27.6142 27.6142 50 0 50H50Z"
+                              fill="#292929"/>
                     </Svg>
                 </View>
                 <UserDisplay
