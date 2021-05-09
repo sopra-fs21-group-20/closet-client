@@ -24,9 +24,19 @@ import categories from "../config/categories";
 import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
 
-export default function ClosetScreen({editMode, menuOpen}) {
+const filterCategories = (categories, closetItems) => {
+    const tempCategories = [];
+    categories.forEach(category => {
+        if (closetItems.find(closetItem => closetItem.categoryId === category.categoryId) !== undefined) {
+            tempCategories.push(category);
+        }
+    });
+    return tempCategories;
+}
 
-    const getClosetApi = useApi(outfitApi.getCloset);
+export default function ClosetScreen({navigation, editMode = false, menuOpen = false, isInjected = false, injectedItemTapFunc}) {
+
+    /*const getClosetApi = useApi(outfitApi.getCloset);
 
     useEffect(() => {
         getClosetApi.request().catch(() => {
@@ -35,16 +45,16 @@ export default function ClosetScreen({editMode, menuOpen}) {
             console.log("working", getClosetApi.data);
             setClosetItems(getClosetApi.data);
         });
-    }, []);
+    }, []);*/
 
-    /*const closet = [
+    const closet = [
         {
             id: 0,
             categoryId: 4,
             name: "Jeans",
             brand: "Armani",
             attributes: {
-                color: "rgb(54,120,183)",
+                color: "marineblue",
                 fabric: fabrics.DENIM,
             },
             signedUrl: "https://img01.ztat.net/article/spp-media-p1/c13f661615af36ebb5cbacd662f10719/81535596902346689bfd3ac5de2ebddf.jpg?imwidth=765&filter=packshot",
@@ -55,7 +65,7 @@ export default function ClosetScreen({editMode, menuOpen}) {
             name: "Joggers",
             brand: "Nike",
             attributes: {
-                color: "rgb(224,224,224)",
+                color: "lightgrey",
                 fabric: fabrics.WOOL,
             },
             signedUrl: "https://cdn-img.prettylittlething.com/d/9/a/a/d9aad4733cf939f38dafaa3a2f27cd8300df4ea5_CLW0864_3.JPG",
@@ -66,7 +76,7 @@ export default function ClosetScreen({editMode, menuOpen}) {
             name: "Jeans",
             brand: "Carhardt",
             attributes: {
-                color: "rgb(50,65,119)",
+                color: "ultramarine",
                 fabric: fabrics.DENIM,
             },
             signedUrl: "https://cdn.skatedeluxe.com/thumb/tJv6tn26l8Ds_vgese0QoUdV3XI=/fit-in/420x490/filters:fill(white):brightness(-4)/product/112940-1-CarharttWIP-WPiercePantMaverick.jpg",
@@ -77,7 +87,7 @@ export default function ClosetScreen({editMode, menuOpen}) {
             name: "Shorts",
             brand: "Pull&Bear",
             attributes: {
-                color: "rgb(145,145,145)",
+                color: "grey",
                 fabric: fabrics.WOOL,
             },
             signedUrl: "https://static.pullandbear.net/2/photos/2021/V/0/2/p/4695/500/802/4695500802_1_1_3.jpg?t=1618923076619",
@@ -88,7 +98,7 @@ export default function ClosetScreen({editMode, menuOpen}) {
             name: "Jeans",
             brand: "Pull&Bear",
             attributes: {
-                color: "rgb(55,92,148)",
+                color: "ultramarine",
                 fabric: fabrics.DENIM,
             },
             signedUrl: "https://static.pullandbear.net/2/photos/2021/V/0/1/p/4681/309/427/4681309427_1_1_3.jpg?t=1618572622717",
@@ -99,7 +109,7 @@ export default function ClosetScreen({editMode, menuOpen}) {
             name: "Leather Jacket",
             brand: "Armani",
             attributes: {
-                color: "rgb(33,33,33)",
+                color: "black",
                 fabric: fabrics.LEATHER,
             },
             signedUrl: "https://www.plein.com/dw/image/v2/BBKQ_PRD/on/demandware.static/-/Sites-plein-master-catalog/default/dwd79b4722/images/large/A17C-MLB0255-PLE046C_02_sf.jpg?sw=603&sh=768",
@@ -110,14 +120,14 @@ export default function ClosetScreen({editMode, menuOpen}) {
             name: "Hoodie",
             brand: "Hollister",
             attributes: {
-                color: "rgb(33,33,33)",
+                color: "black",
                 fabric: fabrics.WOOL,
             },
             signedUrl: "https://img01.ztat.net/article/spp-media-p1/81884809114745e1a95320958231ae31/e6dfeb1165834e6aaff00ad40a8fff41.jpg?imwidth=1800&filter=packshot",
         },
-    ];*/
+    ];
 
-    const [closetItems, setClosetItems] = useState([]);
+    const [closetItems, setClosetItems] = useState(closet);
 
     const deleteFromCloset = (id, isModal = false) => {
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
@@ -137,6 +147,18 @@ export default function ClosetScreen({editMode, menuOpen}) {
                 },
             },
         ]);
+    }
+
+    const [filteredCategories, setFilteredCategories] = useState(isInjected ? filterCategories(categories, closetItems) : categories);
+
+    const itemTap = (data, state, isShown) => {
+        if(isInjected) {
+            injectedItemTapFunc(data);
+        } else {
+            setModalData(data);
+            setModalState(state);
+            setModalIsShown(isShown);
+        }
     }
 
     const addToCloset = (item) => {
@@ -164,7 +186,8 @@ export default function ClosetScreen({editMode, menuOpen}) {
             <View style={styles.sectionHeader}>
                 <ImageBackground source={section.url} resizeMode={'cover'}
                                  style={styles.sectionHeaderBackground}>
-                    <View style={[styles.sectionHeaderBackgroundOpacity, {paddingVertical: containerHeight !== 0 ? ((containerHeight / categories.length) - 26) / 2 : 25}]}>
+                    <View
+                        style={[styles.sectionHeaderBackgroundOpacity, {paddingVertical: containerHeight !== 0 ? ((containerHeight / categories.length) - 26) / 2 : 25}]}>
                         <Text style={styles.sectionHeaderText}>{section.title}</Text>
                         <View style={styles.sectionHeaderIcon}>
                             <MaterialCommunityIcons
@@ -185,10 +208,8 @@ export default function ClosetScreen({editMode, menuOpen}) {
         return (
             <View
                 style={carouselItems.length ? styles.sectionContent : [styles.sectionContent, styles.sectionContentRel]}>
-                <TouchableOpacity onPress={() => {
-                    setModalData({});
-                    setModalState(3);
-                    setModalIsShown(true);
+                {!isInjected && <TouchableOpacity onPress={() => {
+                    itemTap({}, 3, true);
                 }}>
                     <View style={carouselItems.length ? styles.newItem : [styles.newItem, styles.newItemRel]}>
                         <MaterialCommunityIcons
@@ -197,12 +218,10 @@ export default function ClosetScreen({editMode, menuOpen}) {
                             style={styles.newItemIcon}
                             size={70}/>
                     </View>
-                </TouchableOpacity>
-                {carouselItems.length ? (
+                </TouchableOpacity>}
+                {!isInjected && carouselItems.length ? (
                     <TouchableOpacity onPress={() => {
-                        setModalData({});
-                        setModalState(3);
-                        setModalIsShown(true);
+                        itemTap({}, 3, true);
                     }} style={{zIndex: 10}}>
                         <View style={styles.newItemOverlay}>
                         </View>
@@ -224,11 +243,9 @@ export default function ClosetScreen({editMode, menuOpen}) {
     const renderItem = ({item, index}) => {
         return (
             <TouchableOpacity onPress={() => {
-                setModalIsShown(true);
-                setModalData(item);
-                setModalState(2);
+                itemTap(item, 2, true);
             }}>
-                <OutfitItem data={item} editMode={editMode} deleteFunc={deleteFromCloset}/>
+                <OutfitItem state={0} data={item} editMode={editMode} deleteFunc={deleteFromCloset}/>
             </TouchableOpacity>
         )
     }
@@ -236,12 +253,16 @@ export default function ClosetScreen({editMode, menuOpen}) {
     // Renders whole screen
     return (
         <Screen>
-            <ScrollView style={[styles.container, {marginTop: menuOpen ? 100 : 20,}]} onLayout={(event) => {
+            <ScrollView style={[styles.container, {marginTop: menuOpen ? 100 : 20,}, isInjected ? {
+                margin: 0,
+                marginTop: 0,
+                borderRadius: 5
+            } : null]} onLayout={(event) => {
                 const {height} = event.nativeEvent.layout;
                 setContainerHeight(height);
             }}>
                 <Accordion
-                    sections={categories}
+                    sections={filteredCategories}
                     activeSections={activeSection}
                     renderHeader={_renderHeader}
                     renderContent={_renderContent}

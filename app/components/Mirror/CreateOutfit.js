@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {createRef, useState} from "react";
 import {StyleSheet, Text, Dimensions, View, Image, FlatList, SafeAreaView, TouchableOpacity} from "react-native";
 import colors from "../../config/colors";
 import Canvas from "./Canvas";
@@ -11,122 +11,81 @@ import * as Yup from "yup";
 import {StackActions as navigation} from "react-navigation";
 import useLocation from "../../hooks/useLocation";
 import outfitApi from "../../api/outfitApi";
-import { StackActions } from '@react-navigation/native';
-
-
-const {width} = Dimensions.get('screen')
+import {StackActions} from '@react-navigation/native';
+import ActionSheet from "react-native-actions-sheet";
+import ClosetScreen from "../../screens/ClosetScreen";
 
 const collectionId = 3
 
-let DATA =
-        {
-            "items": [
-                {
-                    "id": 19,
-                    "name": 'Dsquared Shirt',
-                    "price": 349.0,
-                    "attributes": {
-                        "color": "black",
-                        "pattern": "white"
-                    },
-                    "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
-                },
-                {
-                    "id": 9,
-                    "name": 'Diesel Jeans Jacket',
-                    "price": 349.0,
-                    "attributes": {
-                        "color": "dark blue",
-                    },
-                    "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
-                },
-                null,
-                {
-                    "id": 6,
-                    "name": "Jack & Jones' Pants",
-                    "price": 349.0,
-                    "attributes": {
-                        "color": "light blue",
-                        "pattern": "slim fit"
-                    },
-                    "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
-                },
-                null,
-                null,
-                {
-                    "id": 8,
-                    "name": 'Polo Shoes',
-                    "price": 349.0,
-                    "attributes": {
-                        "color": "black",
-                        "pattern": "gloss"
-                    },
-                    "signedUrl": 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
-                },
-                null,
-                null
-            ],
-            "collectionIds": [
-                collectionId
-            ]
-        }
+const outfitData = [
+    {
+        "id": 19,
+        "position": 0,
+        "name": 'Dsquared Shirt',
+        "price": 349.0,
+        "attributes": {
+            "color": "black",
+            "pattern": "white"
+        },
+        "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
+    },
+    {
+        "id": 9,
+        "position": 1,
+        "name": 'Diesel Jeans Jacket',
+        "price": 349.0,
+        "attributes": {
+            "color": "dark blue",
+        },
+        "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
+    },
+    {
+        "id": 6,
+        "position": 3,
+        "name": "Jack & Jones' Pants",
+        "price": 349.0,
+        "attributes": {
+            "color": "light blue",
+            "pattern": "slim fit"
+        },
+        "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
+    },
+    {
+        "id": 8,
+        "position": 6,
+        "name": 'Polo Shoes',
+        "price": 349.0,
+        "attributes": {
+            "color": "black",
+            "pattern": "gloss"
+        },
+        "signedUrl": 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
+    },
+];
+
+const closetActionSheet = createRef();
 
 
 export default function CreateOutfit({navigation}) {
-    const location = useLocation();
-    const [outfit, setOutfit] = useState(DATA)
-    const [title, onChangeTitle] = useState(null)
+    const [outfit, setOutfit] = useState(outfitData);
+    const [title, onChangeTitle] = useState(null);
     const [uploadVisible, setUploadVisible] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+    const [activeRow, setActiveRow] = useState(0);
 
-    const addItem = () => {
-        let row = DATA.items.slice(0, 3).filter(item => item).length
-        if (row<3){
-            DATA.items[row] = {
-                "id": 1,
-                "name": 'Dsquared Shirt',
-                "price": 99,
-                "attributes": {'price': 'expensive', 'fit': 'oversize fit'},
-                "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
-            };
-        }
-        setOutfit(DATA)
-        /*console.log('set Outfit', outfit)*/
-        forceUpdate()
+    const deleteItem = (id) => {
+        setOutfit([...outfit.filter(item => item.id !== id)]);
     }
 
-    const addMidItem = () => {
-        let row = DATA.items.slice(3, 6).filter(item => item).length
-        if (row<3){
-            DATA.items[3+row] = {
-                "id": 1,
-                "name": 'Dsquared Shirt',
-                "price": 99,
-                "attributes": {'price': 'expensive', 'fit': 'oversize fit'},
-                "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
-            };
+    const addItem = (item) => {
+        closetActionSheet.current?.setModalVisible(false);
+        const row = outfit.filter(item => item.position >= (3 * activeRow) && item.position <= (3 * activeRow + 2)).length;
+        console.log(row);
+        if (row < 3) {
+            item.position = 3 * activeRow + row;
+            setOutfit([...outfit, item]);
+            console.log(outfit.map(item => item.position));
         }
-        setOutfit(DATA)
-        /*console.log('set Outfit', outfit)*/
-        forceUpdate()
-    }
-
-    const addbottomItem = () => {
-        let row = DATA.items.slice(6,9).filter(item => item).length
-        if (row<3){
-            DATA.items[6+row] = {
-                "id": 1,
-                "name": 'Dsquared Shirt',
-                "price": 99,
-                "attributes": {'price': 'expensive', 'fit': 'oversize fit'},
-                "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
-            };
-        }
-        setOutfit(DATA)
-        /*console.log('set Outfit', outfit)*/
-        forceUpdate()
     }
 
     const validationSchema = Yup.object().shape({
@@ -135,8 +94,8 @@ export default function CreateOutfit({navigation}) {
 
     const transformObject = (outfit) => {
         const items = []
-        for (const [index, element] of Object.entries(outfit.items.items)) {
-            if (element){
+        for (const [index, element] of Object.entries(outfit)) {
+            if (element) {
                 items.push({
                     "itemId": element.id,
                     "position": parseInt(index)
@@ -147,7 +106,7 @@ export default function CreateOutfit({navigation}) {
         return ({
             "name": outfit.outfitTitle,
             "items": items,
-            "collectionIds": outfit.items.collectionIds
+            "collectionIds": outfit.collectionIds
         })
     }
 
@@ -157,9 +116,7 @@ export default function CreateOutfit({navigation}) {
         const transformed = transformObject(outfit)
         const result = await outfitApi.addOutfit(
             transformed,
-            (progress) => setProgress(progress))
-
-        console.log('69',result)
+            (progress) => setProgress(progress));
 
         if (!result.ok) {
             setUploadVisible(false);
@@ -168,6 +125,10 @@ export default function CreateOutfit({navigation}) {
 
         alert(outfit.outfitTitle)
         resetForm();
+    };
+
+    const showCloset = () => {
+        closetActionSheet.current?.setModalVisible();
     };
 
     return (
@@ -180,11 +141,11 @@ export default function CreateOutfit({navigation}) {
             <Form
                 initialValues={{
                     outfitTitle: "",
-                    items: DATA,
+                    items: outfit,
                 }}
                 onSubmit={handleSubmit}
             >
-                <Canvas style={styles.canvas} outfit={outfit.items} edit={true}/>
+                <Canvas style={styles.canvas} outfit={outfit} edit={true} deleteFunc={deleteItem}/>
                 <FormField
                     maxLength={255}
                     name="outfitTitle"
@@ -197,18 +158,32 @@ export default function CreateOutfit({navigation}) {
                     <Text style={styles.chooseText}>Choose the row you want to edit:</Text>
                 </View>
                 <View style={styles.viewContainer}>
-                    <TouchableOpacity onPress={addItem} style={styles.view}>
+                    <TouchableOpacity onPress={() => {
+                        showCloset();
+                        setActiveRow(0);
+                    }} style={styles.view}>
                         <Text style={styles.text}>Top</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={addMidItem} style={styles.view}>
+                    <TouchableOpacity onPress={() => {
+                        showCloset();
+                        setActiveRow(1);
+                    }} style={styles.view}>
                         <Text style={styles.text}>Middle</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={addbottomItem} style={styles.view}>
+                    <TouchableOpacity onPress={() => {
+                        showCloset();
+                        setActiveRow(2);
+                    }} style={styles.view}>
                         <Text style={styles.text}>Bottom</Text>
                     </TouchableOpacity>
                 </View>
                 <SubmitButton title="create"/>
             </Form>
+            <ActionSheet ref={closetActionSheet}>
+                <View style={{height: Dimensions.get("window").height - 100}}>
+                    <ClosetScreen isInjected={true} injectedItemTapFunc={addItem}/>
+                </View>
+            </ActionSheet>
         </SafeAreaView>
     );
 }

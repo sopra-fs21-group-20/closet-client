@@ -15,48 +15,18 @@ const canvasHeight = canvasWidth
 const itemWidth = (canvasWidth - 4 * paddingItem - 2 * canvasMargin) / 3
 const itemHeight = itemWidth
 
-export default function Canvas({outfit, edit}) {
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+export default function Canvas({outfit, edit, deleteFunc}) {
 
-    const topRowItems = outfit.slice(0, 3).filter(item => item).length
-    const middleRowItems = outfit.slice(3, 6).filter(item => item).length
-    const bottomRowItems = outfit.slice(6, 9).filter(item => item).length
+    const topRowItems = outfit.filter(item => item.position>=0 && item.position<3);
+    const middleRowItems = outfit.filter(item => item.position>=3 && item.position<6);
+    const bottomRowItems = outfit.filter(item => item.position>=6 && item.position<9);
 
     function CanvasItem({currItem, imageUrl}) {
 
-        const deleteItem = () => {
-            outfit.indexOf(currItem)
-            const index = outfit.indexOf(currItem)
-            outfit[index] = null
-            if ([0,1,2].includes(index)){
-                let newItems = outfit.slice(0,3).filter(item => item)
-                let nullToInsert = 3 - newItems.length
-                for (let i = 0; i < nullToInsert; i++){
-                    newItems.push(null)
-                }
-                outfit.splice(0, 3, newItems[0], newItems[1], newItems[2] )
-            } else if ([3,4,5].includes(index)){
-                let newItems = outfit.slice(3,6).filter(item => item)
-                let nullToInsert = 3 - newItems.length
-                for (let i = 0; i < nullToInsert; i++){
-                    newItems.push(null)
-                }
-                outfit.splice(3, 3, newItems[0], newItems[1], newItems[2] )
-            } else if ([6,7,8].includes(index)){
-                let newItems = outfit.slice(6,9).filter(item => item)
-                let nullToInsert = 3 - newItems.length
-                for (let i = 0; i < nullToInsert; i++){
-                    newItems.push(null)
-                }
-                outfit.splice(6, 3, newItems[0], newItems[1], newItems[2] )
-            }
-            forceUpdate()
-
-        }
-
         return (
-            <TouchableWithoutFeedback onPress={edit ? deleteItem : null}>
+            <TouchableWithoutFeedback onPress={() => {
+                if(edit) deleteFunc(currItem.id);
+            }}>
                 <View style={styles.imageContainer}>
 
                     <Image
@@ -76,24 +46,24 @@ export default function Canvas({outfit, edit}) {
         }]}>
             <View style={[styles.row]}>
                 {
-                    topRowItems === 0 ?
+                    topRowItems.length === 0 ?
                     <View style={{height: itemHeight + paddingItem}}/> :
-                    outfit.slice(0, 3).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'top' + item.id + index}
+                    topRowItems.map((item, index) => <CanvasItem currItem={item} key={'top' + item.id + index}
                                                                                           imageUrl={item.signedUrl}/>)
                 }
             </View>
             <View style={styles.row}>
                 {
-                    middleRowItems === 0 ?
+                    middleRowItems.length === 0 ?
                     <View style={{height: itemHeight + paddingItem}}/> :
-                    outfit.slice(3, 6).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'mid' + item.id + index}
+                        middleRowItems.map((item, index) => <CanvasItem currItem={item} key={'mid' + item.id + index}
                                                                                    imageUrl={item.signedUrl}/>)}
             </View>
             <View style={styles.row}>
                 {
-                    bottomRowItems === 0 ?
+                    bottomRowItems.length === 0 ?
                         <View style={{height: itemHeight + paddingItem}}/> :
-                    outfit.slice(6, 9).filter(item => item).map((item, index) => <CanvasItem currItem={item} key={'bot' + item.id + index}
+                        bottomRowItems.map((item, index) => <CanvasItem currItem={item} key={'bot' + item.id + index}
                                                                                    imageUrl={item.signedUrl}/>)}
             </View>
         </View>

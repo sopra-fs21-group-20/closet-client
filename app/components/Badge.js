@@ -1,10 +1,10 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
 import defaultStyles from "../config/styles";
 import colors from "../config/colors";
 
-function Badge({children, type = "", color = "rgb(72,69,69)"}) {
+function Badge({children, type = "", color = "rgb(72,69,69)", onPressFunction}) {
     const [colorString, setColorString] = useState(color);
     const [childrenString, setChildrenString] = useState(children);
 
@@ -14,20 +14,13 @@ function Badge({children, type = "", color = "rgb(72,69,69)"}) {
         return Y < 128 ? colors.white : colors.dark;
     }
 
-    console.log(children);
-
     return (
         <TouchableOpacity onPress={() => {
-            /*Alert.prompt("Delete", "Are you sure you want to delete this image?", [
-                { text: "Yes", onPress: () => onChangeImage(null) },
-                { text: "No" },
-            ]);*/
-            setColorString("rgb(150,150,150)");
-            setChildrenString("Grey");
+            onPressFunction();
         }}>
-            <View style={styles.badgeContainer}>
-                <View style={[styles.badge, {backgroundColor: colorString}]}>
-                    <Text style={[styles.badgeText, {color: luminate(colorString)}]}>
+            <View style={[styles.badgeContainer, {opacity: type === "new" ? 0.5 : 1}]}>
+                <View style={[styles.badge]}>
+                    <Text style={[styles.badgeText]}>
                         {childrenString}
                     </Text>
                 </View>
@@ -42,7 +35,7 @@ const styles = StyleSheet.create({
     },
     badge: {
         borderRadius: 20,
-        backgroundColor: colors.primary,
+        backgroundColor: colors.dark,
         paddingHorizontal: 8,
         paddingVertical: 6,
     },

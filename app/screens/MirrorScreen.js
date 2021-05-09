@@ -206,7 +206,7 @@ export default function MirrorScreen() {
                     [{nativeEvent: {contentOffset: {x: scrollX}}}],
                     {useNativeDriver: false})}
                 data={getOutfitApi.data}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 pagingEnabled={true}
                 renderItem={({item}) => {
                     return <View>
