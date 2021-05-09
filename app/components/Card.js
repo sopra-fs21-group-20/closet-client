@@ -52,17 +52,17 @@ function Card({
                     <View style={styles.imageScrollViewContainer}>
                         <TouchableOpacity
                             style={{
-                            backgroundColor: colors.white,
-                            height: 30,
-                            position: 'absolute',
-                            zIndex: 2,
-                            borderTopLeftRadius: 20,
-                            borderBottomRightRadius: 5,
-                            opacity: 0.8,
-                            justifyContent: 'center',
-                            paddingLeft: 10,
-                            paddingRight: 15,
-                        }}>
+                                backgroundColor: colors.white,
+                                height: 30,
+                                position: 'absolute',
+                                zIndex: 2,
+                                borderTopLeftRadius: 20,
+                                borderBottomRightRadius: 5,
+                                opacity: 0.8,
+                                justifyContent: 'center',
+                                paddingLeft: 10,
+                                paddingRight: 15,
+                            }}>
                             <Text>{username}</Text>
                         </TouchableOpacity>
                         {images.map((image, index) => (
@@ -80,12 +80,13 @@ function Card({
                 </TouchableWithoutFeedback>
             </ScrollView>
             <View style={styles.detailsContainer}>
-                <View style={{width: 50, height: 50, right: -30, top: -20, position: "absolute"}}>
+
+                {/*<View style={{width: 50, height: 50, right: -30, top: -20, position: "absolute"}}>
                     <Svg width="20" height="20" viewBox="0 0 50 50" fill="none">
                         <Path fill-rule="evenodd" clip-rule="evenodd" d="M50 50V0C50 27.6142 27.6142 50 0 50H50Z"
                               fill="#292929"/>
                     </Svg>
-                </View>
+                </View>*/}
                 <FeedActions likes={likes}
                              comments={comments}
                              hasBeenLiked={hasBeenLiked}
@@ -98,6 +99,7 @@ function Card({
                              caption_attrs={{username, caption, profileImage}}
                 />
                 {caption ? <View><Text style={{color: colors.white}}>{caption}</Text></View> : null}
+
                 {/*<UserDisplay
                     username={username}
                     profileImage={profileImage}
@@ -138,6 +140,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         borderRadius: 10,
         borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
         zIndex: 2,
     },
     imageScrollViewContainer: {
@@ -145,17 +148,20 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
         width: '100%',
+        alignSelf: 'flex-end',
         paddingHorizontal: 20,
+        paddingTop: 20,
         paddingVertical: 10,
-        flexDirection: "column",
-        marginTop: -20,
+        marginTop: -0,
         backgroundColor: colors.dark,
         borderRadius: 20,
         borderTopRightRadius: 0,
-        zIndex: 10,
+        borderTopLeftRadius: 0,
+        zIndex: 2,
     },
     image: {
         borderRadius: 20,
+        borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
         tintColor: colors.medium,
     },
