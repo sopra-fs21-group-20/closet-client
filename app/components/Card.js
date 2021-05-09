@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {View, StyleSheet, TouchableWithoutFeedback, ScrollView, Dimensions} from "react-native";
+import {View, StyleSheet, TouchableWithoutFeedback, ScrollView, Dimensions, TouchableOpacity} from "react-native";
 import {Image} from "react-native-expo-image-cache";
 
 import Text from "./Text";
@@ -50,11 +50,26 @@ function Card({
             <ScrollView horizontal pagingEnabled style={styles.imageScrollView}>
                 <TouchableWithoutFeedback onPress={handleImagePress}>
                     <View style={styles.imageScrollViewContainer}>
+                        <TouchableOpacity
+                            style={{
+                            backgroundColor: colors.white,
+                            height: 30,
+                            position: 'absolute',
+                            zIndex: 2,
+                            borderTopLeftRadius: 20,
+                            borderBottomRightRadius: 5,
+                            opacity: 0.8,
+                            justifyContent: 'center',
+                            paddingLeft: 10,
+                            paddingRight: 15,
+                        }}>
+                            <Text>{username}</Text>
+                        </TouchableOpacity>
                         {images.map((image, index) => (
                             <Image
                                 style={[styles.image, {
-                                    height: Dimensions.get("window").width - 20,
-                                    width: Dimensions.get("window").width - 20,
+                                    height: Dimensions.get("window").width,
+                                    width: Dimensions.get("window").width,
                                 }]}
                                 preview={{uri: image.thumbnailUrl}}
                                 uri={image.url}
@@ -65,22 +80,12 @@ function Card({
                 </TouchableWithoutFeedback>
             </ScrollView>
             <View style={styles.detailsContainer}>
-                <View style={{width: 50, height: 50, right: 0, top: -50, position: "absolute"}}>
-                    <Svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+                <View style={{width: 50, height: 50, right: -30, top: -20, position: "absolute"}}>
+                    <Svg width="20" height="20" viewBox="0 0 50 50" fill="none">
                         <Path fill-rule="evenodd" clip-rule="evenodd" d="M50 50V0C50 27.6142 27.6142 50 0 50H50Z"
                               fill="#292929"/>
                     </Svg>
                 </View>
-                <UserDisplay
-                    username={username}
-                    profileImage={profileImage}
-                    caption={caption}
-                    lightTheme={index % 2 !== 0}
-                    onCommentClick={onCommentClick}
-                    post_id={post_id}
-                    caption_attrs={{username, caption, profileImage}}
-                    expandable={false}
-                />
                 <FeedActions likes={likes}
                              comments={comments}
                              hasBeenLiked={hasBeenLiked}
@@ -92,6 +97,17 @@ function Card({
                              captionIsEmpty={caption === ""}
                              caption_attrs={{username, caption, profileImage}}
                 />
+                {caption ? <View><Text style={{color: colors.white}}>{caption}</Text></View> : null}
+                {/*<UserDisplay
+                    username={username}
+                    profileImage={profileImage}
+                    caption={caption}
+                    lightTheme={index % 2 !== 0}
+                    onCommentClick={onCommentClick}
+                    post_id={post_id}
+                    caption_attrs={{username, caption, profileImage}}
+                    expandable={false}
+                />*/}
             </View>
             {/*<View style={[styles.afterCard, (index % 2 === 0 ? null : lightTheme.afterCard)]}/>*/}
         </View>
@@ -112,29 +128,15 @@ const styles = StyleSheet.create({
         zIndex: 25,
     },
     card: {
-        borderRadius: 50,
-        backgroundColor: colors.dark,
+        alignItems: 'center',
+        borderRadius: 20,
         marginTop: 20,
         paddingBottom: 0,
-        shadowColor: colors.black,
-        shadowOffset: {
-            height: -5
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
-        elevation: 10,
     },
     imageScrollView: {
-        shadowColor: colors.black,
-        shadowOffset: {
-            height: 5,
-            width: 5
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
         //elevation: 10, //ToDo clashes with zIndex
         overflow: "hidden",
-        borderRadius: 50,
+        borderRadius: 10,
         borderBottomLeftRadius: 0,
         zIndex: 2,
     },
@@ -142,17 +144,18 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     detailsContainer: {
-        padding: 20,
-        paddingTop: 30,
+        width: '100%',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
         flexDirection: "column",
-        marginTop: -50,
+        marginTop: -20,
         backgroundColor: colors.dark,
-        borderRadius: 50,
+        borderRadius: 20,
         borderTopRightRadius: 0,
         zIndex: 10,
     },
     image: {
-        borderRadius: 50,
+        borderRadius: 20,
         borderBottomLeftRadius: 0,
         tintColor: colors.medium,
     },
