@@ -23,6 +23,7 @@ import fabrics from "../config/fabrics";
 import categories from "../config/categories";
 import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
+import ModalLike from "../components/ModalLike";
 
 const filterCategories = (categories, closetItems) => {
     const tempCategories = [];
@@ -271,12 +272,12 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
                     sectionContainerStyle={styles.sectionContainer}
                 />
             </ScrollView>
-            <Modal
+            <ModalLike
                 isVisible={modalIsShown}
                 onBackdropPress={() => setModalIsShown(false)}>
                 <OutfitItem data={modalData} state={modalState} modalCloseFunc={setModalIsShown}
                             deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
-            </Modal>
+            </ModalLike>
         </Screen>
     );
 }
