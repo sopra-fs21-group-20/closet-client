@@ -1,6 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {Vibration} from 'react-native'
 
 import AccountNavigator from "./AccountNavigator";
 import FeedNavigator from "./FeedNavigator";
@@ -23,6 +24,9 @@ const AppNavigator = () => {
         showLabel: false,
         tabBarIcon: {
             size: 32
+        },
+        style: {
+            borderTopWidth: 0,
         }
     }}>
         <Tab.Screen
@@ -44,14 +48,14 @@ const AppNavigator = () => {
             name="Outfit"
             component={OutfitNavigator}
             options={({navigation}) => ({
-                tabBarButton: () => (
+                /*tabBarButton: () => (
                     <OutfitButton
                         onPress={() => navigation.navigate('Outfit')}
                     />
-                ),
+                ),*/
                 tabBarIcon: ({color, size}) => (
                     <MaterialCommunityIcons
-                        name="plus-circle"
+                        name="tshirt-crew"
                         color={color}
                         style={styles.icon}
                         size={32}
@@ -68,7 +72,8 @@ const AppNavigator = () => {
                         name="account"
                         color={color}
                         style={styles.icon}
-                        size={32}/>
+                        size={32}
+                    />
                 ),
             }}
         />

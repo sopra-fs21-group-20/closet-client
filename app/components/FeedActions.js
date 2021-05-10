@@ -33,7 +33,7 @@ function FeedActions({post_id, likes, comments, isLiked, setIsLiked, hasBeenLike
     }
 
     return (
-        <View style={[styles.container,{marginTop:(captionIsEmpty ? -20 : -10)}]}>
+        <View style={styles.container}>
             <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={() => {
                 if(!hasBeenLiked && !isLiked) animationPress();
             }}>
@@ -64,17 +64,17 @@ function FeedActions({post_id, likes, comments, isLiked, setIsLiked, hasBeenLike
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         alignItems: "stretch",
         flexDirection: "row",
         width: '100%',
-        marginVertical: 10,
     },
     detailsContainer: {
-        justifyContent: "flex-end",
+        justifyContent: "center",
         alignItems: "flex-start",
         flexDirection: "row",
-        marginLeft: 25,
+        marginLeft:0,
+        marginRight: 25
     },
     text: {
         color: colors.white,

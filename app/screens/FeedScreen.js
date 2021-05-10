@@ -226,7 +226,7 @@ function FeedScreen({navigation}) {
 
 const styles = StyleSheet.create({
     screen: {
-        paddingHorizontal: 5,
+        paddingHorizontal: 0,
         paddingTop: 0,
         backgroundColor: colors.darker,
     },
