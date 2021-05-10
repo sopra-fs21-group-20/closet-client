@@ -9,7 +9,7 @@ import colors from "../config/colors";
 import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
 
-export default function MirrorScreen() {
+export default function MirrorScreen({navigation, menuOpen}) {
 
     /*const getOutfitApi = useApi(outfitApi.getOutfit)
 
@@ -196,7 +196,7 @@ export default function MirrorScreen() {
     const scrollX = React.useRef(new Animated.Value(0)).current
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]}>
             <Animated.FlatList
                 horizontal={true}
                 scrollEventThrottle={32}

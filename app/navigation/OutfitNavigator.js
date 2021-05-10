@@ -13,27 +13,66 @@ import MirrorScreen from "../screens/MirrorScreen";
 import OutfitDropdown from "./OutfitDropdown";
 import Text from "../components/Text";
 import CreateOutfit from "../components/Mirror/CreateOutfit";
-import { StackActions } from '@react-navigation/native';
+import {StackActions} from '@react-navigation/native';
 import OutfitItem from "../components/OutfitItem";
 
 const Stack = createStackNavigator();
+
+const forFade = ({current}) => ({
+    cardStyle: {
+        opacity: current.progress,
+    },
+});
+
+const newItem = ({current, next, layouts}) => ({
+    cardStyle: {
+        transform: [
+            {
+                translateX: current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [layouts.screen.width, 0],
+                }),
+            },
+            {
+                rotate: current.progress.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [1, 0],
+                }),
+            },
+            {
+                scale: next
+                    ? next.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0.9],
+                    })
+                    : 1,
+            },
+        ],
+    },
+    overlayStyle: {
+        opacity: current.progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 0.5],
+        }),
+    }
+});
 
 const OutfitNavigator = ({navigation}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const isOpenChanged = (isOpenTemp) => {
         setIsOpen(isOpenTemp);
-        navigation.navigate('Closet',{menuOpen: isOpenTemp})
     }
 
     const [editMode, setEditMode] = useState(false);
-    const pushAction = StackActions.push('Closet');
 
     return (<>
         <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={"Closet"} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
-            headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}/>
+            headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}
+                                               isOpenInitial={isOpen}/>,
+            cardStyleInterpolator: forFade,
         }}>
             <Stack.Screen name="Closet" options={{
                 headerLeft: () => (
@@ -42,19 +81,23 @@ const OutfitNavigator = ({navigation}) => {
                     }}/>
                 ),
                 headerRight: () => (
-                    <MaterialCommunityIcons name={editMode ? "pencil-off-outline" : "pencil-outline"} style={styles.headerRight} onPress={() => {
+                    <MaterialCommunityIcons name={editMode ? "pencil-off-outline" : "pencil-outline"}
+                                            style={styles.headerRight} onPress={() => {
                         setEditMode(!editMode);
                     }}/>
                 )
-            }} children={() => <ClosetScreen navigation={navigation} editMode={editMode} menuOpen={isOpen} />}/>
-            <Stack.Screen name="Mirror" component={MirrorScreen} options={{
+            }} children={() => <ClosetScreen navigation={navigation} editMode={editMode} menuOpen={isOpen}/>}/>
+            <Stack.Screen name="Mirror" options={{
+                headerLeft: null,
                 headerRight: () => (
                     <MaterialCommunityIcons name="plus" style={styles.headerRight} onPress={() => {
                         navigation.navigate('createOutfit');
                     }}/>
-                )
+                ),
+            }} children={() => <MirrorScreen navigation={navigation} menuOpen={isOpen}/>}/>
+            <Stack.Screen name="createOutfit" component={CreateOutfit} options={{
+                cardStyleInterpolator: newItem,
             }}/>
-            <Stack.Screen name="createOutfit" component={CreateOutfit}/>
         </Stack.Navigator>
     </>)
 }

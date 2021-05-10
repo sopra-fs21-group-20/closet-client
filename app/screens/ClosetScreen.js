@@ -254,7 +254,7 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     // Renders whole screen
     return (
         <Screen>
-            <ScrollView style={[styles.container, {marginTop: menuOpen ? 100 : 20,}, isInjected ? {
+            <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {
                 margin: 0,
                 marginTop: 0,
                 borderRadius: 5
@@ -285,9 +285,6 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 5,
-        borderRadius: 50,
-        backgroundColor: colors.medium,
         overflow: 'hidden',
     },
     sectionContainer: {

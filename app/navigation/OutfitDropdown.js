@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {useRoute} from '@react-navigation/native';
@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import routes from "./routes";
 import Text from "../components/Text";
 
-function OutfitDropdown({navigation, isOpenChanged}) {
+function OutfitDropdown({navigation, isOpenChanged, isOpenInitial}) {
     const route = useRoute();
     const dropdownOptions = [{
         title: "Closet",
@@ -17,7 +17,13 @@ function OutfitDropdown({navigation, isOpenChanged}) {
         navigateTo: routes.MIRROR
     }];
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(isOpenInitial);
+
+    useEffect(() => {
+        return setIsOpen(isOpenInitial);
+    }, [isOpenInitial]);
+
+
 
     return (
         <>
@@ -43,9 +49,12 @@ function OutfitDropdown({navigation, isOpenChanged}) {
                 <View style={[styles.dropDown, {display: isOpen ? "flex": "none"}]} >
                     {
                         dropdownOptions.map(({navigateTo, title}, index) =>
-                            <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate(navigateTo)}>
+                            <TouchableOpacity key={index} onPress={() => {
+                                navigation.navigate(navigateTo);
+                                isOpenChanged(false);
+                            }}>
                                 <Text style={styles.text}>{title}</Text>
-                            </TouchableWithoutFeedback>)
+                            </TouchableOpacity>)
                     }
                 </View>
             </TouchableOpacity>
