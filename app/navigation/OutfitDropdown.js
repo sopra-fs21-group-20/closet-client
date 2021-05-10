@@ -24,9 +24,9 @@ function OutfitDropdown({navigation, isOpenChanged}) {
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                    /*setIsOpen(!isOpen);
-                    isOpenChanged(!isOpen);*/
-                    (route.name === "Closet") ? navigation.navigate(routes.MIRROR) : navigation.navigate(routes.CLOSET);
+                    setIsOpen(!isOpen);
+                    isOpenChanged(!isOpen);
+                    //(route.name === "Closet") ? navigation.navigate(routes.MIRROR) : navigation.navigate(routes.CLOSET);
                 }}
                 style={styles.container}
             >

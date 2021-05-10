@@ -15,7 +15,7 @@ const canvasHeight = canvasWidth
 const itemWidth = (canvasWidth - 4 * paddingItem - 2 * canvasMargin) / 3
 const itemHeight = itemWidth
 
-export default function Canvas({outfit, edit, deleteFunc}) {
+export default function Canvas({outfit, edit, modal, deleteFunc}) {
 
     const topRowItems = outfit.filter(item => item.position>=0 && item.position<3);
     const middleRowItems = outfit.filter(item => item.position>=3 && item.position<6);

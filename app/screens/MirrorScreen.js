@@ -26,6 +26,7 @@ export default function MirrorScreen() {
             "outfitItems": [
                 {
                     "id": 1,
+                    "position": 0,
                     "name": "Mystic Sun & Moon T-Shirt",
                     "price": 49.90,
                     "attributes": {
@@ -34,10 +35,9 @@ export default function MirrorScreen() {
                     },
                     "signedUrl": "https://img01.ztat.net/article/spp-media-p1/26e07279febb37bea3330484f52a05a3/b93b6bc6aa2347ca940607e4620d9e4e.jpg?imwidth=1800&filter=packshot"
                 },
-                null,
-                null,
                 {
                     "id": 3,
+                    "position": 3,
                     "name": "Chino-Bermuda Shorts",
                     "price": 29,
                     "attributes": {
@@ -47,6 +47,7 @@ export default function MirrorScreen() {
                 },
                 {
                     "id": 2,
+                    "position": 4,
                     "name": "Gucci Belt",
                     "price": 349.0,
                     "attributes": {
@@ -55,9 +56,9 @@ export default function MirrorScreen() {
                     },
                     "signedUrl": "https://cdn-images.farfetch-contents.com/12/14/71/16/12147116_10105896_480.jpg"
                 },
-                null,
                 {
                     "id": 4,
+                    "position": 6,
                     "name": "The Roger",
                     "price": 499,
                     "attributes": {
@@ -66,8 +67,6 @@ export default function MirrorScreen() {
                     },
                     "signedUrl": "https://images.ctfassets.net/od02wyo8cgm5/1jVSrUcc6lGmRy9sGZQFZF/a38da5e8270e59a6f6833902c0956f07/theroger_centre_court-fw20-white_gum-m-t.png?w=150&q=80"
                 },
-                null,
-                null
             ],
             "collectionIds": [
                 2
@@ -79,7 +78,8 @@ export default function MirrorScreen() {
             "userId": "1",
             "outfitItems": [
                 {
-                    "id": 1,
+                    "id": 19,
+                    "position": 0,
                     "name": 'Dsquared Shirt',
                     "price": 349.0,
                     "attributes": {
@@ -89,7 +89,8 @@ export default function MirrorScreen() {
                     "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
                 },
                 {
-                    "id": 2,
+                    "id": 9,
+                    "position": 1,
                     "name": 'Diesel Jeans Jacket',
                     "price": 349.0,
                     "attributes": {
@@ -97,9 +98,9 @@ export default function MirrorScreen() {
                     },
                     "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
                 },
-                null,
                 {
-                    "id": 3,
+                    "id": 6,
+                    "position": 3,
                     "name": "Jack & Jones' Pants",
                     "price": 349.0,
                     "attributes": {
@@ -108,10 +109,9 @@ export default function MirrorScreen() {
                     },
                     "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
                 },
-                null,
-                null,
                 {
-                    "id": 4,
+                    "id": 8,
+                    "position": 6,
                     "name": 'Polo Shoes',
                     "price": 349.0,
                     "attributes": {
@@ -120,8 +120,6 @@ export default function MirrorScreen() {
                     },
                     "signedUrl": 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
                 },
-                null,
-                null
             ],
             "collectionIds": [
                 2
