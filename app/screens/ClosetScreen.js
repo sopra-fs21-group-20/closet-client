@@ -149,7 +149,6 @@ export default function ClosetScreen({
                     if (closetItems.find(item => item.id === id)) setClosetItems(closetItems.filter(item => item.id !== id));
                     if (isModal) {
                         setModalIsShown(false);
-                        setModalData(null);
                     }
                 },
             },

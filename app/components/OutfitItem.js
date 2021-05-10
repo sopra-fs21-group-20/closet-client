@@ -32,7 +32,13 @@ const validationSchema = Yup.object().shape({
 
 const actionSheetRef = createRef();
 
-function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, deleteFunc, addFunc}) {
+function OutfitItem({state, data = {}, modalCloseFunc, editMode, index, deleteFunc, addFunc}) {
+    useEffect(() => {
+        return () => {
+            setModalState(state);
+        };
+    }, [state]);
+
 
     let badgeColor = "";
     if (data.attributes) {
@@ -47,10 +53,15 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
         tempData.signedUrl = listing.image[0];
         console.log(tempData);
         addFunc(tempData);
-        setModalState(2);
-        resetForm();
+        resetComponent(resetForm);
         modalCloseFunc(false);
     };
+
+    const resetComponent = (resetForm = null) => {
+        if(resetForm) resetForm();
+        setModalState(2);
+        setModalData({});
+    }
 
     const [modalState, setModalState] = useState(state);
 
@@ -76,8 +87,17 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
     switch (modalState) {
         case 3: // Modal edit view
             return (
-                <>
-                    <ScrollView style={[styles.container, stylesPopup.container]}>
+                <View style={[styles.container, stylesPopup.container]}>
+                    <TouchableOpacity onPress={() => {
+                        modalCloseFunc(false);
+                    }} style={[stylesPopup.closeIconContainer, stylesPopup.closeIconContainer2]}>
+                        <MaterialCommunityIcons
+                            name="close"
+                            color={colors.white}
+                            style={stylesPopup.closeIcon}
+                            size={20}/>
+                    </TouchableOpacity>
+                    <ScrollView style={stylesPopup.scrollView}contentContainerStyle={{flexGrow: 1}}>
                         <KeyboardAvoidingView
                             behavior={Platform.OS === "ios" ? "padding" : "height"}
                             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
@@ -108,7 +128,7 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
                                 <View style={stylesPopup.badgeContainer}>
                                     <Text>
                                         {
-                                            data.attributes && Object.keys(data.attributes).length !== 0 &&
+                                            data?.attributes && Object.keys(data.attributes).length !== 0 &&
                                             Object.entries(data.attributes).map(([key, value], i) =>
                                                 <Badge key={i} type={key}>{value}</Badge>
                                             )
@@ -120,20 +140,29 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
                                 <View style={stylesPopup.buttonContainer}>
                                     <Button title="Abort" buttonStyle={stylesPopup.buttonAbort}
                                             onPress={() => {
+                                                resetComponent();
                                                 modalCloseFunc(false);
-                                                setModalState(2);
                                             }}/>
                                     <SubmitButton title="Save" buttonStyle={stylesPopup.buttonSave} />
                                 </View>
                             </Form>
                         </KeyboardAvoidingView>
                     </ScrollView>
-                </>
+                </View>
             );
         case 2: // Modal view
             return (
                 <>
                     <View style={[styles.container, stylesPopup.container]}>
+                        <TouchableOpacity onPress={() => {
+                            modalCloseFunc(false);
+                        }} style={stylesPopup.closeIconContainer}>
+                            <MaterialCommunityIcons
+                                name="close"
+                                color={colors.white}
+                                style={stylesPopup.closeIcon}
+                                size={20}/>
+                        </TouchableOpacity>
                         <Image style={stylesPopup.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
                         <View style={stylesPopup.textContainer}>
                             <Text style={stylesPopup.title}>{data.name}</Text>
@@ -142,14 +171,15 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
                         <View style={stylesPopup.badgeContainer}>
                             <Text>
                                 {
-                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge key={i} color={badgeColor}>{value}</Badge>)
+                                    data?.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge key={i} color={badgeColor}>{value}</Badge>)
                                 }
                             </Text>
                         </View>
                         <View style={stylesPopup.buttonContainer}>
                             <Button title="Delete" buttonStyle={stylesPopup.buttonDelete} onPress={() => {
-                                deleteFunc(data.id, true);
-                                setModalState(2);
+                                const tempDataId = data.id;
+                                resetComponent();
+                                deleteFunc(tempDataId, true);
                             }}/>
                             <Button title="Edit" buttonStyle={stylesPopup.buttonEdit} onPress={() => {
                                 changeMode(3);
@@ -231,14 +261,30 @@ const stylesPopup = StyleSheet.create({
     },
     container: {
         width: '100%',
-        maxHeight: Dimensions.get("screen").height - 90,
         paddingHorizontal: 15,
         paddingTop: 30,
         paddingBottom: 15,
         flexDirection: "column",
         position: "relative",
+    },
+    scrollView: {
+        minHeight: 200,
+        maxHeight: Dimensions.get("screen").height - 90,
         flexGrow: 0,
     },
+    closeIconContainer: {
+        position: "absolute",
+        right: -20,
+        top: -20,
+        borderRadius: 20,
+        width: 40,
+        height: 40,
+        zIndex: 10,
+        backgroundColor: colors.dark,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    closeIcon: {},
     image: {
         width: (Dimensions.get("window").width - 110),
         height: (Dimensions.get("window").width - 110),
