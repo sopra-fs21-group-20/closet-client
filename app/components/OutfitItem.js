@@ -27,7 +27,7 @@ const validationSchema = Yup.object().shape({
     image: Yup.array().min(1, "Please select at least one image."),
     title: Yup.string().label("Title"),
     brand: Yup.string().label("Brand"),
-    badges: Yup.array().min(1, "Please select at least one image."),
+    badges: Yup.array().min(1, "Please select at least one attribute."),
 });
 
 const actionSheetRef = createRef();
@@ -40,7 +40,16 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
     }
 
     const handleSubmit = async (listing, {resetForm}) => {
-        console.log("listing", listing);
+        const tempData = data;
+        tempData.name = listing.title;
+        tempData.brand = listing.brand;
+        tempData.attributes = listing.badges[0];
+        tempData.signedUrl = listing.image[0];
+        console.log(tempData);
+        addFunc(tempData);
+        setModalState(2);
+        resetForm();
+        modalCloseFunc(false);
     };
 
     const [modalState, setModalState] = useState(state);
@@ -75,32 +84,26 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
                         >
                             <Form
                                 initialValues={{
-                                    image: [],
-                                    title: "",
-                                    brand: "",
-                                    badges: [],
+                                    image: [data?.signedUrl ? data?.signedUrl : null],
+                                    title: data?.name ? data?.name : "",
+                                    brand: data?.brand ? data?.brand : "",
+                                    badges: [data?.attributes ? data?.attributes : null],
                                 }}
                                 onSubmit={handleSubmit}
                                 validationSchema={validationSchema}
                             >
-                                {/*
-                                    <Image source={{uri: "https://m.media-amazon.com/images/I/A13usaonutL._CLa%7C2140%2C2000%7C410QkIAyiRL.png%7C0%2C0%2C2140%2C2000%2B0.0%2C0.0%2C2140.0%2C2000.0_AC_UL1500_.png"}} style={stylesPopup.image} resizeMode={"cover"}/>
-*/}
-                                {/*<PostImagePicker name="image"/>*/}
-                                <ImageInput imageUri={data.signedUrl ? data.signedUrl : null}/>
+                                <PostImagePicker name="image"/>
                                 <FormField
                                     maxLength={100}
                                     name="title"
                                     numberOfLines={1}
                                     placeholder="Title"
-                                    value={data.name ? data.name : ""}
                                 />
                                 <FormField
                                     maxLength={100}
                                     name="brand"
                                     numberOfLines={1}
                                     placeholder="Brand"
-                                    value={data.brand ? data.brand : ""}
                                 />
                                 <View style={stylesPopup.badgeContainer}>
                                     <Text>
@@ -118,21 +121,9 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
                                     <Button title="Abort" buttonStyle={stylesPopup.buttonAbort}
                                             onPress={() => {
                                                 modalCloseFunc(false);
+                                                setModalState(2);
                                             }}/>
-                                    <Button title="Save" buttonStyle={stylesPopup.buttonSave} onPress={() => {
-                                        addFunc({
-                                            id: 7,
-                                            categoryId: 3,
-                                            name: "Pullover",
-                                            brand: "Champion",
-                                            attributes: {
-                                                color: "rgb(150,150,150)",
-                                                fabric: fabrics.WOOL,
-                                            },
-                                            signedUrl: "https://www.houseofkids.com/media/catalog/product/cache/1/image/960x/9df78eab33525d08d6e5fb8d27136e95/5/f/5f292d079c742Champion-sweat-305379-em031_-1_Front_website.webp",
-                                        });
-                                        modalCloseFunc(false);
-                                    }}/>
+                                    <SubmitButton title="Save" buttonStyle={stylesPopup.buttonSave} />
                                 </View>
                             </Form>
                         </KeyboardAvoidingView>
@@ -151,13 +142,14 @@ function OutfitItem({state = 2, data = {}, modalCloseFunc, editMode, index, dele
                         <View style={stylesPopup.badgeContainer}>
                             <Text>
                                 {
-                                    Object.entries(data.attributes).map(([key, value], i) => <Badge key={i} color={badgeColor}>{value}</Badge>)
+                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge key={i} color={badgeColor}>{value}</Badge>)
                                 }
                             </Text>
                         </View>
                         <View style={stylesPopup.buttonContainer}>
                             <Button title="Delete" buttonStyle={stylesPopup.buttonDelete} onPress={() => {
-                                deleteFunc(data.id, true)
+                                deleteFunc(data.id, true);
+                                setModalState(2);
                             }}/>
                             <Button title="Edit" buttonStyle={stylesPopup.buttonEdit} onPress={() => {
                                 changeMode(3);

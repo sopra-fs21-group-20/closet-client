@@ -35,7 +35,13 @@ const filterCategories = (categories, closetItems) => {
     return tempCategories;
 }
 
-export default function ClosetScreen({navigation, editMode = false, menuOpen = false, isInjected = false, injectedItemTapFunc}) {
+export default function ClosetScreen({
+                                         navigation,
+                                         editMode = false,
+                                         menuOpen = false,
+                                         isInjected = false,
+                                         injectedItemTapFunc
+                                     }) {
 
     /*const getClosetApi = useApi(outfitApi.getCloset);
 
@@ -153,7 +159,7 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     const [filteredCategories, setFilteredCategories] = useState(isInjected ? filterCategories(categories, closetItems) : categories);
 
     const itemTap = (data, state, isShown) => {
-        if(isInjected) {
+        if (isInjected) {
             injectedItemTapFunc(data);
         } else {
             setModalData(data);
@@ -163,7 +169,16 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     }
 
     const addToCloset = (item) => {
-        setClosetItems(closetItems => [...closetItems, item]);
+        const tempClosetItems = closetItems;
+        const index = tempClosetItems.findIndex(items => items.id === item.id);
+        console.log("index", index);
+        if (index !== -1) {
+            tempClosetItems[index] = item;
+            console.log("tempCloset", tempClosetItems);
+            setClosetItems([...tempClosetItems]);
+        } else {
+            setClosetItems(closetItems => [...closetItems, item]);
+        }
     }
 
     const [activeSection, setActiveSection] = useState([]);
@@ -175,7 +190,7 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     const [modalData, setModalData] = useState({});
 
     // Data from item for popup
-    const [modalState, setModalState] = useState(3);
+    const [modalState, setModalState] = useState(2);
 
     // Height of closet container
     const [containerHeight, setContainerHeight] = useState(0);
