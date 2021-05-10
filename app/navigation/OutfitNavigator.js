@@ -30,7 +30,7 @@ const OutfitNavigator = ({navigation}) => {
     const pushAction = StackActions.push('Closet');
 
     return (<>
-        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={"createOutfit"} screenOptions={{
+        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={"Closet"} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}/>

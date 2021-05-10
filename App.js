@@ -14,31 +14,18 @@ import Text from "./app/components/Text";
 
 export default function App() {
     const [user, setUser] = useState();
-    const [isReady, setIsReady] = useState(false);
 
     const restoreUser = async () => {
         const user = await authStorage.getUser();
         if (user) setUser(user);
     };
 
-    /*if (!isReady)
-        return (
-            <AppLoading startAsync={restoreUser} onFinish={() => setIsReady(true)}/>
-        );*/
-
-    /*if(Platform.OS==="web") {
-        return (
-            <View style={{flex: 1, backgroundColor: 'green'}}>
-                <Text>Test</Text>
-            </View>
-        );
-    }
-    */return (
+    return (
         <AuthContext.Provider value={{user, setUser}}>
             <OfflineNotice/>
             <NavigationContainer theme={navigationTheme}>
-                {/*{user ? <AppNavigator/> : <AuthNavigator/>}*/}
-                <AppNavigator/>
+                {user ? <AppNavigator/> : <AuthNavigator/>}
+                {/*<AppNavigator/>*/}
             </NavigationContainer>
             <StatusBar style={"light"} />
         </AuthContext.Provider>

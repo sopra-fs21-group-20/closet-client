@@ -2,6 +2,7 @@
   "expo": {
     "name": "MyOutfit",
     "slug": "myoutfit",
+    "owner": "myoutfit",
     "privacy": "unlisted",
     "platforms": [
       "ios",
