@@ -1,4 +1,4 @@
-import React, {createRef, useEffect, useState} from "react";
+import React, {createRef, useEffect, useRef, useState} from "react";
 import {
     View,
     StyleSheet,
@@ -22,6 +22,7 @@ import ImageInput from "./ImageInput";
 import Screen from "./Screen";
 import NewBadge from "./NewBadge";
 import ActionSheet from "react-native-actions-sheet";
+import {useFormik, useFormikContext} from "formik";
 
 const validationSchema = Yup.object().shape({
     image: Yup.array().min(1, "Please select at least one image."),
@@ -34,41 +35,44 @@ const actionSheetRef = createRef();
 
 function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc, editMode, index, deleteFunc, addFunc}) {
 
+    const [forceUpdate, setForceUpdate] = useState(0);
+
+    const form = useRef();
 
     let badgeColor = "";
     if (data.attributes) {
         badgeColor = data.attributes.color;
     }
 
-    const handleSubmit = async (listing, {resetForm}) => {
+    const handleSubmit = async (listing) => {
         const tempData = data;
         tempData.name = listing.title;
         tempData.brand = listing.brand;
-        tempData.attributes = listing.badges[0];
+        tempData.attributes = attributes;
         tempData.signedUrl = listing.image[0];
         console.log(tempData);
         addFunc(tempData);
-        resetComponent(resetForm);
+        resetComponent();
         modalCloseFunc(false);
     };
 
-    const resetComponent = (resetForm = null) => {
-        if(resetForm) resetForm();
+    const resetComponent = () => {
+        form.current?.resetForm();
         setStateFunc(2);
         setDataFunc({});
     }
-
-    const [newBadgeShown, setNewBadgeShown] = useState(false);
-
-    const [actionSheetShown, setActionSheetShown] = useState(false);
 
     const showActionSheet = () => {
         actionSheetRef.current?.setModalVisible();
     }
 
     const newAttribute = (key, value) => {
-        const newModalData = data.attributes[key] = value;
-        setDataFunc(newModalData);
+        const tempAttributes = data.attributes;
+        tempAttributes[key] = value;
+        const tempData = data;
+        data.attributes = tempAttributes;
+        setDataFunc(data);
+        setForceUpdate(forceUpdate+1);
     }
 
     const changeMode = () => {
@@ -80,6 +84,7 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
             return (
                 <View style={[styles.container, stylesPopup.container]}>
                     <TouchableOpacity onPress={() => {
+                        resetComponent();
                         modalCloseFunc(false);
                     }} style={[stylesPopup.closeIconContainer]}>
                         <MaterialCommunityIcons
@@ -98,10 +103,10 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
                                     image: [data?.signedUrl ? data?.signedUrl : null],
                                     title: data?.name ? data?.name : "",
                                     brand: data?.brand ? data?.brand : "",
-                                    badges: [data?.attributes ? data?.attributes : null],
                                 }}
                                 onSubmit={handleSubmit}
                                 validationSchema={validationSchema}
+                                innerRef={form}
                             >
                                 <PostImagePicker name="image"/>
                                 <FormField
@@ -119,7 +124,8 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
                                 <View style={stylesPopup.badgeContainer}>
                                     <Text>
                                         {
-                                            data?.attributes && Object.keys(data.attributes).length !== 0 &&
+                                            data.attributes &&
+                                            Object.keys(data.attributes).length !== 0 &&
                                             Object.entries(data.attributes).map(([key, value], i) =>
                                                 <Badge key={i} type={key}>{value}</Badge>
                                             )
@@ -162,7 +168,7 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
                         <View style={stylesPopup.badgeContainer}>
                             <Text>
                                 {
-                                    data?.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge key={i} color={badgeColor}>{value}</Badge>)
+                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge key={i} color={badgeColor}>{value}</Badge>)
                                 }
                             </Text>
                         </View>
