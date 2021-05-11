@@ -14,7 +14,7 @@ const AccountNavigator = () => {
     return (
         <Stack.Navigator screenOptions={{
             headerStyle: [styles.headerStyle],
-            headerTitle: user.sub ? user.sub : "Account",
+            headerTitle: user?.sub ? user.sub : "Account",
             headerTitleStyle: styles.headerTitle,
         }}>
             <Stack.Screen name="Account" component={AccountScreen} options={{

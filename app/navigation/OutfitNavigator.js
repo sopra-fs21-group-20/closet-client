@@ -48,6 +48,7 @@ const newItem = ({current, next, layouts}) => ({
                     : 1,
             },
         ],
+        opacity: current.progress,
     },
     overlayStyle: {
         opacity: current.progress.interpolate({
@@ -67,7 +68,7 @@ const OutfitNavigator = ({navigation}) => {
     const [editMode, setEditMode] = useState(false);
 
     return (<>
-        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={"Closet"} screenOptions={{
+        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={"createOutfit"} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}

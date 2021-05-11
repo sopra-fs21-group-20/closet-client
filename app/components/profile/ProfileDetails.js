@@ -15,7 +15,7 @@ export default function ProfileDetails() {
                 style={styles.profilePic}
             />
             <View style={styles.details}>
-                <Text style={styles.username}>{user.sub}</Text>
+                <Text style={styles.username}>{user.sub ? user.sub : ""}</Text>
                 <Text style={styles.bio}>test@test.ch</Text>
             </View>
             <ProfileBar/>

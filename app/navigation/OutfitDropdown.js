@@ -30,21 +30,22 @@ function OutfitDropdown({navigation, isOpenChanged, isOpenInitial}) {
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                    setIsOpen(!isOpen);
-                    isOpenChanged(!isOpen);
-                    //(route.name === "Closet") ? navigation.navigate(routes.MIRROR) : navigation.navigate(routes.CLOSET);
+                    if(route.name !== routes.CREATEOUTFIT) {
+                        setIsOpen(!isOpen);
+                        isOpenChanged(!isOpen);
+                    }
                 }}
                 style={styles.container}
             >
-                <View style={styles.title}>
-                    <Text style={styles.text}>{route.name}</Text>
-                    <View style={styles.iconWrap}>
+                <View style={[styles.title, route.name !== routes.CREATEOUTFIT ? {paddingLeft: 0} : null]}>
+                    <Text style={styles.text}>{route.name === routes.CREATEOUTFIT ? "New Outfit" : route.name}</Text>
+                    {route.name !== routes.CREATEOUTFIT && <View style={styles.iconWrap}>
                         <MaterialCommunityIcons
                             name={isOpen ? 'chevron-up' : 'chevron-down'}
                             color={'rgba(255, 255, 255, 0.7)'}
                             size={28}
                         />
-                    </View>
+                    </View>}
                 </View>
                 <View style={[styles.dropDown, {display: isOpen ? "flex": "none"}]} >
                     {

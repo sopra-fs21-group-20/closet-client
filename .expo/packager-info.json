@@ -3,8 +3,8 @@
   "expoServerPort": 19000,
   "packagerPort": 19000,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://nh-wit.joeweber.closet-client.exp.direct",
+  "packagerNgrokUrl": "https://packager.nh-wit.joeweber.closet-client.exp.direct",
+  "ngrokPid": 3120,
   "devToolsPort": 19002
 }
