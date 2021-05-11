@@ -289,7 +289,7 @@ export default function ClosetScreen({
             <ModalLike
                 isVisible={modalIsShown}
                 onBackdropPress={() => setModalIsShown(false)}>
-                <OutfitItem data={modalData} state={modalState} modalCloseFunc={setModalIsShown}
+                <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState} setStateFunc={setModalState} modalCloseFunc={setModalIsShown}
                             deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
             </ModalLike>
         </Screen>

@@ -32,12 +32,7 @@ const validationSchema = Yup.object().shape({
 
 const actionSheetRef = createRef();
 
-function OutfitItem({state, data = {}, modalCloseFunc, editMode, index, deleteFunc, addFunc}) {
-    useEffect(() => {
-        return () => {
-            setModalState(state);
-        };
-    }, [state]);
+function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc, editMode, index, deleteFunc, addFunc}) {
 
 
     let badgeColor = "";
@@ -59,13 +54,9 @@ function OutfitItem({state, data = {}, modalCloseFunc, editMode, index, deleteFu
 
     const resetComponent = (resetForm = null) => {
         if(resetForm) resetForm();
-        setModalState(2);
-        setModalData({});
+        setStateFunc(2);
+        setDataFunc({});
     }
-
-    const [modalState, setModalState] = useState(state);
-
-    const [modalData, setModalData] = useState(data);
 
     const [newBadgeShown, setNewBadgeShown] = useState(false);
 
@@ -76,21 +67,21 @@ function OutfitItem({state, data = {}, modalCloseFunc, editMode, index, deleteFu
     }
 
     const newAttribute = (key, value) => {
-        const newModalData = modalData.attributes[key] = value;
-        setModalData(newModalData);
+        const newModalData = data.attributes[key] = value;
+        setDataFunc(newModalData);
     }
 
     const changeMode = () => {
-        setModalState(3);
+        setStateFunc(3);
     }
 
-    switch (modalState) {
+    switch (state) {
         case 3: // Modal edit view
             return (
                 <View style={[styles.container, stylesPopup.container]}>
                     <TouchableOpacity onPress={() => {
                         modalCloseFunc(false);
-                    }} style={[stylesPopup.closeIconContainer, stylesPopup.closeIconContainer2]}>
+                    }} style={[stylesPopup.closeIconContainer]}>
                         <MaterialCommunityIcons
                             name="close"
                             color={colors.white}
@@ -269,8 +260,7 @@ const stylesPopup = StyleSheet.create({
     },
     scrollView: {
         minHeight: 200,
-        maxHeight: Dimensions.get("screen").height - 90,
-        flexGrow: 0,
+        maxHeight: Dimensions.get("screen").height - 110,
     },
     closeIconContainer: {
         position: "absolute",
