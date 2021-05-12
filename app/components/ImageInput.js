@@ -12,7 +12,7 @@ import * as ImagePicker from "expo-image-picker";
 import colors from "../config/colors";
 import {useFormikContext} from "formik";
 
-function ImageInput({onAddImage, onRemoveImage, key = 0, name}) {
+function ImageInput({onAddImage, onRemoveImage, key = 0, name, editable}) {
     const {values} = useFormikContext();
 
     const [forceUpdate, setForceUpdate] = useState(0);
@@ -71,7 +71,7 @@ function ImageInput({onAddImage, onRemoveImage, key = 0, name}) {
                         size={100}
                     />
                 )}
-                {imageUri && (
+                {imageUri && editable && (
                     <View style={styles.editImage}>
                         <MaterialCommunityIcons
                             color={colors.white}

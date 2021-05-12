@@ -68,12 +68,12 @@ function CreatePostScreen({navigation, route}) {
             <Form
                 initialValues={{
                     caption: "",
-                    images: [],
+                    images: [route.params.picture],
                 }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
             >
-                <PostImagePicker name="images" picture={route.params.picture}/>
+                <PostImagePicker name="images" editable={false}/>
                 <FormField
                     maxLength={255}
                     multiline
