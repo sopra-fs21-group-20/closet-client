@@ -58,7 +58,7 @@ function OutfitItem({
         const tempData = data;
         tempData.name = listing.title;
         tempData.brand = listing.brand;
-        tempData.attributes = attributes;
+        tempData.attributes = data.attributes;
         tempData.signedUrl = listing.image[0];
         console.log(tempData);
         addFunc(tempData);
@@ -118,7 +118,7 @@ function OutfitItem({
                                 validationSchema={validationSchema}
                                 innerRef={form}
                             >
-                                <PostImagePicker name="image"/>
+                                <PostImagePicker name="image" forceUpdateFunc={setForceUpdate} forceUpdateVal={forceUpdate}/>
                                 <FormField
                                     maxLength={100}
                                     name="title"

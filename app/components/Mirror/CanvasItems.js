@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingVertical: 15,
         backgroundColor: colors.darker,
-        borderRadius: 40,
+        borderRadius: 10,
         paddingHorizontal: 10,
     },
     list: {
