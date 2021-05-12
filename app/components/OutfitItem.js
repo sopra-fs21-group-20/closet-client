@@ -33,7 +33,17 @@ const validationSchema = Yup.object().shape({
 
 const actionSheetRef = createRef();
 
-function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc, editMode, index, deleteFunc, addFunc}) {
+function OutfitItem({
+                        state,
+                        setStateFunc,
+                        data = {},
+                        setDataFunc,
+                        modalCloseFunc,
+                        editMode,
+                        index,
+                        deleteFunc,
+                        addFunc
+                    }) {
 
     const [forceUpdate, setForceUpdate] = useState(0);
 
@@ -72,7 +82,7 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
         const tempData = data;
         data.attributes = tempAttributes;
         setDataFunc(data);
-        setForceUpdate(forceUpdate+1);
+        setForceUpdate(forceUpdate + 1);
     }
 
     const changeMode = () => {
@@ -93,7 +103,7 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
                             style={stylesPopup.closeIcon}
                             size={20}/>
                     </TouchableOpacity>
-                    <ScrollView style={stylesPopup.scrollView}contentContainerStyle={{flexGrow: 1}}>
+                    <ScrollView style={stylesPopup.scrollView} contentContainerStyle={{flexGrow: 1}}>
                         <KeyboardAvoidingView
                             behavior={Platform.OS === "ios" ? "padding" : "height"}
                             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
@@ -140,7 +150,7 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
                                                 resetComponent();
                                                 modalCloseFunc(false);
                                             }}/>
-                                    <SubmitButton title="Save" buttonStyle={stylesPopup.buttonSave} />
+                                    <SubmitButton title="Save" buttonStyle={stylesPopup.buttonSave}/>
                                 </View>
                             </Form>
                         </KeyboardAvoidingView>
@@ -168,7 +178,8 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
                         <View style={stylesPopup.badgeContainer}>
                             <Text>
                                 {
-                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge key={i} color={badgeColor}>{value}</Badge>)
+                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge
+                                        key={i} color={badgeColor}>{value}</Badge>)
                                 }
                             </Text>
                         </View>
@@ -187,7 +198,20 @@ function OutfitItem({state, setStateFunc, data = {}, setDataFunc, modalCloseFunc
             );
         case 1: // List view
             return (
-                <></>
+                <TouchableOpacity>
+                    <View style={stylesList.item}>
+                        <Image source={{uri: data.signedUrl}} style={stylesList.image}/>
+                        <View style={stylesList.information}>
+                            <Text><Text style={stylesList.title}>{data.name}</Text> | <Text style={stylesList.brand}>{data.brand}</Text></Text>
+                            <Text style={stylesList.attributes}>
+                                {
+                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge
+                                        key={i} color={badgeColor}>{value}</Badge>)
+                                }
+                            </Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
             );
         default: // Square image view
             return (
@@ -244,6 +268,43 @@ const stylesSquare = StyleSheet.create({
     image: {
         width: 'auto',
         height: '100%',
+    },
+});
+
+const stylesList = StyleSheet.create({
+    item: {
+        flex: 1,
+        flexDirection: 'row',
+        marginTop: 10,
+        backgroundColor: colors.white,
+        height: 80,
+        width: '100%',
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        alignItems: 'center',
+    },
+    image: {
+        width: 60,
+        height: 60,
+        borderRadius: 10,
+    },
+    information: {
+        flex: 1,
+        marginLeft: 20
+    },
+    title: {
+        fontSize: 20,
+        color: colors.dark,
+        fontWeight: '700',
+    },
+    brand: {
+        fontSize: 20,
+        color: colors.darker,
+    },
+    attributes: {
+        flexDirection: 'row',
+        marginTop: 10,
     },
 });
 

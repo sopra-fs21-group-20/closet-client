@@ -32,7 +32,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
             outfitItems: [
                 {
                     id: 19,
-                    name: 'Dsquared Shirt',
+                    name: 'Shirt',
+                    brand: 'Dsquared',
                     price: 349.0,
                     attributes: {
                         color: 'black',
@@ -42,7 +43,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
                 },
                 {
                     id: 9,
-                    name: 'Diesel Jeans Jacket',
+                    name: 'Jeans Jacket',
+                    brand: 'Diesel',
                     price: 349.0,
                     attributes: {
                         color: 'dark blue',
@@ -51,7 +53,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
                 },
                 {
                     id: 6,
-                    name: 'Jack & Jones Pants',
+                    name: 'Pants',
+                    brand: 'Jack & Jones',
                     price: 349.0,
                     attributes: {
                         color: 'light blue',
@@ -61,7 +64,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
                 },
                 {
                     id: 8,
-                    name: 'Polo Shoes',
+                    name: 'Shoes',
+                    brand: 'Polo',
                     price: 349.0,
                     attributes: {
                         color: 'black',
@@ -87,7 +91,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
             outfitItems: [
                 {
                     id: 19,
-                    name: 'Dsquared Shirt',
+                    name: 'Shirt',
+                    brand: 'Dsquared',
                     price: 349.0,
                     attributes: {
                         color: 'black',
@@ -97,7 +102,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
                 },
                 {
                     id: 9,
-                    name: 'Diesel Jeans Jacket',
+                    name: 'Jeans Jacket',
+                    brand: 'Diesel',
                     price: 349.0,
                     attributes: {
                         color: 'dark blue',
@@ -106,7 +112,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
                 },
                 {
                     id: 6,
-                    name: 'Jack & Jones Pants',
+                    name: 'Pants',
+                    brand: 'Jack & Jones',
                     price: 349.0,
                     attributes: {
                         color: 'light blue',
@@ -116,7 +123,8 @@ export default function MirrorScreen({navigation, menuOpen}) {
                 },
                 {
                     id: 8,
-                    name: 'Polo Shoes',
+                    name: 'Shoes',
+                    brand: 'Polo',
                     price: 349.0,
                     attributes: {
                         color: 'black',

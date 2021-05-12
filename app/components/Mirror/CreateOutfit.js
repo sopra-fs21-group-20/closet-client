@@ -27,7 +27,8 @@ const positionData = [
 const outfitData = [
     {
         id: 19,
-        name: 'Dsquared Shirt',
+        name: 'Shirt',
+        brand: 'Dsquared',
         price: 349.0,
         attributes: {
             color: 'black',
@@ -37,7 +38,8 @@ const outfitData = [
     },
     {
         id: 9,
-        name: 'Diesel Jeans Jacket',
+        name: 'Jeans Jacket',
+        brand: 'Diesel',
         price: 349.0,
         attributes: {
             color: 'dark blue',
@@ -46,7 +48,8 @@ const outfitData = [
     },
     {
         id: 6,
-        name: 'Jack & Jones Pants',
+        name: 'Pants',
+        brand: 'Jack & Jones',
         price: 349.0,
         attributes: {
             color: 'light blue',
@@ -56,7 +59,8 @@ const outfitData = [
     },
     {
         id: 8,
-        name: 'Polo Shoes',
+        name: 'Shoes',
+        brand: 'Polo',
         price: 349.0,
         attributes: {
             color: 'black',
@@ -110,7 +114,6 @@ export default function CreateOutfit({navigation}) {
                 })
             }
         }
-        console.log(items)
         return ({
             "name": outfit.outfitTitle,
             "items": items,
