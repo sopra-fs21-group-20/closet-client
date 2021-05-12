@@ -35,7 +35,13 @@ const filterCategories = (categories, closetItems) => {
     return tempCategories;
 }
 
-export default function ClosetScreen({navigation, editMode = false, menuOpen = false, isInjected = false, injectedItemTapFunc}) {
+export default function ClosetScreen({
+                                         navigation,
+                                         editMode = false,
+                                         menuOpen = false,
+                                         isInjected = false,
+                                         injectedItemTapFunc
+                                     }) {
 
     /*const getClosetApi = useApi(outfitApi.getCloset);
 
@@ -143,7 +149,6 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
                     if (closetItems.find(item => item.id === id)) setClosetItems(closetItems.filter(item => item.id !== id));
                     if (isModal) {
                         setModalIsShown(false);
-                        setModalData(null);
                     }
                 },
             },
@@ -153,7 +158,7 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     const [filteredCategories, setFilteredCategories] = useState(isInjected ? filterCategories(categories, closetItems) : categories);
 
     const itemTap = (data, state, isShown) => {
-        if(isInjected) {
+        if (isInjected) {
             injectedItemTapFunc(data);
         } else {
             setModalData(data);
@@ -163,7 +168,16 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     }
 
     const addToCloset = (item) => {
-        setClosetItems(closetItems => [...closetItems, item]);
+        const tempClosetItems = closetItems;
+        const index = tempClosetItems.findIndex(items => items.id === item.id);
+        console.log("index", index);
+        if (index !== -1) {
+            tempClosetItems[index] = item;
+            console.log("tempCloset", tempClosetItems);
+            setClosetItems([...tempClosetItems]);
+        } else {
+            setClosetItems(closetItems => [...closetItems, item]);
+        }
     }
 
     const [activeSection, setActiveSection] = useState([]);
@@ -175,7 +189,7 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     const [modalData, setModalData] = useState({});
 
     // Data from item for popup
-    const [modalState, setModalState] = useState(3);
+    const [modalState, setModalState] = useState(2);
 
     // Height of closet container
     const [containerHeight, setContainerHeight] = useState(0);
@@ -254,7 +268,7 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
     // Renders whole screen
     return (
         <Screen>
-            <ScrollView style={[styles.container, {marginTop: menuOpen ? 100 : 20,}, isInjected ? {
+            <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {
                 margin: 0,
                 marginTop: 0,
                 borderRadius: 5
@@ -275,7 +289,7 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
             <ModalLike
                 isVisible={modalIsShown}
                 onBackdropPress={() => setModalIsShown(false)}>
-                <OutfitItem data={modalData} state={modalState} modalCloseFunc={setModalIsShown}
+                <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState} setStateFunc={setModalState} modalCloseFunc={setModalIsShown}
                             deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
             </ModalLike>
         </Screen>
@@ -285,9 +299,6 @@ export default function ClosetScreen({navigation, editMode = false, menuOpen = f
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 5,
-        borderRadius: 50,
-        backgroundColor: colors.medium,
         overflow: 'hidden',
     },
     sectionContainer: {

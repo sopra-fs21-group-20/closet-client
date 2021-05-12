@@ -4,18 +4,19 @@ import Text from "../Text";
 import ProfileBar from "./ProfileBar";
 import useAuth from "../../auth/useAuth";
 import colors from "../../config/colors";
+import Image2 from "../Image";
 
 export default function ProfileDetails() {
     const {user, logOut} = useAuth();
 
     return (
         <View style={styles.container}>
-            <Image
+            <Image2
                 source={require("../../assets/corey_nici.jpg")}
                 style={styles.profilePic}
             />
             <View style={styles.details}>
-                <Text style={styles.username}>{user.sub}</Text>
+                <Text style={styles.username}>{user?.sub ? user?.sub : ""}</Text>
                 <Text style={styles.bio}>test@test.ch</Text>
             </View>
             <ProfileBar/>

@@ -4,13 +4,14 @@ import {View, StyleSheet, Image} from "react-native";
 import Text from "./Text";
 import colors from "../config/colors";
 import moment from "moment";
+import Image2 from "./Image";
 
 function Comment({user_id, username, comment, creationDate, profileImage, index, lightThemeEnabled}) {
     const postedAt = moment(creationDate).add(2, "hours").fromNow();
 
     return (
         <View style={styles.container}>
-            <Image style={styles.profileImage} source={{uri: profileImage}}/>
+            <Image2 style={styles.profileImage} source={{uri: profileImage}}/>
             <View style={styles.containerInner}>
                 <Text style={styles.text}>
                     <Text style={[styles.username, (lightThemeEnabled ? lightTheme.username : null)]}>{username}</Text>

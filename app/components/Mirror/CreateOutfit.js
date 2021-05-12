@@ -15,51 +15,58 @@ import {StackActions} from '@react-navigation/native';
 import ActionSheet from "react-native-actions-sheet";
 import ClosetScreen from "../../screens/ClosetScreen";
 
-const collectionId = 3
+const collectionId = 3;
+
+const positionData = [
+    {id: 19, position: 0},
+    {id: 9, position: 1},
+    {id: 6, position: 3},
+    {id: 8, position: 6},
+];
 
 const outfitData = [
     {
-        "id": 19,
-        "position": 0,
-        "name": 'Dsquared Shirt',
-        "price": 349.0,
-        "attributes": {
-            "color": "black",
-            "pattern": "white"
+        id: 19,
+        name: 'Shirt',
+        brand: 'Dsquared',
+        price: 349.0,
+        attributes: {
+            color: 'black',
+            pattern: 'white'
         },
-        "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
+        signedUrl: 'https://img01.ztat.net/article/spp-media-p1/64a3bd02da914ed9b2ea51ad249803b7/6e32f0973d0f40a88becfcb2eee977b4.jpg?imwidth=1800&filter=packshot'
     },
     {
-        "id": 9,
-        "position": 1,
-        "name": 'Diesel Jeans Jacket',
-        "price": 349.0,
-        "attributes": {
-            "color": "dark blue",
+        id: 9,
+        name: 'Jeans Jacket',
+        brand: 'Diesel',
+        price: 349.0,
+        attributes: {
+            color: 'dark blue',
         },
-        "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
+        signedUrl: 'https://img01.ztat.net/article/spp-media-p1/f74f14c70e22372bb559bc655c080ac5/43891ebf79c4462088c45ac62fd18249.jpg?imwidth=1800&filter=packshot'
     },
     {
-        "id": 6,
-        "position": 3,
-        "name": "Jack & Jones' Pants",
-        "price": 349.0,
-        "attributes": {
-            "color": "light blue",
-            "pattern": "slim fit"
+        id: 6,
+        name: 'Pants',
+        brand: 'Jack & Jones',
+        price: 349.0,
+        attributes: {
+            color: 'light blue',
+            pattern: 'slim fit'
         },
-        "signedUrl": 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
+        signedUrl: 'https://img01.ztat.net/article/spp-media-p1/008a480179193efbaee7ff6434d528e6/614b9211afb64a61982d4978d7be2dec.jpg?imwidth=1800&filter=packshot'
     },
     {
-        "id": 8,
-        "position": 6,
-        "name": 'Polo Shoes',
-        "price": 349.0,
-        "attributes": {
-            "color": "black",
-            "pattern": "gloss"
+        id: 8,
+        name: 'Shoes',
+        brand: 'Polo',
+        price: 349.0,
+        attributes: {
+            color: 'black',
+            pattern: 'gloss'
         },
-        "signedUrl": 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
+        signedUrl: 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
     },
 ];
 
@@ -68,6 +75,7 @@ const closetActionSheet = createRef();
 
 export default function CreateOutfit({navigation}) {
     const [outfit, setOutfit] = useState(outfitData);
+    const [position, setPosition] = useState(positionData);
     const [title, onChangeTitle] = useState(null);
     const [uploadVisible, setUploadVisible] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -75,17 +83,21 @@ export default function CreateOutfit({navigation}) {
 
     const deleteItem = (id) => {
         setOutfit([...outfit.filter(item => item.id !== id)]);
+        setPosition([...position.filter(item => item.id !== id)]);
     }
 
     const addItem = (item) => {
         closetActionSheet.current?.setModalVisible(false);
         const row = outfit.filter(item => item.position >= (3 * activeRow) && item.position <= (3 * activeRow + 2)).length;
-        console.log(row);
         if (row < 3) {
-            item.position = 3 * activeRow + row;
             setOutfit([...outfit, item]);
-            console.log(outfit.map(item => item.position));
+            setPosition([...position, {id: item.id, position: 3 * activeRow + row}]);
         }
+    }
+
+    const openCloset = (row) => {
+        setActiveRow(row);
+        showCloset();
     }
 
     const validationSchema = Yup.object().shape({
@@ -102,7 +114,6 @@ export default function CreateOutfit({navigation}) {
                 })
             }
         }
-        console.log(items)
         return ({
             "name": outfit.outfitTitle,
             "items": items,
@@ -145,39 +156,19 @@ export default function CreateOutfit({navigation}) {
                 }}
                 onSubmit={handleSubmit}
             >
-                <Canvas style={styles.canvas} outfit={outfit} edit={true} deleteFunc={deleteItem}/>
-                <FormField
-                    maxLength={255}
-                    name="outfitTitle"
-                    numberOfLines={1}
-                    placeholder="Outfit Name"
-                    blurOnSubmit={true}
-                    returnKeyType={'done'}
-                />
-                <View style={{alignItems: 'center', marginVertical: 10, marginTop: 20}}>
-                    <Text style={styles.chooseText}>Choose the row you want to edit:</Text>
+                <Canvas style={styles.canvas} outfit={outfit} positions={position} edit={true} deleteFunc={deleteItem}
+                        addFunc={openCloset}/>
+                <View style={styles.formContainer}>
+                    <FormField
+                        maxLength={255}
+                        name="outfitTitle"
+                        numberOfLines={1}
+                        placeholder="Outfit Name"
+                        blurOnSubmit={true}
+                        returnKeyType={'done'}
+                    />
+                    <SubmitButton title="create"/>
                 </View>
-                <View style={styles.viewContainer}>
-                    <TouchableOpacity onPress={() => {
-                        showCloset();
-                        setActiveRow(0);
-                    }} style={styles.view}>
-                        <Text style={styles.text}>Top</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        showCloset();
-                        setActiveRow(1);
-                    }} style={styles.view}>
-                        <Text style={styles.text}>Middle</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        showCloset();
-                        setActiveRow(2);
-                    }} style={styles.view}>
-                        <Text style={styles.text}>Bottom</Text>
-                    </TouchableOpacity>
-                </View>
-                <SubmitButton title="create"/>
             </Form>
             <ActionSheet ref={closetActionSheet}>
                 <View style={{height: Dimensions.get("window").height - 100}}>
@@ -194,6 +185,10 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         alignItems: 'center'
+    },
+    formContainer: {
+        paddingHorizontal: 10,
+        paddingVertical:25,
     },
     text: {
         fontSize: 20,

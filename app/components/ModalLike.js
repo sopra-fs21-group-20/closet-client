@@ -6,9 +6,11 @@ function ModalLike({isVisible, onBackdropPress, children}) {
         <TouchableWithoutFeedback onPress={() => {
             onBackdropPress()
         }}>
-            <View style={[styles.backdrop, {display: isVisible ? "flex" : "none"}]}>
-                {children}
-            </View>
+            <TouchableWithoutFeedback>
+                <View style={[styles.backdrop, {display: isVisible ? "flex" : "none"}]}>
+                    {children}
+                </View>
+            </TouchableWithoutFeedback>
         </TouchableWithoutFeedback>
     );
 }
@@ -17,6 +19,7 @@ const styles = StyleSheet.create({
     backdrop: {
         position: 'absolute',
         top: 0,
+        bottom: 0,
         left: 0,
         flex: 1,
         width: Dimensions.get("screen").width,

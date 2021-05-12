@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {useRoute} from '@react-navigation/native';
@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import routes from "./routes";
 import Text from "../components/Text";
 
-function OutfitDropdown({navigation, isOpenChanged}) {
+function OutfitDropdown({navigation, isOpenChanged, isOpenInitial}) {
     const route = useRoute();
     const dropdownOptions = [{
         title: "Closet",
@@ -17,35 +17,45 @@ function OutfitDropdown({navigation, isOpenChanged}) {
         navigateTo: routes.MIRROR
     }];
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(isOpenInitial);
+
+    useEffect(() => {
+        return setIsOpen(isOpenInitial);
+    }, [isOpenInitial]);
+
+
 
     return (
         <>
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                    setIsOpen(!isOpen);
-                    isOpenChanged(!isOpen);
-                    //(route.name === "Closet") ? navigation.navigate(routes.MIRROR) : navigation.navigate(routes.CLOSET);
+                    if(route.name !== routes.CREATEOUTFIT) {
+                        setIsOpen(!isOpen);
+                        isOpenChanged(!isOpen);
+                    }
                 }}
                 style={styles.container}
             >
-                <View style={styles.title}>
-                    <Text style={styles.text}>{route.name}</Text>
-                    <View style={styles.iconWrap}>
+                <View style={[styles.title, route.name !== routes.CREATEOUTFIT ? {paddingLeft: 0} : null]}>
+                    <Text style={styles.text}>{route.name === routes.CREATEOUTFIT ? "New Outfit" : route.name}</Text>
+                    {route.name !== routes.CREATEOUTFIT && <View style={styles.iconWrap}>
                         <MaterialCommunityIcons
                             name={isOpen ? 'chevron-up' : 'chevron-down'}
                             color={'rgba(255, 255, 255, 0.7)'}
                             size={28}
                         />
-                    </View>
+                    </View>}
                 </View>
                 <View style={[styles.dropDown, {display: isOpen ? "flex": "none"}]} >
                     {
                         dropdownOptions.map(({navigateTo, title}, index) =>
-                            <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate(navigateTo)}>
+                            <TouchableOpacity key={index} onPress={() => {
+                                navigation.navigate(navigateTo);
+                                isOpenChanged(false);
+                            }}>
                                 <Text style={styles.text}>{title}</Text>
-                            </TouchableWithoutFeedback>)
+                            </TouchableOpacity>)
                     }
                 </View>
             </TouchableOpacity>

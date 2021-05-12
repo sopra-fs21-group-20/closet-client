@@ -11,6 +11,7 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 import Text from "./Text";
 import colors from "../config/colors";
+import Image2 from "./Image";
 
 function UserDisplay({
                          username,
@@ -56,7 +57,7 @@ function UserDisplay({
             expandable ? rotate() : onCommentClick(post_id, caption_attrs, lightTheme);
         }}>
             <View style={styles.container}>
-                <Image style={styles.profileImage} source={(profileImage) ? {uri: profileImage} : null}/>
+                <Image2 style={styles.profileImage} source={(profileImage) ? {uri: profileImage} : null}/>
                 <View style={[styles.detailsContainer, {height: isOpen ? captionHeight + 40 : null}]}>
                     <Text style={[styles.username, (lightTheme ? lightThemeStyle.username : null)]} numberOfLines={1}>
                         {username}

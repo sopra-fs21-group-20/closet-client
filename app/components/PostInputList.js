@@ -1,31 +1,47 @@
-import React, { useRef } from "react";
+import React, {useRef} from "react";
 import {View, StyleSheet, ScrollView, Dimensions} from "react-native";
 import ImageInput from "./ImageInput";
 
-function PostInputList({ imageUris = [], onRemoveImage, onAddImage }) {
+function PostInputList({imageUris = [], onRemoveImage, onAddImage, hasMultiple}) {
     const scrollView = useRef();
 
-    return (
-        <View>
-            <ScrollView
-                ref={scrollView}
-                horizontal
-                /*onContentSizeChange={() => scrollView.current.scrollToEnd()}*/
-            >
+    if (hasMultiple) {
+        return (
+            <View>
+                <ScrollView
+                    ref={scrollView}
+                    horizontal
+                    /*onContentSizeChange={() => scrollView.current.scrollToEnd()}*/
+                >
+                    <View style={styles.container}>
+                        {imageUris.map((uri, index) => (
+                            <View key={index} style={styles.image}>
+                                <ImageInput
+                                    imageUri={uri}
+                                    onRemoveImage={onRemoveImage}
+                                />
+                            </View>
+                        ))}
+                        <ImageInput onAddImage={onAddImage}/>
+                    </View>
+                </ScrollView>
+            </View>
+        );
+    } else {
+        return (
+            <View>
                 <View style={styles.container}>
-                    {imageUris.map((uri, index) => (
-                        <View key={index} style={styles.image}>
-                            <ImageInput
-                                imageUri={uri}
-                                onChangeImage={() => onRemoveImage(uri)}
-                            />
-                        </View>
-                    ))}
-                    <ImageInput onChangeImage={(uri) => onAddImage(uri)} />
+                    <View style={styles.image}>
+                        <ImageInput
+                            imageUri={imageUris[0]?.uri ? imageUris[0].uri : null}
+                            onAddImage={onAddImage}
+                            onRemoveImage={onRemoveImage}
+                        />
+                    </View>
                 </View>
-            </ScrollView>
-        </View>
-    );
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -33,8 +49,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     image: {
-        height: 350,//(Dimensions.get("window").width - 110),
-        width: 350,//(Dimensions.get("window").width - 110),
         marginRight: 10,
         zIndex: 10,
     },

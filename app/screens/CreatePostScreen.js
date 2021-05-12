@@ -44,13 +44,11 @@ function CreatePostScreen({navigation, route}) {
 
         if (!result.ok) {
             setUploadVisible(false);
-            /*const testLog = result;
-            testLog.config.data = "";*/
             return alert("Could not save the post");
         }
 
         resetForm();
-        navigation.popToTop();
+        navigation.navigate('Feed', {screen: 'Feed', reload: true})
     };
 
     return (
@@ -68,12 +66,12 @@ function CreatePostScreen({navigation, route}) {
             <Form
                 initialValues={{
                     caption: "",
-                    images: [],
+                    images: [route.params.picture],
                 }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
             >
-                <PostImagePicker name="images" picture={route.params.picture}/>
+                <PostImagePicker name="images" editable={false} hasMultiple={true}/>
                 <FormField
                     maxLength={255}
                     multiline
