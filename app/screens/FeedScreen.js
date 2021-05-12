@@ -14,9 +14,18 @@ import Modal from "react-native-modal";
 import OutfitItem from "../components/OutfitItem";
 import Canvas from "../components/Mirror/Canvas";
 import CanvasItems from "../components/Mirror/CanvasItems";
+import {useRoute} from "@react-navigation/native";
 
 function FeedScreen({navigation}) {
     //default is start=0, end=3
+
+    const route = useRoute();
+
+    useEffect(() => {
+        route.params?.reload ? getFeedApi.request() : null;
+    }, [route]);
+
+
 
     const positionData = [
         {id: 19, position: 0},

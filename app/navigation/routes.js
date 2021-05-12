@@ -3,6 +3,7 @@ export default Object.freeze({
   COMMENTS: "Comments",
   CREATEOUTFIT: "createOutfit",
   LOGIN: "Login",
+  FEED: "Feed",
   MESSAGES: "Messages",
   MIRROR: "Mirror",
   OUTFIT: "MirrorScreen",

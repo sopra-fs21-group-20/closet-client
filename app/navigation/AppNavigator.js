@@ -11,6 +11,7 @@ import {StyleSheet} from "react-native";
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import ClosetScreen from "../screens/ClosetScreen";
 import OutfitNavigator from "./OutfitNavigator";
+import routes from "./routes";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ const AppNavigator = () => {
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
         return routeName !== 'cameraNavigator';
     };
-    return (<Tab.Navigator initialRouteName={"Outfit"} tabBarOptions={{
+    return (<Tab.Navigator initialRouteName={routes.FEED} tabBarOptions={{
         keyboardHidesTabBar: true,
         showLabel: false,
         tabBarIcon: {

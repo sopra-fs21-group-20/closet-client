@@ -42,7 +42,7 @@ function ImageInput({onAddImage, onRemoveImage, key = 0, name, editable}) {
                 {text: "Yes", onPress: () => onRemoveImage(null)},
                 {text: "No"},
             ]);*/
-        selectImage();
+        if(editable) selectImage();
     };
 
     const selectImage = async () => {
