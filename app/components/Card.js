@@ -7,6 +7,7 @@ import colors from "../config/colors";
 import UserDisplay from "./UserDisplay";
 import FeedActions from "./FeedActions";
 import {Svg, Path} from 'react-native-svg';
+import Image2 from "./Image";
 
 const DOUBLE_PRESS_DELAY = 300;
 
@@ -66,14 +67,14 @@ function Card({
                             <Text>{username}</Text>
                         </TouchableOpacity>
                         {images.map((image, index) => (
-                            <Image
+                            <Image2
                                 style={[styles.image, {
                                     height: Dimensions.get("window").width,
                                     width: Dimensions.get("window").width,
                                 }]}
-                                preview={{uri: image.thumbnailUrl}}
-                                uri={image.url}
+                                source={{uri:image.url}}
                                 key={index}
+                                resizeMode={"cover"}
                             />
                         ))}
                     </View>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
-        tintColor: colors.medium,
+        backgroundColor: colors.medium,
     },
 });
 

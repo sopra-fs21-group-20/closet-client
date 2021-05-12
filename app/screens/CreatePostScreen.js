@@ -71,7 +71,7 @@ function CreatePostScreen({navigation, route}) {
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
             >
-                <PostImagePicker name="images" editable={false}/>
+                <PostImagePicker name="images" editable={false} hasMultiple={true}/>
                 <FormField
                     maxLength={255}
                     multiline

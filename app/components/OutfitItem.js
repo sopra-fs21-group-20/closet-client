@@ -23,6 +23,7 @@ import Screen from "./Screen";
 import NewBadge from "./NewBadge";
 import ActionSheet from "react-native-actions-sheet";
 import {useFormik, useFormikContext} from "formik";
+import Image2 from "./Image";
 
 const validationSchema = Yup.object().shape({
     image: Yup.array().min(1, "Please select at least one image."),
@@ -170,7 +171,7 @@ function OutfitItem({
                                 style={stylesPopup.closeIcon}
                                 size={20}/>
                         </TouchableOpacity>
-                        <Image style={stylesPopup.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
+                        <Image2 style={stylesPopup.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
                         <View style={stylesPopup.textContainer}>
                             <Text style={stylesPopup.title}>{data.name}</Text>
                             <Text style={stylesPopup.text}>{data.brand}</Text>
@@ -200,7 +201,7 @@ function OutfitItem({
             return (
                 <TouchableOpacity>
                     <View style={stylesList.item}>
-                        <Image source={{uri: data.signedUrl}} style={stylesList.image}/>
+                        <Image2 source={{uri: data.signedUrl}} style={stylesList.image}/>
                         <View style={stylesList.information}>
                             <Text><Text style={stylesList.title}>{data.name}</Text> | <Text style={stylesList.brand}>{data.brand}</Text></Text>
                             <Text style={stylesList.attributes}>
@@ -226,7 +227,7 @@ function OutfitItem({
                                 style={styles.deleteIcon}
                                 size={20}/>
                         </TouchableOpacity>
-                        <Image style={stylesSquare.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
+                        <Image2 style={stylesSquare.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
                     </View>
                 </View>
             );

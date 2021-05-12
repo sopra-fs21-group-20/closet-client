@@ -6,6 +6,7 @@ import routes from "../navigation/routes";
 import { useFonts, Damion_400Regular } from '@expo-google-fonts/damion';
 import colors from "../config/colors";
 import ActivityIndicator from "../components/ActivityIndicator";
+import Image2 from "../components/Image";
 
 function WelcomeScreen({ navigation }) {
   let [fontsLoaded] = useFonts({
@@ -21,7 +22,7 @@ function WelcomeScreen({ navigation }) {
       source={require("../assets/triangle_background.jpg")}
     >
       <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={require("../assets/logo-primary.png")} resizeMode={"contain"} />
+        <Image2 style={styles.logo} source={require("../assets/logo-primary.png")} resizeMode={"contain"} />
         <Text style={styles.tagline}>myOutf.it</Text>
       </View>
       <View style={styles.buttonsContainer}>

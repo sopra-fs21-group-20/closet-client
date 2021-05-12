@@ -4,6 +4,7 @@ import colors from "../config/colors";
 import {Entypo} from "@expo/vector-icons";
 import AppButton from "../components/Button";
 import * as FileSystem from 'expo-file-system';
+import Image2 from "../components/Image";
 
 
 const dimensions = Dimensions.get('window')
@@ -27,7 +28,7 @@ export default function PictureTakenScreen({route, navigation}) {
             </View>
             <View style={[styles.imageContainer, {height: imageDimensions}]}>
                 {route.params.picture &&
-                <Image source={{uri: pictureUri}} style={{width: '100%', height: '100%'}}/>}
+                <Image2 source={{uri: pictureUri}} style={{width: '100%', height: '100%'}}/>}
             </View>
             <View style={[styles.bottomButtonContainer, {height: bottomButtonContainerHeight}]}>
                 <AppButton title={'continue'} onPress={()=> {navigation.push('createPost', {picture: pictureUri, base64: pictureBase64})}}/>

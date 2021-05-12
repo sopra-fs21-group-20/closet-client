@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import colors from "../../config/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import Image2 from "../Image";
 
 const paddingItem = 10
 const canvasMargin = 0
@@ -37,7 +38,7 @@ export default function Canvas({outfit, positions, edit = false, modal, deleteFu
             }}>
                 <View style={styles.imageContainer}>
 
-                    <Image
+                    <Image2
                         source={{uri: imageUrl}}
                         style={styles.image}
                     />

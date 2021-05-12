@@ -11,20 +11,24 @@ import * as ImagePicker from "expo-image-picker";
 
 import colors from "../config/colors";
 import {useFormikContext} from "formik";
+import Image2 from "./Image";
 
-function ImageInput({onAddImage, onRemoveImage, key = 0, name, editable}) {
+function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, editable}) {
     const {values} = useFormikContext();
 
     const [forceUpdate, setForceUpdate] = useState(0);
 
     useEffect(() => {
-        console.log("effect", values);
-            setImageUri(values[name][key]);
-            setForceUpdate(forceUpdate+1);
+        if(!newImage) {
+            setImageUri(values[name][index]);
+            setForceUpdate(forceUpdate + 1);
+        }
     }, [values[name]]);
 
 
-    const [imageUri, setImageUri] = useState(values[name][key]);
+    const [imageUri, setImageUri] = useState(newImage ? null : values[name][index]);
+
+    console.log("imageUri", [imageUri,newImage]);
 
     useEffect(() => {
         requestPermission();
@@ -42,7 +46,7 @@ function ImageInput({onAddImage, onRemoveImage, key = 0, name, editable}) {
                 {text: "Yes", onPress: () => onRemoveImage(null)},
                 {text: "No"},
             ]);*/
-        if(editable) selectImage();
+        if(editable || newImage) selectImage();
     };
 
     const selectImage = async () => {
@@ -80,7 +84,7 @@ function ImageInput({onAddImage, onRemoveImage, key = 0, name, editable}) {
                         />
                     </View>
                 )}
-                {imageUri && <Image source={{uri: imageUri}} style={styles.image}/>}
+                {imageUri && <Image2 source={{uri: imageUri}} style={styles.image}/>}
             </View>
         </TouchableOpacity>
     );

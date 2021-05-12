@@ -12,6 +12,7 @@ import {
 import authApi from "../api/login";
 import useAuth from "../auth/useAuth";
 import ActivityIndicator from "../components/ActivityIndicator";
+import Image2 from "../components/Image";
 
 const validationSchema = Yup.object().shape({
     username: Yup.string().required().label("Username"),
@@ -36,7 +37,7 @@ function LoginScreen() {
         <>
             <ActivityIndicator visible={isLoggingIn}/>
             <Screen style={styles.container}>
-                <Image style={styles.logo} source={require("../assets/logo-primary.png")} resizeMode={"contain"}/>
+                <Image2 style={styles.logo} source={require("../assets/logo-primary.png")} resizeMode={"contain"}/>
 
                 <Form
                     initialValues={{username: "test", password: "test"}}

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Image, Dimensions} from 'react-native'
+import Image2 from "../Image";
 
 export default function ProfilePost({size, paddingBetweenTiles, imageUrl}) {
 
@@ -10,7 +11,7 @@ export default function ProfilePost({size, paddingBetweenTiles, imageUrl}) {
             paddingBottom: paddingBetweenTiles,
             paddingRight: paddingBetweenTiles
         }]}>
-            <Image
+            <Image2
                 style={styles.image}
                 source={{uri: imageUrl}}
             />
