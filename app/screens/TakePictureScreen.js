@@ -75,7 +75,6 @@ export default function TakePictureScreen({navigation}) {
             setImage(result.uri);
             setPictureTaken(true)
             const imageInfo = await FileSystem.getInfoAsync(result.uri)
-            console.log('size: ', imageInfo.size)
             navigation.push('pictureTaken', {picture: result.uri, base64: result.base64, cameraDimensions})
         }
     };

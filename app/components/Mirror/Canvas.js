@@ -49,8 +49,10 @@ export default function Canvas({outfit, positions, edit = false, modal, deleteFu
 
     return (
         <SafeAreaView style={[styles.container, {
-            height: edit || modal ? canvasHeight : canvasHeight + 50,
-            marginBottom: edit ? 0 : -50,
+            height: canvasHeight + 50,
+            marginBottom: -50,
+            /*height: edit || modal ? canvasHeight : canvasHeight + 50,
+            marginBottom: edit || modal ? 0 : -50,*/
         }]}>
             {allItems.map((itemRow, index) =>
             <View style={[styles.row]} key={index}>
