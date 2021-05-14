@@ -151,15 +151,6 @@ export default function ClosetScreen({
         ]);
     }
 
-    useEffect(() => {
-        if (!closetApi.loading && isInjected) {
-            setFilteredCategories(filterCategories(categories, closetApi.data));
-        }
-    }, [closetApi.loading]);
-
-
-    const [filteredCategories, setFilteredCategories] = useState(categories);
-
     const itemTap = (data, state, isShown) => {
         if (isInjected) {
             injectedItemTapFunc(data);
@@ -268,7 +259,7 @@ export default function ClosetScreen({
 
     // Renders whole screen
     return (
-        <View style={isInjected ? {height: (filteredCategories.length * 100 + activeSection.length * 225)} : {flex: 1}}>
+        <View style={isInjected ? {height: (filterCategories(categories, closetApi.data).length * 100 + activeSection.length * 225)} : {flex: 1}}>
             <ActivityIndicator visible={closetApi.loading}/>
             <Screen>
                 <ScrollView
@@ -284,7 +275,7 @@ export default function ClosetScreen({
                     }}*/
                 >
                     <Accordion
-                        sections={filteredCategories}
+                        sections={filterCategories(categories, closetApi.data)}
                         activeSections={activeSection}
                         renderHeader={_renderHeader}
                         renderContent={_renderContent}

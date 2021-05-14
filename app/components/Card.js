@@ -18,6 +18,10 @@ import FeedActions from "./FeedActions";
 import {Svg, Path} from 'react-native-svg';
 import Image2 from "./Image";
 import feed from "../api/feed";
+import Canvas from "./Mirror/Canvas";
+import CanvasItems from "./Mirror/CanvasItems";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+import Modal from "react-native-modal";
 
 const DOUBLE_PRESS_DELAY = 300;
 
@@ -164,8 +168,11 @@ function Card({
                             style={styles.closeIcon}
                             size={20}/>
                     </TouchableOpacity>
-                    {outfit.outfitItems && outfit.itemPositions && <><Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
-                    <CanvasItems outfit={outfit}/></>}
+                    {outfit?.outfitItems && outfit?.itemPositions &&
+                    <>
+                        <Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
+                        <CanvasItems outfit={outfit}/>
+                    </>}
                 </SafeAreaView>
             </Modal>
         </>
