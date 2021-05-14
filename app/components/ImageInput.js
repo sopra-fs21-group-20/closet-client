@@ -28,8 +28,6 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
 
     const [imageUri, setImageUri] = useState(newImage ? null : values[name][index]);
 
-    console.log("imageUri", [imageUri,newImage]);
-
     useEffect(() => {
         requestPermission();
     }, []);

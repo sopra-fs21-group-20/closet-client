@@ -17,8 +17,6 @@ const addOutfit = () => () => {
         ]
     }
 
-    console.log('data is send: ', data)
-
     /*{
         "name": outfit.name,
         "items": outfit.items,

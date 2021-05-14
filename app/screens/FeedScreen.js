@@ -27,7 +27,7 @@ function FeedScreen({navigation}) {
 
 
 
-    const positionData = [
+    /*const positionData = [
         {id: 19, position: 0},
         {id: 9, position: 1},
         {id: 6, position: 3},
@@ -88,10 +88,7 @@ function FeedScreen({navigation}) {
         collectionIds: [
             2
         ]
-    };
-
-    const [showModal, setShowModal] = useState(false)
-    console.log(showModal)
+    };*/
 
     const getFeedApi = useApi(feed.getFeed);
 
@@ -159,14 +156,6 @@ function FeedScreen({navigation}) {
         console.log(color);
     };*/
 
-    const handleModal = () => {
-        if (showModal === false) {
-            setShowModal(true)
-        } else {
-            setShowModal(false)
-        }
-    }
-
     const navigateToComments = (post_id, captionAttrs, lightThemeEnabled) => {
         navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
     };
@@ -216,26 +205,16 @@ function FeedScreen({navigation}) {
                             hasBeenLiked={item.hasLiked}
                             likes={item.numberOfLikes}
                             comments={item.numberOfComments}
+                            outfit={item.outfit}
                             images={item.images}
                             onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/
                             }}
                             index={index}
                             onCommentClick={navigateToComments}
-                            handleModal={handleModal}
                         />);
                     }}
                 />)}
             </Screen>
-            <Modal propagateSwipe
-                   style={{margin: 0}}
-                   isVisible={showModal}
-                   onBackdropPress={() => setShowModal(false)}
-                   onSwipeComplete={() => setShowModal(false)}
-                   swipeDirection={"down"}
-            >
-
-                <Canvas outfit={modalData.outfitItems} positions={positionData} modal={true}/>
-            </Modal>
         </>
 
     );

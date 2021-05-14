@@ -23,9 +23,6 @@ export default function CanvasItems({outfit}) {
 }
 
 const styles = StyleSheet.create({
-    attributes: {
-        flexDirection: 'row'
-    },
     container: {
         display: 'flex',
         width: '100%',
@@ -33,38 +30,12 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darker,
         borderRadius: 10,
         paddingHorizontal: 10,
-    },
-    list: {
         flex: 1,
-        flexDirection: 'row',
-        marginTop: 10,
-        backgroundColor: colors.dark,
-        height: 70,
-        width: '100%',
-        borderRadius: 20,
-        paddingHorizontal: 10,
-        paddingVertical: 10,
-        alignItems: 'center',
-    },
-    listImage: {
-        width: 60,
-        height: 60,
-        borderRadius: 10,
-    },
-    listInformation: {
-        flex: 1,
-        marginLeft: 20
     },
     title: {
         color: colors.white,
         fontSize: 25,
         fontWeight: '600',
-        paddingBottom: 5
-    },
-    itemName: {
-        color: colors.white,
-        fontSize: 22,
-        fontWeight: '500',
         paddingBottom: 5
     },
     description: {

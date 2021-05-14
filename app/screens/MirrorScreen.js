@@ -8,8 +8,10 @@ import CanvasItems from "../components/Mirror/CanvasItems";
 import colors from "../config/colors";
 import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
+import AppButton from "../components/Button";
+import {useNavigation, useRoute} from "@react-navigation/native";
 
-export default function MirrorScreen({navigation, menuOpen}) {
+export default function MirrorScreen({menuOpen, isInjected = false}) {
 
     /*const getOutfitApi = useApi(outfitApi.getOutfit)
 
@@ -148,27 +150,51 @@ export default function MirrorScreen({navigation, menuOpen}) {
         itemVisiblePercentThreshold: 50
     }*/
 
-    const scrollX = React.useRef(new Animated.Value(0)).current
+    const scrollX = React.useRef(new Animated.Value(0)).current;
+
+    const route = useRoute();
+
+    const navigation = useNavigation();
+
+    const {picture, base64} = isInjected ? route.params : {picture: null , base64: null};
+
+    const [currentOutfit, setCurrentOutfit] = useState(0);
+
+    const onScrollEnd = (e) => {
+        const contentOffset = e.nativeEvent.contentOffset;
+        const viewSize = e.nativeEvent.layoutMeasurement;
+        const pageNum = Math.floor(contentOffset.x / viewSize.width);
+        console.log('scrolled to page ', pageNum);
+        setCurrentOutfit(pageNum);
+    }
 
     return (
-        <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]}>
-            <Animated.FlatList
-                horizontal={true}
-                scrollEventThrottle={32}
-                onScroll={Animated.event(
-                    [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                    {useNativeDriver: false})}
-                keyExtractor={(item) => item.id.toString()}
-                /*data={getOutfitApi.data}*/
-                data={outfits}
-                pagingEnabled={true}
-                renderItem={({item}) => {
-                    return <View>
-                        <Canvas outfit={item.outfitItems} positions={item.itemPositions} key={`canvas-${item.id}`}/>
-                        <CanvasItems outfitID={item.id} outfit={item} key={`canvasItem-${item.id}`}/>
-                    </View>
+        <Screen>
+            <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]}>
+                <Animated.FlatList
+                    horizontal={true}
+                    scrollEventThrottle={32}
+                    onScroll={Animated.event(
+                        [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                        {useNativeDriver: false})}
+                    onMomentumScrollEnd={onScrollEnd}
+                    keyExtractor={(item) => item.id.toString()}
+                    /*data={getOutfitApi.data}*/
+                    data={outfits}
+                    pagingEnabled={true}
+                    renderItem={({item}) => {
+                        return <View>
+                            <Canvas outfit={item.outfitItems} positions={item.itemPositions} key={`canvas-${item.id}`}/>
+                            <CanvasItems outfit={item} key={`canvasItem-${item.id}`}/>
+                        </View>
+                    }}/>
+            </ScrollView>
+            {isInjected && <View style={styles.chooseOutfitContainer}>
+                <AppButton title={'choose this outfit'} onPress={()=> {
+                    navigation.push('createPost', {picture: picture, base64: base64, outfitId: outfits[currentOutfit].id, outfitName: outfits[currentOutfit].name});
                 }}/>
-        </ScrollView>
+            </View>}
+        </Screen>
     );
 }
 
@@ -188,5 +214,10 @@ const styles = StyleSheet.create({
         backgroundColor: colors.lighter,
         borderRadius: 50,
         padding: 25,
-    }
+    },
+    chooseOutfitContainer: {
+        width: '100%',
+        padding: 10,
+        paddingBottom: 0,
+    },
 });
