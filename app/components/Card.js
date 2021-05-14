@@ -9,6 +9,7 @@ import {
     SafeAreaView, Platform
 } from "react-native";
 import {Image} from "react-native-expo-image-cache";
+import * as Progress from 'react-native-progress';
 
 import Text from "./Text";
 import colors from "../config/colors";
@@ -16,11 +17,7 @@ import UserDisplay from "./UserDisplay";
 import FeedActions from "./FeedActions";
 import {Svg, Path} from 'react-native-svg';
 import Image2 from "./Image";
-import Screen from "./Screen";
-import Modal from "react-native-modal";
-import Canvas from "./Mirror/Canvas";
-import CanvasItems from "./Mirror/CanvasItems";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import feed from "../api/feed";
 
 const DOUBLE_PRESS_DELAY = 300;
 
@@ -30,7 +27,9 @@ function Card({
                   profileImage,
                   caption,
                   likes,
+                  dislikes,
                   hasBeenLiked,
+                  hasBeenDisliked,
                   comments,
                   outfit,
                   images,
@@ -41,9 +40,25 @@ function Card({
 
     const scrollableImages = useRef();
 
-    const [isLiked, setIsLiked] = useState(false);
+    //const [isLiked, setIsLiked] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
+    const [progress, setProgress] = useState((likes + dislikes) === 0 ? 0 : likes / (dislikes + likes))
+    const [isViewable, setIsViewable] = useState(isViewable)
+
+    const getPollRate = async () => {
+        const result = await feed.getPostPoll(post_id)
+        const likes = parseFloat(result.data.numberOfLikes)
+        const dislikes = parseFloat(result.data.numberOfDislikes)
+        return likes / (likes + dislikes)
+    }
+
+    const refreshPoll = (rate) => {
+        if (rate >= 0) {
+            setProgress(rate)
+        }
+    }
+
 
     const handleImagePress = (e) => {
         setShowModal(!showModal);
@@ -56,9 +71,9 @@ function Card({
         }*/
     }
 
-    const handleImageDoublePress = (e) => {
+    /*const handleImageDoublePress = (e) => {
         if (!hasBeenLiked) setIsLiked(true);
-    }
+    }*/
 
     //ToDo defaultSource of images
     return (
@@ -97,23 +112,25 @@ function Card({
                     </TouchableWithoutFeedback>
                 </ScrollView>
                 <View style={styles.detailsContainer}>
-
-                    {/*<View style={{width: 50, height: 50, right: -30, top: -20, position: "absolute"}}>
-                    <Svg width="20" height="20" viewBox="0 0 50 50" fill="none">
-                        <Path fill-rule="evenodd" clip-rule="evenodd" d="M50 50V0C50 27.6142 27.6142 50 0 50H50Z"
-                              fill="#292929"/>
-                    </Svg>
-                </View>*/}
+                    <Progress.Bar
+                        progress={progress}
+                        width={Dimensions.get("window").width - 50}
+                        color={'white'}
+                        style={{
+                            marginBottom: 20,
+                            alignSelf: 'center',
+                        }}/>
                     <FeedActions likes={likes}
                                  comments={comments}
                                  hasBeenLiked={hasBeenLiked}
-                                 isLiked={isLiked}
-                                 setIsLiked={setIsLiked}
+                                 hasBeenDisliked={hasBeenDisliked}
                                  lightTheme={false/*index % 2 !== 0*/}
                                  onCommentClick={onCommentClick}
                                  post_id={post_id}
                                  captionIsEmpty={caption === ""}
                                  caption_attrs={{username, caption, profileImage}}
+                                 refreshPoll={refreshPoll}
+                                 getPollRate={getPollRate}
                     />
                     {caption ? <View><Text style={{color: colors.white}}>{caption}</Text></View> : null}
 
