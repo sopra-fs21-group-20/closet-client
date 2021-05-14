@@ -44,10 +44,10 @@ export default function ClosetScreen({
                                          injectedItemTapFunc
                                      }) {
 
-    const closetApi = useApi(outfitApi.getCloset);
+    const getClosetApi = useApi(outfitApi.getCloset);
 
     useEffect(() => {
-        closetApi.request();
+        getClosetApi.request();
     }, []);
 
     /*const closet = [
@@ -133,7 +133,6 @@ export default function ClosetScreen({
     //const [closetItems, setClosetItems] = useState(closet);
 
     const deleteFromCloset = (id, isModal = false) => {
-        // ToDo API
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
             {
                 text: 'Cancel',
@@ -143,7 +142,10 @@ export default function ClosetScreen({
             {
                 text: 'Delete',
                 onPress: () => {
-                    if (closetApi.data.find(item => item.id === id)) closetApi.setData(closetApi.data.filter(item => item.id !== id));
+                    if (getClosetApi.data.find(item => item.id === id)) {
+
+                        getClosetApi.setData(getClosetApi.data.filter(item => item.id !== id));
+                    }
                     if (isModal) {
                         setModalIsShown(false);
                     }
@@ -165,14 +167,14 @@ export default function ClosetScreen({
     const addToCloset = (item) => {
         // ToDo API
         console.log(item);
-        const tempClosetItems = closetApi.data;
+        const tempClosetItems = getClosetApi.data;
         const index = tempClosetItems.findIndex(items => items.id === item.id);
         if (index !== -1) {
             tempClosetItems[index] = item;
-            closetApi.setData([...tempClosetItems]);
+            getClosetApi.setData([...tempClosetItems]);
         } else {
             console.log([...tempClosetItems, item]);
-            closetApi.setData([...tempClosetItems, item]);
+            getClosetApi.setData([...tempClosetItems, item]);
         }
     }
 
@@ -215,7 +217,7 @@ export default function ClosetScreen({
 
     //Renders panel content
     const _renderContent = section => {
-        const carouselItems = closetApi.data.filter(item => item.categoryId === section.categoryId);
+        const carouselItems = getClosetApi.data.filter(item => item.categoryId === section.categoryId);
         return (
             <View
                 style={carouselItems.length ? styles.sectionContent : [styles.sectionContent, styles.sectionContentRel]}>
@@ -263,8 +265,8 @@ export default function ClosetScreen({
 
     // Renders whole screen
     return (
-        <View style={isInjected ? {height: (filterCategories(categories, closetApi.data).length * 100 + activeSection.length * 225)} : {flex: 1}}>
-            <ActivityIndicator visible={closetApi.loading}/>
+        <View style={isInjected ? {height: (filterCategories(categories, getClosetApi.data).length * 100 + activeSection.length * 225)} : {flex: 1}}>
+            <ActivityIndicator visible={getClosetApi.loading}/>
             <Screen>
                 <ScrollView
                     style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {
@@ -279,7 +281,7 @@ export default function ClosetScreen({
                     }}*/
                 >
                     <Accordion
-                        sections={isInjected ? filterCategories(categories, closetApi.data) : categories}
+                        sections={isInjected ? filterCategories(categories, getClosetApi.data) : categories}
                         activeSections={activeSection}
                         renderHeader={_renderHeader}
                         renderContent={_renderContent}

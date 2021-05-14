@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {Animated, Image, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Animated, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -157,7 +157,15 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
 
     const navigation = useNavigation();
 
-    const {picture, base64} = isInjected ? route.params : {picture: null, base64: null};
+    const {picture, base64, reload} = isInjected ? route.params : {picture: null, base64: null};
+
+    useEffect(() => {
+        route.params?.reload ? getOutfitApi.request() : null;
+    }, [route]);
+
+    const onRefresh = () => {
+        getOutfitApi.request();
+    };
 
     const [currentOutfit, setCurrentOutfit] = useState(0);
 
@@ -172,7 +180,14 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
         <View style={{flex: 1}}>
             <ActivityIndicator visible={getOutfitApi.loading}/>
             <Screen>
-                <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]}>
+                <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]} refreshControl={
+                    <RefreshControl
+                        refreshing={getOutfitApi.loading}
+                        onRefresh={onRefresh}
+                        colors={[colors.light]}
+                        tintColor={colors.light}
+                    />
+                }>
                     <Animated.FlatList
                         horizontal={true}
                         scrollEventThrottle={32}

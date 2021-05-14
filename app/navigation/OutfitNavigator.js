@@ -12,7 +12,7 @@ import ClosetScreen from "../screens/ClosetScreen";
 import MirrorScreen from "../screens/MirrorScreen";
 import OutfitDropdown from "./OutfitDropdown";
 import Text from "../components/Text";
-import CreateOutfit from "../components/Mirror/CreateOutfit";
+import CreateOutfitScreen from "../screens/CreateOutfitScreen";
 import {StackActions} from '@react-navigation/native';
 import OutfitItem from "../components/OutfitItem";
 
@@ -68,7 +68,7 @@ const OutfitNavigator = ({navigation}) => {
     const [editMode, setEditMode] = useState(false);
 
     return (<>
-        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={routes.MIRROR} screenOptions={{
+        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={routes.CLOSET} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}
@@ -96,7 +96,7 @@ const OutfitNavigator = ({navigation}) => {
                     }}/>
                 ),
             }} children={() => <MirrorScreen navigation={navigation} menuOpen={isOpen}/>}/>
-            <Stack.Screen name="createOutfit" component={CreateOutfit} options={{
+            <Stack.Screen name="createOutfit" component={CreateOutfitScreen} options={{
                 cardStyleInterpolator: newItem,
             }}/>
         </Stack.Navigator>

@@ -1,21 +1,25 @@
-import React, {createRef, useState} from "react";
+import React, {createRef, useEffect, useState} from "react";
 import {StyleSheet, Text, Dimensions, View, Image, FlatList, SafeAreaView, TouchableOpacity, Alert} from "react-native";
-import colors from "../../config/colors";
-import Canvas from "./Canvas";
-import TextInput from "../TextInput";
-import AppButton from "../Button";
-import Form from "../forms/Form";
-import UploadScreen from "../../screens/UploadScreen";
-import {FormField, SubmitButton} from "../forms";
+import colors from "../config/colors";
+import Canvas from "../components/Mirror/Canvas";
+import TextInput from "../components/TextInput";
+import AppButton from "../components/Button";
+import Form from "../components/forms/Form";
+import UploadScreen from "./UploadScreen";
+import {FormField, SubmitButton} from "../components/forms";
 import * as Yup from "yup";
 import {StackActions as navigation} from "react-navigation";
-import useLocation from "../../hooks/useLocation";
-import outfitApi from "../../api/outfitApi";
+import useLocation from "../hooks/useLocation";
+import outfitApi from "../api/outfitApi";
 import {StackActions} from '@react-navigation/native';
 import ActionSheet from "react-native-actions-sheet";
-import ClosetScreen from "../../screens/ClosetScreen";
+import ClosetScreen from "./ClosetScreen";
+import useApi from "../hooks/useApi";
+import Screen from "../components/Screen";
+import ActivityIndicator from "../components/ActivityIndicator";
+import routes from "../navigation/routes";
 
-const collectionId = 3;
+/*const collectionId = 3;
 
 const positionData = [
     {id: 19, position: 0},
@@ -68,18 +72,20 @@ const outfitData = [
         },
         signedUrl: 'https://cdn.shopify.com/s/files/1/0706/6863/products/Royal-Black-Site-1_786cdc4b-c7e9-4214-939e-ff07335a8cb9.jpg?v=1571605462'
     },
-];
+];*/
 
 const closetActionSheet = createRef();
 
 
-export default function CreateOutfit({navigation}) {
-    const [outfit, setOutfit] = useState(outfitData);
-    const [position, setPosition] = useState(positionData);
+export default function CreateOutfitScreen({navigation}) {
+
+    const [outfit, setOutfit] = useState([]);
+    const [position, setPosition] = useState([]);
     const [title, onChangeTitle] = useState(null);
     const [uploadVisible, setUploadVisible] = useState(false);
     const [progress, setProgress] = useState(0);
     const [activeRow, setActiveRow] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const deleteItem = (id) => {
         Alert.alert("Delete", "Do you really want to remove this item?", [
@@ -103,6 +109,7 @@ export default function CreateOutfit({navigation}) {
     }
 
     const openCloset = (row) => {
+        setLoading(true);
         setActiveRow(row);
         showCloset();
     }
@@ -113,11 +120,11 @@ export default function CreateOutfit({navigation}) {
 
     const handleSubmit = async (formData, {resetForm}) => {
         if (formData.outfitTitle) {
-            /*setProgress(0);
-            setUploadVisible(true);*/
+            setProgress(0);
+            setUploadVisible(true);
             const data = {
                 "name": formData.outfitTitle,
-                "items": position,
+                "items": position.map(({id: itemId, position}) => ({itemId, position})),
                 "collectionIds": []
             };
             const result = await outfitApi.addOutfit(
@@ -131,6 +138,7 @@ export default function CreateOutfit({navigation}) {
                 return alert("Could not save the outfit");
             }
             resetForm();
+            navigation.navigate(routes.MIRROR, {reload: true});
         } else {
             Alert.alert("Please enter an outfit name.");
         }
@@ -141,38 +149,44 @@ export default function CreateOutfit({navigation}) {
     };
 
     return (
-        <SafeAreaView>
-            <UploadScreen
-                onDone={() => setUploadVisible(false)}
-                progress={progress}
-                visible={uploadVisible}
-            />
-            <Form
-                initialValues={{
-                    outfitTitle: "",
-                }}
-                onSubmit={handleSubmit}
-            >
-                <Canvas style={styles.canvas} outfit={outfit} positions={position} edit={true} deleteFunc={deleteItem}
-                        addFunc={openCloset}/>
-                <View style={styles.formContainer}>
-                    <FormField
-                        maxLength={255}
-                        name="outfitTitle"
-                        numberOfLines={1}
-                        placeholder="Outfit Name"
-                        blurOnSubmit={true}
-                        returnKeyType={'done'}
+        <View style={{flex: 1}}>
+            <ActivityIndicator visible={loading}/>
+            <Screen>
+                <SafeAreaView>
+                    <UploadScreen
+                        onDone={() => setUploadVisible(false)}
+                        progress={progress}
+                        visible={uploadVisible}
                     />
-                    <SubmitButton title="create"/>
-                </View>
-            </Form>
-            <ActionSheet ref={closetActionSheet}>
-                <View style={styles.actionSheet}>
-                    <ClosetScreen isInjected={true} injectedItemTapFunc={addItem}/>
-                </View>
-            </ActionSheet>
-        </SafeAreaView>
+                    <Form
+                        initialValues={{
+                            outfitTitle: "",
+                        }}
+                        onSubmit={handleSubmit}
+                    >
+                        <Canvas style={styles.canvas} outfit={outfit} positions={position} edit={true}
+                                deleteFunc={deleteItem}
+                                addFunc={openCloset}/>
+                        <View style={styles.formContainer}>
+                            <FormField
+                                maxLength={255}
+                                name="outfitTitle"
+                                numberOfLines={1}
+                                placeholder="Outfit Name"
+                                blurOnSubmit={true}
+                                returnKeyType={'done'}
+                            />
+                            <SubmitButton title="create"/>
+                        </View>
+                    </Form>
+                    <ActionSheet ref={closetActionSheet} onOpen={() => {setLoading(false)}}>
+                        <View style={styles.actionSheet}>
+                            <ClosetScreen isInjected={true} injectedItemTapFunc={addItem}/>
+                        </View>
+                    </ActionSheet>
+                </SafeAreaView>
+            </Screen>
+        </View>
     );
 }
 

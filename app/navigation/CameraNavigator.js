@@ -9,7 +9,7 @@ import FeedContext from "./FeedContext";
 import MirrorScreen from "../screens/MirrorScreen";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import colors from "../config/colors";
-import CreateOutfit from "../components/Mirror/CreateOutfit";
+import CreateOutfitScreen from "../screens/CreateOutfitScreen";
 
 const Stack = createStackNavigator();
 
@@ -63,7 +63,7 @@ const CameraNavigator = ({navigation, route}) => {
                         navigation.navigate("createOutfit")
                     }}/>,
             }} children={() => <MirrorScreen isInjected={true} />}/>
-            <Stack.Screen name="createOutfit" component={CreateOutfit} navigation={navigation} route={route} options={{
+            <Stack.Screen name="createOutfit" component={CreateOutfitScreen} navigation={navigation} route={route} options={{
                 headerShown: true,
                 headerTitle: null,
                 headerLeft: () => <MaterialCommunityIcons name="arrow-left" style={styles.headerLeft} onPress={() => {
