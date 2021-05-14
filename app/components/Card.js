@@ -130,7 +130,7 @@ function Card({
                 </View>
                 {/*<View style={[styles.afterCard, (index % 2 === 0 ? null : lightTheme.afterCard)]}/>*/}
             </View>
-            <Modal propagateSwipe
+            {outfit && <Modal propagateSwipe
                    style={{margin: 0,}}
                    isVisible={showModal}
                    onBackdropPress={() => setShowModal(false)}
@@ -150,10 +150,10 @@ function Card({
                     <Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
                     <CanvasItems outfit={outfit}/>
                 </SafeAreaView>
-            </Modal>
+            </Modal>}
         </>
     );
-}
+};
 
 /*const headerHeight = ;
 const tabBarHeight = useBottomTabBarHeight();*/
