@@ -8,4 +8,5 @@ export default Object.freeze({
   MIRROR: "Mirror",
   OUTFIT: "MirrorScreen",
   REGISTER: "Register",
+  CAMERA: "cameraNavigator",
 });

@@ -30,17 +30,14 @@ function RegisterScreen() {
   const [error, setError] = useState();
 
   const handleSubmit = async (userInfo) => {
-    console.log(userInfo)
     const result = await registerApi.request(userInfo);
 
     if (!result.ok) {
       if (result.data) {
         setError(result.data.error);
-        console.log(result);
       }
       else {
         setError("An unexpected error occurred.");
-        console.log(result);
       }
       return;
     }
@@ -49,7 +46,6 @@ function RegisterScreen() {
       userInfo.username,
       userInfo.password
     );
-    console.log(authToken);
     auth.logIn(authToken);
   };
 

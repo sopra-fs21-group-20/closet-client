@@ -274,7 +274,6 @@ const stylesSquare = StyleSheet.create({
 
 const stylesList = StyleSheet.create({
     item: {
-        flex: 1,
         flexDirection: 'row',
         marginTop: 10,
         backgroundColor: colors.white,
@@ -284,6 +283,7 @@ const stylesList = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 10,
         alignItems: 'center',
+        position: "relative",
     },
     image: {
         width: 60,

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {View, StyleSheet, TouchableWithoutFeedback, ScrollView, Dimensions, TouchableOpacity} from "react-native";
 import {Image} from "react-native-expo-image-cache";
 import * as Progress from 'react-native-progress';
@@ -32,11 +32,6 @@ function Card({
 
     const [progress, setProgress] = useState((likes + dislikes) === 0 ? 0 : likes / (dislikes + likes))
     const [isViewable, setIsViewable] = useState(isViewable)
-
-    console.log('we are here',likes / (dislikes + likes))
-    console.log(likes)
-    console.log(dislikes)
-
 
     const getPollRate = async () => {
         const result = await feed.getPostPoll(post_id)
@@ -125,7 +120,7 @@ function Card({
                 />
                 {caption ? <View><Text style={{color: colors.white}}>{caption}</Text></View> : null}
 
-                {/*<UserDisplay
+                    {/*<UserDisplay
                     username={username}
                     profileImage={profileImage}
                     caption={caption}

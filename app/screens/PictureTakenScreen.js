@@ -31,7 +31,10 @@ export default function PictureTakenScreen({route, navigation}) {
                 <Image2 source={{uri: pictureUri}} style={{width: '100%', height: '100%'}}/>}
             </View>
             <View style={[styles.bottomButtonContainer, {height: bottomButtonContainerHeight}]}>
-                <AppButton title={'continue'} onPress={()=> {navigation.push('createPost', {picture: pictureUri, base64: pictureBase64})}}/>
+                <AppButton title={'choose this as first image'} onPress={()=> {
+                    //navigation.push('createPost', {picture: pictureUri, base64: pictureBase64});
+                    navigation.push('chooseOutfit', {picture: pictureUri, base64: pictureBase64});
+                }}/>
             </View>
         </SafeAreaView>
     );
@@ -64,6 +67,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        paddingHorizontal: 10,
     },
     topButtonContainer:{
         width:'100%',

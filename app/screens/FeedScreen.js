@@ -15,12 +15,10 @@ import OutfitItem from "../components/OutfitItem";
 import Canvas from "../components/Mirror/Canvas";
 import CanvasItems from "../components/Mirror/CanvasItems";
 import {useRoute} from "@react-navigation/native";
-import {Viewport} from "@skele/components/src";
 
 function FeedScreen({navigation}) {
     //default is start=0, end=3
 
-    const ViewportAwareCard = Viewport.Aware(Card)
     const route = useRoute();
 
     useEffect(() => {
@@ -28,7 +26,8 @@ function FeedScreen({navigation}) {
     }, [route]);
 
 
-    const positionData = [
+
+    /*const positionData = [
         {id: 19, position: 0},
         {id: 9, position: 1},
         {id: 6, position: 3},
@@ -89,10 +88,11 @@ function FeedScreen({navigation}) {
         collectionIds: [
             2
         ]
-    };
+    };*/
 
     const [showModal, setShowModal] = useState(false)
     const [myOutfit, setMyOutfit] = useState(null)
+    };
 
     const getFeedApi = useApi(feed.getFeed);
 
@@ -199,7 +199,6 @@ function FeedScreen({navigation}) {
                     </ScrollView>
                 )}
                 {getFeedApi.data && getFeedApi.data.length >= 1 && (
-                    <Viewport.Tracker>
                         <FlatList
                             contentContainerStyle={styles.flatList}
                             refreshControl={<RefreshControl
@@ -232,7 +231,6 @@ function FeedScreen({navigation}) {
                                 />);
                             }}
                         />
-                    </Viewport.Tracker>
                 )}
             </Screen>
             <Modal propagateSwipe

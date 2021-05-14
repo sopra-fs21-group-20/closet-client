@@ -171,7 +171,7 @@ export default function CreateOutfit({navigation}) {
                 </View>
             </Form>
             <ActionSheet ref={closetActionSheet}>
-                <View style={{height: Dimensions.get("window").height - 100}}>
+                <View style={styles.actionSheet}>
                     <ClosetScreen isInjected={true} injectedItemTapFunc={addItem}/>
                 </View>
             </ActionSheet>
@@ -189,6 +189,9 @@ const styles = StyleSheet.create({
     formContainer: {
         paddingHorizontal: 10,
         paddingVertical:25,
+        backgroundColor: colors.darker,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
     },
     text: {
         fontSize: 20,
@@ -234,5 +237,10 @@ const styles = StyleSheet.create({
     title: {
         color: colors.white,
         fontSize: 30
+    },
+    actionSheet: {
+        backgroundColor: colors.dark,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
     },
 });

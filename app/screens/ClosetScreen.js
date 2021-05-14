@@ -24,6 +24,7 @@ import categories from "../config/categories";
 import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
 import ModalLike from "../components/ModalLike";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 const filterCategories = (categories, closetItems) => {
     const tempCategories = [];
@@ -43,18 +44,15 @@ export default function ClosetScreen({
                                          injectedItemTapFunc
                                      }) {
 
-    /*const getClosetApi = useApi(outfitApi.getCloset);
+    const closetApi = useApi(outfitApi.getCloset);
 
     useEffect(() => {
-        getClosetApi.request().catch(() => {
-            console.log(getClosetApi.error);
-        }).then(() => {
-            console.log("working", getClosetApi.data);
-            setClosetItems(getClosetApi.data);
+        closetApi.request().catch(() => {
+            console.log(closetApi.error);
         });
-    }, []);*/
+    }, []);
 
-    const closet = [
+    /*const closet = [
         {
             id: 0,
             categoryId: 4,
@@ -132,9 +130,9 @@ export default function ClosetScreen({
             },
             signedUrl: "https://img01.ztat.net/article/spp-media-p1/81884809114745e1a95320958231ae31/e6dfeb1165834e6aaff00ad40a8fff41.jpg?imwidth=1800&filter=packshot",
         },
-    ];
+    ];*/
 
-    const [closetItems, setClosetItems] = useState(closet);
+    //const [closetItems, setClosetItems] = useState(closet);
 
     const deleteFromCloset = (id, isModal = false) => {
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
@@ -146,7 +144,7 @@ export default function ClosetScreen({
             {
                 text: 'Delete',
                 onPress: () => {
-                    if (closetItems.find(item => item.id === id)) setClosetItems(closetItems.filter(item => item.id !== id));
+                    if (closetApi.data.find(item => item.id === id)) closetApi.setData(closetApi.data.filter(item => item.id !== id));
                     if (isModal) {
                         setModalIsShown(false);
                     }
@@ -155,7 +153,14 @@ export default function ClosetScreen({
         ]);
     }
 
-    const [filteredCategories, setFilteredCategories] = useState(isInjected ? filterCategories(categories, closetItems) : categories);
+    useEffect(() => {
+        if (!closetApi.loading && isInjected) {
+            setFilteredCategories(filterCategories(categories, closetApi.data));
+        }
+    }, [closetApi.loading]);
+
+
+    const [filteredCategories, setFilteredCategories] = useState(categories);
 
     const itemTap = (data, state, isShown) => {
         if (isInjected) {
@@ -170,10 +175,8 @@ export default function ClosetScreen({
     const addToCloset = (item) => {
         const tempClosetItems = closetItems;
         const index = tempClosetItems.findIndex(items => items.id === item.id);
-        console.log("index", index);
         if (index !== -1) {
             tempClosetItems[index] = item;
-            console.log("tempCloset", tempClosetItems);
             setClosetItems([...tempClosetItems]);
         } else {
             setClosetItems(closetItems => [...closetItems, item]);
@@ -192,7 +195,7 @@ export default function ClosetScreen({
     const [modalState, setModalState] = useState(2);
 
     // Height of closet container
-    const [containerHeight, setContainerHeight] = useState(0);
+    //const [containerHeight, setContainerHeight] = useState(500);
 
 
     // Renders panel header (always shown)
@@ -202,7 +205,7 @@ export default function ClosetScreen({
                 <ImageBackground source={section.url} resizeMode={'cover'}
                                  style={styles.sectionHeaderBackground}>
                     <View
-                        style={[styles.sectionHeaderBackgroundOpacity, {paddingVertical: containerHeight !== 0 ? ((containerHeight / categories.length) - 26) / 2 : 25}]}>
+                        style={[styles.sectionHeaderBackgroundOpacity, /*{paddingVertical: containerHeight !== 0 ? ((containerHeight / categories.length) - 26) / 2 : 25}*/]}>
                         <Text style={styles.sectionHeaderText}>{section.title}</Text>
                         <View style={styles.sectionHeaderIcon}>
                             <MaterialCommunityIcons
@@ -219,7 +222,7 @@ export default function ClosetScreen({
 
     //Renders panel content
     const _renderContent = section => {
-        const carouselItems = closetItems.filter(item => item.categoryId === section.categoryId);
+        const carouselItems = closetApi.data.filter(item => item.categoryId === section.categoryId);
         return (
             <View
                 style={carouselItems.length ? styles.sectionContent : [styles.sectionContent, styles.sectionContentRel]}>
@@ -267,32 +270,40 @@ export default function ClosetScreen({
 
     // Renders whole screen
     return (
-        <Screen>
-            <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {
-                margin: 0,
-                marginTop: 0,
-                borderRadius: 5
-            } : null]} onLayout={(event) => {
-                const {height} = event.nativeEvent.layout;
-                setContainerHeight(height);
-            }}>
-                <Accordion
-                    sections={filteredCategories}
-                    activeSections={activeSection}
-                    renderHeader={_renderHeader}
-                    renderContent={_renderContent}
-                    onChange={newActiveSection => setActiveSection(newActiveSection)}
-                    underlayColor={'rgba(0,0,0,0.3)'}
-                    sectionContainerStyle={styles.sectionContainer}
-                />
-            </ScrollView>
-            <ModalLike
-                isVisible={modalIsShown}
-                onBackdropPress={() => setModalIsShown(false)}>
-                <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState} setStateFunc={setModalState} modalCloseFunc={setModalIsShown}
-                            deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
-            </ModalLike>
-        </Screen>
+        <View style={isInjected ? {height: (filteredCategories.length * 100 + activeSection.length * 225)} : {flex: 1}}>
+            <ActivityIndicator visible={closetApi.loading}/>
+            <Screen>
+                <ScrollView
+                    style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {
+                        margin: 0,
+                        marginTop: 0,
+                        borderRadius: 5,
+                    } : null]}
+                    /*onLayout={(event) => {
+                        const {height} = event.nativeEvent.layout;
+                        console.log("height", height);
+                        setContainerHeight(height);
+                    }}*/
+                >
+                    <Accordion
+                        sections={filteredCategories}
+                        activeSections={activeSection}
+                        renderHeader={_renderHeader}
+                        renderContent={_renderContent}
+                        onChange={newActiveSection => setActiveSection(newActiveSection)}
+                        underlayColor={'rgba(0,0,0,0.3)'}
+                        sectionContainerStyle={styles.sectionContainer}
+                    />
+                </ScrollView>
+                {!isInjected && <ModalLike
+                    isVisible={modalIsShown}
+                    onBackdropPress={() => setModalIsShown(false)}>
+                    <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState}
+                                setStateFunc={setModalState} modalCloseFunc={setModalIsShown}
+                                deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
+                </ModalLike>}
+            </Screen>
+        </View>
     );
 }
 
@@ -308,14 +319,17 @@ const styles = StyleSheet.create({
     sectionHeader: {
         width: '100%',
         position: 'relative',
+        height: 100,
     },
     sectionHeaderBackground: {
-        /*width: '100%',
-        height: '100%',*/
+        width: '100%',
+        height: '100%',
     },
     sectionHeaderBackgroundOpacity: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.6)',
+        justifyContent: "center",
+        alignItems: "center",
     },
     sectionHeaderText: {
         color: colors.light,

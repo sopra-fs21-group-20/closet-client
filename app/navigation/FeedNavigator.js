@@ -29,7 +29,7 @@ const FeedNavigator = ({navigation}) => {
                 headerStyle: [styles.headerStyle],
                 headerTitle: "myOutf.it",
                 headerTitleStyle: styles.headerTitle,
-            }}>
+            }} initialRouteName={routes.FEED}>
                 <Stack.Screen name="Feed" component={FeedScreen} options={{
                     headerLeft: () => (
                         <MaterialCommunityIcons name="camera-outline" style={styles.headerLeft} onPress={() => {

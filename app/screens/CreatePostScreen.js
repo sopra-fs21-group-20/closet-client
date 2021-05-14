@@ -1,5 +1,14 @@
 import React, {useContext, useState} from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View
+} from "react-native";
 import {NavigationActions, StackActions} from "react-navigation";
 import * as Yup from "yup";
 
@@ -31,14 +40,14 @@ function CreatePostScreen({navigation, route}) {
     const [uploadVisible, setUploadVisible] = useState(false);
     const [progress, setProgress] = useState(0);
     const {user} = useContext(AuthContext);
-    const {base64} = route.params;
+    const {base64, outfitId} = route.params;
     //const {navigation} = useContext(FeedContext);
 
     const handleSubmit = async (listing, {resetForm}) => {
         setProgress(0);
         setUploadVisible(true);
         const result = await feed.addFeedItem(
-            {...listing, location, base64}, user,
+            {...listing, location, base64, outfitId}, user,
             (progress) => setProgress(progress)
         );
 
@@ -48,39 +57,57 @@ function CreatePostScreen({navigation, route}) {
         }
 
         resetForm();
-        navigation.navigate('Feed', {screen: 'Feed', reload: true})
+        navigation.navigate('Feed', {screen: 'Feed', reload: true});
     };
 
     return (
         <Screen style={styles.container}>
-            <UploadScreen
-                onDone={() => setUploadVisible(false)}
-                progress={progress}
-                visible={uploadVisible}
-            />
-            <View style={styles.topButtonContainer}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <MaterialIcons name="arrow-back" size={35} color="black" style={styles.backButton}/>
-                </TouchableOpacity>
-            </View>
-            <Form
-                initialValues={{
-                    caption: "",
-                    images: [route.params.picture],
-                }}
-                onSubmit={handleSubmit}
-                validationSchema={validationSchema}
-            >
-                <PostImagePicker name="images" editable={false} hasMultiple={true}/>
-                <FormField
-                    maxLength={255}
-                    multiline
-                    name="caption"
-                    numberOfLines={3}
-                    placeholder="Caption"
-                />
-                <SubmitButton title="Post"/>
-            </Form>
+            <TouchableWithoutFeedback onPress={() => {
+                Keyboard.dismiss
+            }} accessible={false}>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "position" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 85 : 60}
+                >
+                    <UploadScreen
+                        onDone={() => setUploadVisible(false)}
+                        progress={progress}
+                        visible={uploadVisible}
+                    />
+                    <View style={styles.topButtonContainer}>
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <MaterialIcons name="arrow-back" size={35} color="white"/>
+                        </TouchableOpacity>
+                    </View>
+                    <Form
+                        initialValues={{
+                            caption: "",
+                            outfit: route.params.outfitName,
+                            images: [route.params.picture],
+                        }}
+                        onSubmit={handleSubmit}
+                        validationSchema={validationSchema}
+                    >
+                        <PostImagePicker name="images" editable={false} hasMultiple={true}/>
+                        <FormField
+                            maxLength={255}
+                            multiline
+                            name="outfit"
+                            numberOfLines={3}
+                            placeholder="Outfit"
+                            editable={false}
+                        />
+                        <FormField
+                            maxLength={255}
+                            multiline
+                            name="caption"
+                            numberOfLines={3}
+                            placeholder="Caption"
+                        />
+                        <SubmitButton title="Post"/>
+                    </Form>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         </Screen>
     );
 }
