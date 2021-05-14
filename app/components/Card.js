@@ -130,7 +130,7 @@ function Card({
                 </View>
                 {/*<View style={[styles.afterCard, (index % 2 === 0 ? null : lightTheme.afterCard)]}/>*/}
             </View>
-            {outfit && <Modal propagateSwipe
+            <Modal propagateSwipe
                    style={{margin: 0,}}
                    isVisible={showModal}
                    onBackdropPress={() => setShowModal(false)}
@@ -147,10 +147,10 @@ function Card({
                             style={styles.closeIcon}
                             size={20}/>
                     </TouchableOpacity>
-                    <Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
-                    <CanvasItems outfit={outfit}/>
+                    {outfit.outfitItems && outfit.itemPositions && <><Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
+                    <CanvasItems outfit={outfit}/></>}
                 </SafeAreaView>
-            </Modal>}
+            </Modal>
         </>
     );
 };

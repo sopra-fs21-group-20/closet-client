@@ -47,9 +47,7 @@ export default function ClosetScreen({
     const closetApi = useApi(outfitApi.getCloset);
 
     useEffect(() => {
-        closetApi.request().catch(() => {
-            console.log(closetApi.error);
-        });
+        closetApi.request();
     }, []);
 
     /*const closet = [
