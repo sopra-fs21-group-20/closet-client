@@ -133,6 +133,7 @@ export default function ClosetScreen({
     //const [closetItems, setClosetItems] = useState(closet);
 
     const deleteFromCloset = (id, isModal = false) => {
+        // ToDo API
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
             {
                 text: 'Cancel',
@@ -162,13 +163,16 @@ export default function ClosetScreen({
     }
 
     const addToCloset = (item) => {
-        const tempClosetItems = closetItems;
+        // ToDo API
+        console.log(item);
+        const tempClosetItems = closetApi.data;
         const index = tempClosetItems.findIndex(items => items.id === item.id);
         if (index !== -1) {
             tempClosetItems[index] = item;
-            setClosetItems([...tempClosetItems]);
+            closetApi.setData([...tempClosetItems]);
         } else {
-            setClosetItems(closetItems => [...closetItems, item]);
+            console.log([...tempClosetItems, item]);
+            closetApi.setData([...tempClosetItems, item]);
         }
     }
 
@@ -216,7 +220,7 @@ export default function ClosetScreen({
             <View
                 style={carouselItems.length ? styles.sectionContent : [styles.sectionContent, styles.sectionContentRel]}>
                 {!isInjected && <TouchableOpacity onPress={() => {
-                    itemTap({}, 3, true);
+                    itemTap({categoryId: section.categoryId}, 3, true);
                 }}>
                     <View style={carouselItems.length ? styles.newItem : [styles.newItem, styles.newItemRel]}>
                         <MaterialCommunityIcons
@@ -228,7 +232,7 @@ export default function ClosetScreen({
                 </TouchableOpacity>}
                 {!isInjected && carouselItems.length ? (
                     <TouchableOpacity onPress={() => {
-                        itemTap({}, 3, true);
+                        itemTap({categoryId: section.categoryId}, 3, true);
                     }} style={{zIndex: 10}}>
                         <View style={styles.newItemOverlay}>
                         </View>
@@ -275,7 +279,7 @@ export default function ClosetScreen({
                     }}*/
                 >
                     <Accordion
-                        sections={filterCategories(categories, closetApi.data)}
+                        sections={isInjected ? filterCategories(categories, closetApi.data) : categories}
                         activeSections={activeSection}
                         renderHeader={_renderHeader}
                         renderContent={_renderContent}
