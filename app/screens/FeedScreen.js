@@ -92,8 +92,6 @@ function FeedScreen({navigation}) {
 
     const [showModal, setShowModal] = useState(false)
     const [myOutfit, setMyOutfit] = useState(null)
-    };
-
     const getFeedApi = useApi(feed.getFeed);
 
     useEffect(() => {
