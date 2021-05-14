@@ -15,16 +15,17 @@ import OutfitItem from "../components/OutfitItem";
 import Canvas from "../components/Mirror/Canvas";
 import CanvasItems from "../components/Mirror/CanvasItems";
 import {useRoute} from "@react-navigation/native";
+import {Viewport} from "@skele/components/src";
 
 function FeedScreen({navigation}) {
     //default is start=0, end=3
 
+    const ViewportAwareCard = Viewport.Aware(Card)
     const route = useRoute();
 
     useEffect(() => {
         route.params?.reload ? getFeedApi.request() : null;
     }, [route]);
-
 
 
     const positionData = [
@@ -91,7 +92,7 @@ function FeedScreen({navigation}) {
     };
 
     const [showModal, setShowModal] = useState(false)
-    console.log(showModal)
+    const [myOutfit, setMyOutfit] = useState(null)
 
     const getFeedApi = useApi(feed.getFeed);
 
@@ -159,7 +160,9 @@ function FeedScreen({navigation}) {
         console.log(color);
     };*/
 
-    const handleModal = () => {
+
+    const handleModal = (outfit) => {
+        setMyOutfit(outfit)
         if (showModal === false) {
             setShowModal(true)
         } else {
@@ -195,36 +198,42 @@ function FeedScreen({navigation}) {
                         </View>
                     </ScrollView>
                 )}
-                {getFeedApi.data && getFeedApi.data.length >= 1 && (<FlatList
-                    /*viewabilityConfig={viabilityConfig}
-                    onViewableItemsChanged={onViewableItemsChanged}*/
-                    contentContainerStyle={styles.flatList}
-                    refreshControl={<RefreshControl
-                        refreshing={getFeedApi.loading}
-                        onRefresh={onRefresh}
-                        colors={[colors.light]}
-                        tintColor={colors.light}
-                    />}
-                    data={getFeedApi.data}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({item, index}) => {
-                        return (<Card
-                            post_id={item.id}
-                            username={item.username}
-                            profileImage={item.profileImage}
-                            caption={item.caption}
-                            hasBeenLiked={item.hasLiked}
-                            likes={item.numberOfLikes}
-                            comments={item.numberOfComments}
-                            images={item.images}
-                            onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/
+                {getFeedApi.data && getFeedApi.data.length >= 1 && (
+                    <Viewport.Tracker>
+                        <FlatList
+                            contentContainerStyle={styles.flatList}
+                            refreshControl={<RefreshControl
+                                refreshing={getFeedApi.loading}
+                                onRefresh={onRefresh}
+                                colors={[colors.light]}
+                                tintColor={colors.light}
+                            />}
+                            data={getFeedApi.data}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({item, index}) => {
+                                return (<Card
+                                    post_id={item.id}
+                                    username={item.username}
+                                    profileImage={item.profileImage}
+                                    caption={item.caption}
+                                    hasBeenLiked={item.hasLiked}
+                                    hasBeenDisliked={item.hasDisliked}
+                                    likes={item.numberOfLikes}
+                                    dislikes={item.numberOfDislikes}
+                                    comments={item.numberOfComments}
+                                    images={item.images}
+                                    onPress={() => { /*navigation.navigate(routes.LISTING_DETAILS, item)*/
+                                    }}
+                                    index={index}
+                                    onCommentClick={navigateToComments}
+                                    handleModal={handleModal}
+                                    isViewable={item.isViewable}
+                                    outfit={item.outfit}
+                                />);
                             }}
-                            index={index}
-                            onCommentClick={navigateToComments}
-                            handleModal={handleModal}
-                        />);
-                    }}
-                />)}
+                        />
+                    </Viewport.Tracker>
+                )}
             </Screen>
             <Modal propagateSwipe
                    style={{margin: 0}}
@@ -233,8 +242,12 @@ function FeedScreen({navigation}) {
                    onSwipeComplete={() => setShowModal(false)}
                    swipeDirection={"down"}
             >
-
-                <Canvas outfit={modalData.outfitItems} positions={positionData} modal={true}/>
+                {
+                    myOutfit ?
+                        <Canvas outfit={myOutfit.outfitItems} positions={myOutfit.itemPositions}
+                                modal={true}/> :
+                        <View style={{alignItems: 'center', justifyContent: 'center', height: 100, backgroundColor: colors.white}}><Text>No Outfit connected</Text></View>
+                }
             </Modal>
         </>
 

@@ -19,8 +19,14 @@ const addFeedItem = (feedItem, user, onUploadProgress) => {
 
 const likePost = (post_id) => client.post(endpoint + "/" + post_id + "/like");
 
+const dislikePost = (post_id) => client.post(endpoint + "/" + post_id + "/dislike")
+
+const getPostPoll = (post_id) => client.get(endpoint + "/" + post_id + "/poll")
+
 export default {
     addFeedItem,
     getFeed,
-    likePost
+    likePost,
+    dislikePost,
+    getPostPoll
 };
