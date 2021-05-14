@@ -20,7 +20,7 @@ const AppNavigator = () => {
         const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
         return routeName !== 'cameraNavigator';
     };
-    return (<Tab.Navigator initialRouteName={routes.FEED} tabBarOptions={{
+    return (<Tab.Navigator initialRouteName={routes.OUTFIT} tabBarOptions={{
         keyboardHidesTabBar: true,
         showLabel: false,
         tabBarIcon: {

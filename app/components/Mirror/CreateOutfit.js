@@ -1,5 +1,5 @@
 import React, {createRef, useState} from "react";
-import {StyleSheet, Text, Dimensions, View, Image, FlatList, SafeAreaView, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, Dimensions, View, Image, FlatList, SafeAreaView, TouchableOpacity, Alert} from "react-native";
 import colors from "../../config/colors";
 import Canvas from "./Canvas";
 import TextInput from "../TextInput";
@@ -82,8 +82,15 @@ export default function CreateOutfit({navigation}) {
     const [activeRow, setActiveRow] = useState(0);
 
     const deleteItem = (id) => {
-        setOutfit([...outfit.filter(item => item.id !== id)]);
-        setPosition([...position.filter(item => item.id !== id)]);
+        Alert.alert("Delete", "Do you really want to remove this item?", [
+            {
+                text: "Yes", onPress: () => {
+                    setOutfit([...outfit.filter(item => item.id !== id)]);
+                    setPosition([...position.filter(item => item.id !== id)]);
+                }
+            },
+            {text: "No"},
+        ]);
     }
 
     const addItem = (item) => {
@@ -104,38 +111,29 @@ export default function CreateOutfit({navigation}) {
         outfitTitle: Yup.string().label("OUTFIT NAME"),
     });
 
-    const transformObject = (outfit) => {
-        const items = []
-        for (const [index, element] of Object.entries(outfit)) {
-            if (element) {
-                items.push({
-                    "itemId": element.id,
-                    "position": parseInt(index)
-                })
+    const handleSubmit = async (formData, {resetForm}) => {
+        if (formData.outfitTitle) {
+            /*setProgress(0);
+            setUploadVisible(true);*/
+            const data = {
+                "name": formData.outfitTitle,
+                "items": position,
+                "collectionIds": []
+            };
+            const result = await outfitApi.addOutfit(
+                data,
+                (progress) => setProgress(progress));
+
+            if (!result.ok) {
+                setUploadVisible(false);
+                console.log(data);
+                console.log(result);
+                return alert("Could not save the outfit");
             }
+            resetForm();
+        } else {
+            Alert.alert("Please enter an outfit name.");
         }
-        return ({
-            "name": outfit.outfitTitle,
-            "items": items,
-            "collectionIds": outfit.collectionIds
-        })
-    }
-
-    const handleSubmit = async (outfit, {resetForm}) => {
-        setProgress(0);
-        setUploadVisible(true);
-        const transformed = transformObject(outfit)
-        const result = await outfitApi.addOutfit(
-            transformed,
-            (progress) => setProgress(progress));
-
-        if (!result.ok) {
-            setUploadVisible(false);
-            return alert("Could not save the outfit");
-        }
-
-        alert(outfit.outfitTitle)
-        resetForm();
     };
 
     const showCloset = () => {
@@ -152,7 +150,6 @@ export default function CreateOutfit({navigation}) {
             <Form
                 initialValues={{
                     outfitTitle: "",
-                    items: outfit,
                 }}
                 onSubmit={handleSubmit}
             >
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         paddingHorizontal: 10,
-        paddingVertical:25,
+        paddingVertical: 25,
         backgroundColor: colors.darker,
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,

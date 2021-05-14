@@ -68,7 +68,7 @@ const OutfitNavigator = ({navigation}) => {
     const [editMode, setEditMode] = useState(false);
 
     return (<>
-        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={routes.CLOSET} screenOptions={{
+        <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={routes.MIRROR} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}
