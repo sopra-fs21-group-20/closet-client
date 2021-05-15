@@ -6,7 +6,7 @@ import useAuth from "../../auth/useAuth";
 import colors from "../../config/colors";
 import Image2 from "../Image";
 
-export default function ProfileDetails() {
+export default function ProfileDetails({userDetails, postsAmount}) {
     const {user, logOut} = useAuth();
 
     return (
@@ -16,10 +16,10 @@ export default function ProfileDetails() {
                 style={styles.profilePic}
             />
             <View style={styles.details}>
-                <Text style={styles.username}>{user?.sub ? user?.sub : ""}</Text>
-                <Text style={styles.bio}>test@test.ch</Text>
+                <Text style={styles.username}>{userDetails.username}</Text>
+                <Text style={styles.bio}>{userDetails.biography ? userDetails.biography : 'this is a placeholder'}</Text>
             </View>
-            <ProfileBar/>
+            <ProfileBar posts={postsAmount}/>
         </View>
     );
 }
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     bio:{
+        color: colors.white
     },
     details:{
         margin: 10,
