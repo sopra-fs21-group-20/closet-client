@@ -13,15 +13,14 @@ import * as Progress from 'react-native-progress';
 
 import Text from "./Text";
 import colors from "../config/colors";
-import UserDisplay from "./UserDisplay";
 import FeedActions from "./FeedActions";
-import {Svg, Path} from 'react-native-svg';
 import Image2 from "./Image";
 import feed from "../api/feed";
 import Canvas from "./Mirror/Canvas";
 import CanvasItems from "./Mirror/CanvasItems";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Modal from "react-native-modal";
+import LivePoll from "./LivePoll";
 
 const DOUBLE_PRESS_DELAY = 300;
 
@@ -47,21 +46,7 @@ function Card({
     //const [isLiked, setIsLiked] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
-    const [progress, setProgress] = useState((likes + dislikes) === 0 ? 0 : likes / (dislikes + likes))
-    const [isViewable, setIsViewable] = useState(isViewable)
-
-    const getPollRate = async () => {
-        const result = await feed.getPostPoll(post_id)
-        const likes = parseFloat(result.data.numberOfLikes)
-        const dislikes = parseFloat(result.data.numberOfDislikes)
-        return likes / (likes + dislikes)
-    }
-
-    const refreshPoll = (rate) => {
-        if (rate >= 0) {
-            setProgress(rate)
-        }
-    }
+    const [isViewable, setIsViewable] = useState(isViewable);
 
 
     const handleImagePress = (e) => {
@@ -78,8 +63,6 @@ function Card({
     /*const handleImageDoublePress = (e) => {
         if (!hasBeenLiked) setIsLiked(true);
     }*/
-
-    //ToDo defaultSource of images
     return (
         <>
             <View style={[styles.card, (index % 2 === 0 ? null : lightTheme.card)]}>
@@ -87,20 +70,18 @@ function Card({
                     <TouchableWithoutFeedback onPress={handleImagePress}>
                         <View style={styles.imageScrollViewContainer}>
                             <TouchableOpacity
-                                style={{
-                                    backgroundColor: colors.white,
-                                    height: 30,
-                                    position: 'absolute',
-                                    zIndex: 2,
-                                    borderTopLeftRadius: 20,
-                                    borderBottomRightRadius: 5,
-                                    opacity: 0.8,
-                                    justifyContent: 'center',
-                                    paddingLeft: 10,
-                                    paddingRight: 15,
-                                }}>
+                                style={styles.username}>
                                 <Text>{username}</Text>
                             </TouchableOpacity>
+                            <View style={styles.comments}>
+                                <FeedActions comments={comments}
+                                             lightTheme={false/*index % 2 !== 0*/}
+                                             post_id={post_id}
+                                             captionIsEmpty={caption === ""}
+                                             caption_attrs={{username, caption, profileImage}}
+                                             onCommentClick={onCommentClick}
+                                />
+                            </View>
                             {images.map((image, index) => (
                                 <Image2
                                     style={[styles.image, {
@@ -116,28 +97,14 @@ function Card({
                     </TouchableWithoutFeedback>
                 </ScrollView>
                 <View style={styles.detailsContainer}>
-                    <Progress.Bar
-                        progress={progress}
-                        width={Dimensions.get("window").width - 50}
-                        color={'white'}
-                        style={{
-                            marginBottom: 20,
-                            alignSelf: 'center',
-                        }}/>
-                    <FeedActions likes={likes}
-                                 comments={comments}
-                                 hasBeenLiked={hasBeenLiked}
-                                 hasBeenDisliked={hasBeenDisliked}
-                                 lightTheme={false/*index % 2 !== 0*/}
-                                 onCommentClick={onCommentClick}
-                                 post_id={post_id}
-                                 captionIsEmpty={caption === ""}
-                                 caption_attrs={{username, caption, profileImage}}
-                                 refreshPoll={refreshPoll}
-                                 getPollRate={getPollRate}
+                    {caption ? <View style={styles.caption}><Text style={{color: colors.white}}>{caption}</Text></View> : null}
+                    <LivePoll likes={likes}
+                              dislikes={dislikes}
+                              hasBeenLiked={hasBeenLiked}
+                              hasBeenDisliked={hasBeenDisliked}
+                              lightTheme={false/*index % 2 !== 0*/}
+                              post_id={post_id}
                     />
-                    {caption ? <View><Text style={{color: colors.white}}>{caption}</Text></View> : null}
-
                     {/*<UserDisplay
                     username={username}
                     profileImage={profileImage}
@@ -241,6 +208,34 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     closeIcon: {},
+    caption: {
+        marginBottom: 10,
+    },
+    username: {
+        backgroundColor: colors.white,
+        height: 30,
+        position: 'absolute',
+        zIndex: 2,
+        borderTopLeftRadius: 20,
+        borderBottomRightRadius: 5,
+        opacity: 0.8,
+        justifyContent: 'center',
+        paddingLeft: 10,
+        paddingRight: 15,
+    },
+    comments: {
+        backgroundColor: colors.white,
+        height: 30,
+        position: 'absolute',
+        right: 0,
+        zIndex: 2,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 5,
+        opacity: 0.8,
+        justifyContent: 'center',
+        paddingLeft: 10,
+        paddingRight: 15,
+    },
 });
 
 
