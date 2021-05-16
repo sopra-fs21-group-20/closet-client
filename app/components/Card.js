@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {
     View,
     StyleSheet,
@@ -38,15 +38,21 @@ function Card({
                   images,
                   onPress,
                   index,
-                  onCommentClick
+                  onCommentClick,
+                  viewableCards
               }) {
 
     const scrollableImages = useRef();
 
+    useEffect(() => {
+        if(viewableCards.includes(post_id)) {
+            handleRefresh();
+        }
+    }, [viewableCards]);
+
     //const [isLiked, setIsLiked] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
-    const [isViewable, setIsViewable] = useState(isViewable);
 
 
     const handleImagePress = (e) => {
@@ -63,6 +69,63 @@ function Card({
     /*const handleImageDoublePress = (e) => {
         if (!hasBeenLiked) setIsLiked(true);
     }*/
+
+    const [liked, setLiked] = useState(hasBeenLiked);
+    const [disliked, setDisliked] = useState(hasBeenDisliked);
+    const [progress, setProgress] = useState((likes + dislikes) === 0 ? 0 : likes / (dislikes + likes));
+    //this prevents sending multiple requests at once and bombarding our server
+    let processingRequest = false;
+
+    const handleRefresh = async () => {
+        const result = await feed.getPostPoll(post_id)
+        const likes = parseFloat(result.data?.numberOfLikes)
+        const dislikes = parseFloat(result.data?.numberOfDislikes)
+        const pollRate = likes / (likes + dislikes)
+        console.log("new likes for " + post_id + " are " + likes);
+        refreshPoll(pollRate);
+    }
+
+    const handleLike = async () => {
+        if (processingRequest) {
+            return;
+        }
+        processingRequest = true;
+        if (!liked) {
+            setLiked(true);
+            setDisliked(false);
+        } else (setLiked(false));
+        await feed.likePost(post_id);
+        await handleRefresh();
+        processingRequest = false;
+    }
+
+    const handleDislike = async () => {
+        if (processingRequest) {
+            return;
+        }
+        processingRequest = true;
+        if (!disliked) {
+            setDisliked(true);
+            setLiked(false);
+        } else (setDisliked(false));
+        await feed.dislikePost(post_id);
+        await handleRefresh();
+        processingRequest = false;
+    }
+
+    const getPollRate = async () => {
+        const result = await feed.getPostPoll(post_id);
+        const likes = parseFloat(result.data.numberOfLikes);
+        const dislikes = parseFloat(result.data.numberOfDislikes);
+        return likes / (likes + dislikes);
+    }
+
+    const refreshPoll = (rate) => {
+        if (rate >= 0) {
+            setProgress(rate);
+        }
+    }
+
     return (
         <>
             <View style={[styles.card, (index % 2 === 0 ? null : lightTheme.card)]}>
@@ -97,11 +160,13 @@ function Card({
                     </TouchableWithoutFeedback>
                 </ScrollView>
                 <View style={styles.detailsContainer}>
-                    {caption ? <View style={styles.caption}><Text style={{color: colors.white}}>{caption}</Text></View> : null}
-                    <LivePoll likes={likes}
-                              dislikes={dislikes}
-                              hasBeenLiked={hasBeenLiked}
-                              hasBeenDisliked={hasBeenDisliked}
+                    {caption ?
+                        <View style={styles.caption}><Text style={{color: colors.white}}>{caption}</Text></View> : null}
+                    <LivePoll progress={progress}
+                              liked={liked}
+                              disliked={disliked}
+                              handleLike={handleLike}
+                              handleDislike={handleDislike}
                               lightTheme={false/*index % 2 !== 0*/}
                               post_id={post_id}
                     />

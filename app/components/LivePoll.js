@@ -6,72 +6,16 @@ import feed from "../api/feed";
 import * as Progress from 'react-native-progress';
 
 function LivePoll({
-                      post_id,
-                      likes,
-                      dislikes,
-                      isLiked,
-                      setIsLiked,
+                      liked,
+                      disliked,
                       hasBeenLiked,
                       hasBeenDisliked,
                       lightTheme,
-                      captionIsEmpty,
-                      caption_attrs
+                      handleLike,
+                      handleDislike,
+                      progress
                   }) {
 
-    const [liked, setLiked] = useState(hasBeenLiked);
-    const [disliked, setDisliked] = useState(hasBeenDisliked);
-    const [progress, setProgress] = useState((likes + dislikes) === 0 ? 0 : likes / (dislikes + likes));
-    //this prevents sending multiple requests at once and bombarding our server
-    let processingRequest = false;
-
-    const handleRefresh = async () => {
-        const result = await feed.getPostPoll(post_id)
-        const likes = parseFloat(result.data?.numberOfLikes)
-        const dislikes = parseFloat(result.data?.numberOfDislikes)
-        const pollRate = likes / (likes + dislikes)
-        refreshPoll(pollRate);
-    }
-
-    const handleLike = async () => {
-        if (processingRequest) {
-            return;
-        }
-        processingRequest = true;
-        if (!liked) {
-            setLiked(true);
-            setDisliked(false);
-        } else (setLiked(false));
-        await feed.likePost(post_id);
-        await handleRefresh();
-        processingRequest = false;
-    }
-
-    const handleDislike = async () => {
-        if (processingRequest) {
-            return;
-        }
-        processingRequest = true;
-        if (!disliked) {
-            setDisliked(true);
-            setLiked(false);
-        } else (setDisliked(false));
-        await feed.dislikePost(post_id);
-        await handleRefresh();
-        processingRequest = false;
-    }
-
-    const getPollRate = async () => {
-        const result = await feed.getPostPoll(post_id);
-        const likes = parseFloat(result.data.numberOfLikes);
-        const dislikes = parseFloat(result.data.numberOfDislikes);
-        return likes / (likes + dislikes);
-    }
-
-    const refreshPoll = (rate) => {
-        if (rate >= 0) {
-            setProgress(rate);
-        }
-    }
 
     return (
         <View style={styles.container}>

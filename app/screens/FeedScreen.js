@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {forwardRef, useEffect, useRef, useState} from "react";
 import {FlatList, Image, RefreshControl, ScrollView, StyleSheet, View} from "react-native";
 
 import ActivityIndicator from "../components/ActivityIndicator";
@@ -147,16 +147,20 @@ function FeedScreen({navigation}) {
         ]
     };*/
 
-    /*const viabilityConfig = {
+    const viabilityConfig = useRef({
         waitForInteraction: true,
-        viewAreaCoveragePercentThreshold: 50
-    }
+        itemVisiblePercentThreshold: 80,
+    });
 
-    const onViewableItemsChanged = ({viewableItems, changed}) => {
-        const viewablePrev = viewableItems[0].key === 1 ? null : viewableItems[0].key - 1;
-        const color = viewablePrev && viewablePrev%2 === 0 ? colors.white : (viewablePrev && viewablePrev%2 === 1) ? colors.dark : colors.primary;
-        console.log(color);
-    };*/
+    const onViewableItemsChanged = useRef(({viewableItems, changed}) => {
+        const tempItems = [];
+        viewableItems.forEach(viewAbleItem => {
+            tempItems.push(viewAbleItem.item.id);
+        });
+        setViewableCards(tempItems);
+    });
+
+    const [viewableCards, setViewableCards] = useState([]);
 
 
     const handleModal = (outfit) => {
@@ -205,10 +209,11 @@ function FeedScreen({navigation}) {
                                 colors={[colors.light]}
                                 tintColor={colors.light}
                             />}
+                            viewabilityConfig={viabilityConfig.current}
+                            onViewableItemsChanged={onViewableItemsChanged.current}
                             data={getFeedApi.data}
                             keyExtractor={(item) => item.id.toString()}
-                            renderItem={({item, index}) => {
-                                return (<Card
+                            renderItem={({item, index}) => <Card
                                     post_id={item.id}
                                     username={item.username}
                                     profileImage={item.profileImage}
@@ -224,10 +229,10 @@ function FeedScreen({navigation}) {
                                     index={index}
                                     onCommentClick={navigateToComments}
                                     handleModal={handleModal}
-                                    isViewable={item.isViewable}
+                                    viewableCards={viewableCards}
                                     outfit={item.outfit}
-                                />);
-                            }}
+                                />
+                            }
                         />
                 )}
             </Screen>
