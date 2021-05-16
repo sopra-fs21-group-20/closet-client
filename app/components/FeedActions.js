@@ -10,20 +10,11 @@ function FeedActions({
                          comments,
                          isLiked,
                          setIsLiked,
-                         hasBeenLiked,
-                         hasBeenDisliked,
                          lightTheme,
                          onCommentClick,
                          captionIsEmpty,
                          caption_attrs,
-                         refreshPoll,
-                         getPollRate
                      }) {
-    const [likesNumber, setLikesNumber] = useState(parseInt(likes));
-    const [liked, setLiked] = useState(hasBeenLiked)
-    const [disliked, setDisliked] = useState(hasBeenDisliked)
-    //this prevents sending multiple requests at once and bombarding our server
-    let processingRequest = false
 
  /*   const animation = useRef(null);
     const animationPress = () => {
@@ -41,59 +32,17 @@ function FeedActions({
         const result = await feed.likePost(post_id);
     }*/
 
-    const handleRefresh = async () => {
-        const result = await feed.getPostPoll(post_id)
-        const likes = parseFloat(result.data.numberOfLikes)
-        const dislikes = parseFloat(result.data.numberOfDislikes)
-        const pollRate = likes / (likes + dislikes)
-        refreshPoll(pollRate)
-    }
-
-    const handleLike = async () => {
-        if (processingRequest) {
-            return
-        }
-        processingRequest = true
-        if (!liked) {
-            setLiked(true)
-            setDisliked(false)
-        } else (setLiked(false))
-        await feed.likePost(post_id)
-        await handleRefresh()
-        processingRequest = false
-    }
-
-    const handleDislike = async () => {
-        if (processingRequest) {
-            return
-        }
-        processingRequest = true
-        if (!disliked) {
-            setDisliked(true)
-            setLiked(false)
-        } else (setDisliked(false))
-        await feed.dislikePost(post_id)
-        await handleRefresh()
-        processingRequest = false
-    }
-
     return (
         <View style={styles.container}>
-            <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={
+            {/*<TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={
                 handleLike
-                /*if (!hasBeenLiked && !isLiked) animationPress();*/}>
+                /*if (!hasBeenLiked && !isLiked) animationPress();*!/>
                 <View style={styles.detailsContainer}>
-                    {/*<Text
-                        style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>likesNumber</Text>*/}
-                    {/*<View style={styles.lottieContainer}>
+                    <Text
+                        style={[styles.text, {color: (lightTheme ? lightThemeStyle.text.color : styles.text.color)}]}>likesNumber</Text>
+                    <View style={styles.lottieContainer}>
                         <LottieView progress={(hasBeenLiked) ? 1 : 0.2} autoSize={true} speed={1.5} ref={animation} loop={false} style={styles.lottie} source={(require("../assets/animations/like-button-white.json"))} />
-                    </View>*/}
-                    <AntDesign
-                        name={!liked ? "like2" : 'like1'}
-                        size={24}
-                        color={lightTheme}
-                        style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
-                    />
+                    </View>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={handleDislike}>
@@ -105,7 +54,7 @@ function FeedActions({
                         style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
                     />
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
             <TouchableOpacity onPress={() => {
                 onCommentClick(post_id, caption_attrs, lightTheme);
             }}>
@@ -115,16 +64,7 @@ function FeedActions({
                     <Octicons
                         name={"comment"}
                         size={22}
-                        style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
-                    />
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleRefresh}>
-                <View style={styles.detailsContainer}>
-                    <MaterialCommunityIcons
-                        name={"refresh"}
-                        size={22}
-                        style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
+                        style={[styles.icon]}
                     />
                 </View>
             </TouchableOpacity>
@@ -144,7 +84,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         flexDirection: "row",
         marginLeft: 0,
-        marginRight: 25
+        marginRight: 0,
     },
     text: {
         color: colors.white,
@@ -152,9 +92,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     icon: {
-        color: colors.lighter,
+        color: colors.dark,
         marginLeft: 3,
-        height: 24
+        height: 24,
+        marginTop: 3,
     },
     lottieContainer: {
         width: 24,

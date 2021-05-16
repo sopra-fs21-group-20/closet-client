@@ -2,38 +2,42 @@ import client from "./client";
 
 const endpoint = "/outfits";
 
-const getOutfit = () => client.get(endpoint);
+const getOutfits = () => client.get(endpoint);
 
 const getCloset = () => client.get("/users/closet");
 
 const addOutfit = (outfit, onUploadProgress) => {
-    const data = {
-        "name": outfit.name,
-        "items": outfit.items,
-        "collectionIds": outfit.collectionIds
-    }
-    /*{
-        "name": "My first BIG outfit",
-        "items": [
-            {
-                "itemId": 10,
-                "position": 0
-            }
-        ],
-        "collectionIds": [
-            2
-        ]
-    }*/
 
-    return client.post(endpoint, data, {
+    return client.post(endpoint, outfit, {
             onUploadProgress: (progress) =>
                 onUploadProgress(progress.loaded / progress.total),
         }
     );
 };
 
+const postItem = (item, onUploadProgress) => {
+    return client.post("/items", item, {
+        onUploadProgress: (progress) =>
+            onUploadProgress(progress.loaded / progress.total),
+    });
+}
+
+const putItem = (item, onUploadProgress) => {
+    return client.put("/items/" + item.itemId, item, {
+        onUploadProgress: (progress) =>
+            onUploadProgress(progress.loaded / progress.total),
+    });
+}
+
+const deleteItem = () => {
+    console.log("Test");
+}
+
 export default {
-    getOutfit,
+    getOutfits,
     addOutfit,
-    getCloset
+    getCloset,
+    postItem,
+    putItem,
+    deleteItem,
 };

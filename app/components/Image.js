@@ -7,12 +7,8 @@ import LottieView from "lottie-react-native";
 function Image2({ children, ...otherProps }) {
   const [loading, setLoading] = useState(false);
 
-/*
-  console.log(otherProps.source);
-*/
-
   return (
-      <>
+      <View>
         <Image onLoadStart={() => setLoading(true)}
                onLoadEnd={() => {setLoading(false)}} {...otherProps}/>
         {children}
@@ -24,7 +20,7 @@ function Image2({ children, ...otherProps }) {
               style={styles.animation}
           />
         </View>}
-      </>
+      </View>
   );
 }
 

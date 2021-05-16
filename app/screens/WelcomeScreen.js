@@ -19,10 +19,10 @@ function WelcomeScreen({ navigation }) {
     <ImageBackground
         blurRadius={3}
       style={styles.background}
-      source={require("../assets/triangle_background.jpg")}
+      defaultSource={require("../assets/triangle_background.jpg")}
     >
       <View style={styles.logoContainer}>
-        <Image2 style={styles.logo} source={require("../assets/logo-primary.png")} resizeMode={"contain"} />
+        <Image2 style={styles.logo} defaultSource={require("../assets/logo-primary.png")} resizeMode={"contain"} />
         <Text style={styles.tagline}>myOutf.it</Text>
       </View>
       <View style={styles.buttonsContainer}>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    width: "100%",
+    width: 200,
     height: 130,
   },
   logoContainer: {

@@ -71,7 +71,7 @@ export default function Canvas({outfit, positions, edit = false, modal, deleteFu
                                         size={60}/>
                                 </View>
                             </TouchableOpacity> :
-                            allItems.length === 0 ? <View style={{height: itemHeight + paddingItem}}/> : null
+                            itemRow.length === 0 ? <View style={{height: itemHeight + paddingItem}}/> : null
                 }
             </View>)}
         </SafeAreaView>

@@ -1,5 +1,6 @@
 import React, {useContext, useState} from "react";
 import {
+    Alert,
     Keyboard,
     KeyboardAvoidingView,
     Platform,
@@ -44,20 +45,30 @@ function CreatePostScreen({navigation, route}) {
     //const {navigation} = useContext(FeedContext);
 
     const handleSubmit = async (listing, {resetForm}) => {
-        setProgress(0);
-        setUploadVisible(true);
-        const result = await feed.addFeedItem(
-            {...listing, location, base64, outfitId}, user,
-            (progress) => setProgress(progress)
-        );
+        if(listing.caption !== "") {
+            setProgress(0);
+            setUploadVisible(true);
+            const formData = {caption: listing.caption, image: base64, outfitId};
+            const result = await feed.addFeedItem(
+                formData, user,
+                (progress) => setProgress(progress)
+            );
 
-        if (!result.ok) {
-            setUploadVisible(false);
-            return alert("Could not save the post");
+            if (!result.ok) {
+                // Deletes the base64 from the response
+                const temp = result;
+                delete temp.config;
+                console.log(temp);
+                setUploadVisible(false);
+                return alert("Could not save the post");
+            }
+
+            resetForm();
+            navigation.navigate('Feed', {screen: 'Feed', reload: true});
+
+        } else {
+            Alert.alert("Please enter a caption.")
         }
-
-        resetForm();
-        navigation.navigate('Feed', {screen: 'Feed', reload: true});
     };
 
     return (
@@ -70,7 +81,7 @@ function CreatePostScreen({navigation, route}) {
                     keyboardVerticalOffset={Platform.OS === "ios" ? 85 : 60}
                 >
                     <UploadScreen
-                        onDone={() => setUploadVisible(false)}
+                        onDone={() => setUploadVisible(true)}
                         progress={progress}
                         visible={uploadVisible}
                     />
@@ -83,12 +94,12 @@ function CreatePostScreen({navigation, route}) {
                         initialValues={{
                             caption: "",
                             outfit: route.params.outfitName,
-                            images: [route.params.picture],
+                            images: [{uri:route.params.picture}],
                         }}
                         onSubmit={handleSubmit}
                         validationSchema={validationSchema}
                     >
-                        <PostImagePicker name="images" editable={false} hasMultiple={true}/>
+                        <PostImagePicker name="images" editable={false} hasMultiple={false}/>
                         <FormField
                             maxLength={255}
                             multiline

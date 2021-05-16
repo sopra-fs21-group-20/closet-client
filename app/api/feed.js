@@ -5,12 +5,7 @@ const endpoint = "/posts";
 const getFeed = () => client.get(endpoint);
 
 const addFeedItem = (feedItem, user, onUploadProgress) => {
-   const data = {
-        "caption": feedItem.caption,
-        "image": feedItem.base64
-    }
-
-    return client.post(endpoint, data, {
+    return client.post(endpoint, feedItem, {
             onUploadProgress: (progress) =>
                 onUploadProgress(progress.loaded / progress.total),
         }
