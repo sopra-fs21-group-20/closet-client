@@ -13,7 +13,7 @@ import colors from "../config/colors";
 import {useFormikContext} from "formik";
 import Image2 from "./Image";
 
-function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, editable}) {
+function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, editable, hasMultiple}) {
     const {values} = useFormikContext();
 
     const [forceUpdate, setForceUpdate] = useState(0);
@@ -52,9 +52,10 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 quality: 0.5,
+                base64: true
             });
             if (!result.cancelled) {
-                onAddImage(result.uri);
+                onAddImage(result.uri, result.base64);
             } else {
                 onRemoveImage(null);
             }
@@ -65,7 +66,10 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
 
     return (
         <TouchableOpacity onPress={handlePress}>
-            <View style={styles.container}>
+            <View style={[styles.container, !hasMultiple ? {
+                width: Dimensions.get("screen").width - 20,
+                height: Dimensions.get("screen").width - 20,
+            } : null]}>
                 {!imageUri && (
                     <MaterialCommunityIcons
                         color={colors.medium}
@@ -82,7 +86,7 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
                         />
                     </View>
                 )}
-                {imageUri && <Image2 source={{uri: imageUri}} style={styles.image}/>}
+                {imageUri && <Image source={{uri: imageUri.uri}} style={styles.image}/>}
             </View>
         </TouchableOpacity>
     );

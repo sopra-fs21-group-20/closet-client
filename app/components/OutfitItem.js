@@ -60,7 +60,8 @@ function OutfitItem({
         tempData.name = listing.title;
         tempData.brand = listing.brand;
         tempData.attributes = data.attributes;
-        tempData.signedUrl = listing.image[0];
+        tempData.image = listing.image[0].base64;
+        tempData.signedUrl = listing.image[0].uri;
         tempData.price = 0;
         tempData.public = true;
         tempData.isPublic = true;
@@ -112,7 +113,7 @@ function OutfitItem({
                         >
                             <Form
                                 initialValues={{
-                                    image: [data?.signedUrl ? data?.signedUrl : null],
+                                    image: [data?.signedUrl ? {uri: data?.signedUrl, base64: ""} : null],
                                     title: data?.name ? data?.name : "",
                                     brand: data?.brand ? data?.brand : "",
                                 }}
@@ -120,7 +121,7 @@ function OutfitItem({
                                 validationSchema={validationSchema}
                                 innerRef={form}
                             >
-                                <PostImagePicker name="image" forceUpdateFunc={setForceUpdate} forceUpdateVal={forceUpdate}/>
+                                <PostImagePicker name="image" base64={true} forceUpdateFunc={setForceUpdate} forceUpdateVal={forceUpdate}/>
                                 <FormField
                                     maxLength={100}
                                     name="title"

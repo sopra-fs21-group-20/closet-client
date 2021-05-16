@@ -6,15 +6,15 @@ import PostInputList from "../PostInputList";
 import {ScrollView, StyleSheet, View} from "react-native";
 import ImageInput from "../ImageInput";
 
-function PostImagePicker({name, hasMultiple = false, editable = true, forceUpdateFunc = () => {}, forceUpdateVal = 0}) {
+function PostImagePicker({name, base64 = false, hasMultiple = false, editable = true, forceUpdateFunc = () => {}, forceUpdateVal = 0}) {
     const {errors, setFieldValue, touched, values} = useFormikContext();
 
     const [imageUris, setImageUris] = useState(values[name]);
 
-    const handleAdd = (uri) => {
+    const handleAdd = (uri, base64) => {
         let newValue;
-        if(hasMultiple) newValue = [...imageUris, uri];
-        else newValue = [uri];
+        if(hasMultiple) newValue = [...imageUris, {uri, base64}];
+        else newValue = [{uri, base64}];
 
         setFieldValue(name, newValue);
         setImageUris(newValue);
@@ -22,7 +22,7 @@ function PostImagePicker({name, hasMultiple = false, editable = true, forceUpdat
     };
 
     const handleRemove = (uri) => {
-        const newValue = imageUris.filter((imageUri) => imageUri !== uri);
+        const newValue = imageUris.filter((imageUri) => imageUri.uri !== uri);
         setFieldValue(name, newValue);
         setImageUris(newValue);
         forceUpdateFunc(forceUpdateVal + 1);
@@ -39,11 +39,11 @@ function PostImagePicker({name, hasMultiple = false, editable = true, forceUpdat
                         {imageUris.map((uri, index) => (
                             <View key={index} style={styles.image}>
                                 <ImageInput
-                                    onRemoveImage={handleRemove} index={index} name={name} editable={editable}
+                                    onRemoveImage={handleRemove} index={index} name={name} editable={editable} hasMultiple={hasMultiple}
                                 />
                             </View>
                         ))}
-                        <ImageInput onAddImage={handleAdd} newImage={true} name={name} editable={editable} index={0}/>
+                        <ImageInput onAddImage={handleAdd} newImage={true} name={name} editable={editable} index={0} hasMultiple={hasMultiple}/>
                     </View>
                 </ScrollView>
             </View>}
@@ -56,6 +56,7 @@ function PostImagePicker({name, hasMultiple = false, editable = true, forceUpdat
                             name={name}
                             editable={editable}
                             index={0}
+                            hasMultiple={hasMultiple}
                         />
                     </View>
                 </View>

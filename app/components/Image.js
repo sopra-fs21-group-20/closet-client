@@ -8,7 +8,7 @@ function Image2({ children, ...otherProps }) {
   const [loading, setLoading] = useState(false);
 
   return (
-      <>
+      <View>
         <Image onLoadStart={() => setLoading(true)}
                onLoadEnd={() => {setLoading(false)}} {...otherProps}/>
         {children}
@@ -20,7 +20,7 @@ function Image2({ children, ...otherProps }) {
               style={styles.animation}
           />
         </View>}
-      </>
+      </View>
   );
 }
 

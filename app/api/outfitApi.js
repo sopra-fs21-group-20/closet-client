@@ -15,8 +15,29 @@ const addOutfit = (outfit, onUploadProgress) => {
     );
 };
 
+const postItem = (item, onUploadProgress) => {
+    return client.post("/items", item, {
+        onUploadProgress: (progress) =>
+            onUploadProgress(progress.loaded / progress.total),
+    });
+}
+
+const putItem = (item, onUploadProgress) => {
+    return client.put("/items/" + item.itemId, item, {
+        onUploadProgress: (progress) =>
+            onUploadProgress(progress.loaded / progress.total),
+    });
+}
+
+const deleteItem = () => {
+    console.log("Test");
+}
+
 export default {
     getOutfits,
     addOutfit,
-    getCloset
+    getCloset,
+    postItem,
+    putItem,
+    deleteItem,
 };

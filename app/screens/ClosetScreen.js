@@ -3,7 +3,7 @@ import {
     Alert,
     Dimensions,
     Image,
-    ImageBackground,
+    ImageBackground, KeyboardAvoidingView,
     ScrollView,
     StyleSheet,
     Text,
@@ -25,6 +25,8 @@ import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
 import ModalLike from "../components/ModalLike";
 import ActivityIndicator from "../components/ActivityIndicator";
+import UploadScreen from "./UploadScreen";
+import feed from "../api/feed";
 
 const filterCategories = (categories, closetItems) => {
     const tempCategories = [];
@@ -143,12 +145,10 @@ export default function ClosetScreen({
                 text: 'Delete',
                 onPress: () => {
                     if (getClosetApi.data.find(item => item.id === id)) {
-
+                        // TODO deleteItemApi.request();
                         getClosetApi.setData(getClosetApi.data.filter(item => item.id !== id));
                     }
-                    if (isModal) {
-                        setModalIsShown(false);
-                    }
+                    if (isModal) setModalIsShown(false);
                 },
             },
         ]);
@@ -164,16 +164,32 @@ export default function ClosetScreen({
         }
     }
 
-    const addToCloset = (item) => {
-        // ToDo API
+    const addToCloset = async (item) => {
         console.log(item);
         const tempClosetItems = getClosetApi.data;
         const index = tempClosetItems.findIndex(items => items.id === item.id);
         if (index !== -1) {
             tempClosetItems[index] = item;
+            //TODO putItemApi.request(item);
             getClosetApi.setData([...tempClosetItems]);
         } else {
             console.log([...tempClosetItems, item]);
+            setProgress(0);
+            setUploadVisible(true);
+            const result = await outfitApi.postItem(
+                item,
+                (progress) => setProgress(progress)
+            );
+
+            if (!result.ok) {
+                // Deletes the base64 from the response
+                const temp = result;
+                delete temp.config;
+                console.log(temp);
+                setUploadVisible(false);
+                return alert(result.data.message ? result.data.message : "Something went wrong.");
+            }
+
             getClosetApi.setData([...tempClosetItems, item]);
         }
     }
@@ -191,6 +207,10 @@ export default function ClosetScreen({
 
     // Height of closet container
     //const [containerHeight, setContainerHeight] = useState(500);
+
+    // Upload
+    const [uploadVisible, setUploadVisible] = useState(false);
+    const [progress, setProgress] = useState(0);
 
 
     // Renders panel header (always shown)
@@ -266,6 +286,11 @@ export default function ClosetScreen({
     // Renders whole screen
     return (
         <View style={isInjected ? {height: (filterCategories(categories, getClosetApi.data).length * 100 + activeSection.length * 225)} : {flex: 1}}>
+            <UploadScreen
+                onDone={() => setUploadVisible(false)}
+                progress={progress}
+                visible={uploadVisible}
+            />
             <ActivityIndicator visible={getClosetApi.loading}/>
             <Screen>
                 <ScrollView

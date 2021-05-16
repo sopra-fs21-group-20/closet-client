@@ -36,7 +36,7 @@ function LoginScreen() {
         <>
             <ActivityIndicator visible={isLoggingIn}/>
             <Screen style={styles.container}>
-                <Image2 style={styles.logo} source={require("../assets/logo-primary.png")} resizeMode={"contain"}/>
+                <Image2 style={styles.logo} defaultSource={require("../assets/logo-primary.png")} resizeMode={"contain"}/>
 
                 <Form
                     initialValues={{username: "test", password: "test"}}
