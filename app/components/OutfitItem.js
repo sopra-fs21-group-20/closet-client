@@ -61,7 +61,9 @@ function OutfitItem({
         tempData.brand = listing.brand;
         tempData.attributes = data.attributes;
         tempData.signedUrl = listing.image[0];
+/*
         console.log(tempData);
+*/
         addFunc(tempData);
         resetComponent();
         modalCloseFunc(false);

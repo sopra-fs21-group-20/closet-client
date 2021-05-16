@@ -12,7 +12,7 @@ export default function ProfileDetails({userDetails, postsAmount}) {
     return (
         <View style={styles.container}>
             <Image2
-                source={require("../../assets/corey_nici.jpg")}
+                source={{uri: userDetails.signedUrl}}
                 style={styles.profilePic}
             />
             <View style={styles.details}>

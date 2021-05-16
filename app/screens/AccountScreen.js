@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View, FlatList, Image, Dimensions, ScrollView, Button, RefreshControl} from "react-native";
+import {
+    StyleSheet,
+    View,
+    FlatList,
+    Image,
+    Dimensions,
+    ScrollView,
+    Button,
+    RefreshControl,
+    TouchableWithoutFeedback
+} from "react-native";
 
 import colors from "../config/colors";
 import Screen from "../components/Screen";
@@ -12,8 +22,9 @@ import profile from "../api/profile";
 import Text from "../components/Text";
 import Card from "../components/Card";
 import ActivityIndicator from "../components/ActivityIndicator";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-function AccountScreen() {
+function AccountScreen({navigation}) {
     const getFeedApi = useApi(profile.getPosts);
 
     useEffect(() => {
@@ -50,14 +61,19 @@ function AccountScreen() {
                             onRefresh={onRefresh}
                         />
                     } contentContainerStyle={styles.flatList}>
-                        <ProfileDetails userDetails={getFeedApi.data.user} postsAmount={getFeedApi.data.userPosts.length}/>
+                        <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
+                            <Ionicons name="ellipsis-horizontal" size={24} color="white"
+                                      style={{position: 'absolute', padding: 20, right: 10, zIndex: 1}}/>
+                        </TouchableWithoutFeedback>
+                        <ProfileDetails userDetails={getFeedApi.data.user}
+                                        postsAmount={getFeedApi.data.userPosts.length}/>
                         <Gallery data={getFeedApi.data.userPosts}/>
                     </ScrollView>
                 )}
             </Screen>
         </>
     );
-}
+};
 
 const styles = StyleSheet.create({
     screen: {
@@ -70,7 +86,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
     flatList: {
-
+        flex: 1
     },
     errorView: {
         flex: 1,

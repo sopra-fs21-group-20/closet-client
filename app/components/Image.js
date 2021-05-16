@@ -7,7 +7,9 @@ import LottieView from "lottie-react-native";
 function Image2({ children, ...otherProps }) {
   const [loading, setLoading] = useState(false);
 
+/*
   console.log(otherProps.source);
+*/
 
   return (
       <>
