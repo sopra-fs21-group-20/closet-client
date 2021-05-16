@@ -6,12 +6,29 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import useAuth from "../auth/useAuth";
 import {Platform, StyleSheet} from "react-native";
 import colors from "../config/colors";
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {NavigationContainer} from "@react-navigation/native";
+import {DrawerContainer} from "../components/DrawerContainer";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import UpdateProfileScreen from "../screens/UpdateProfileScreen";
 
-const Stack = createStackNavigator();
+
+const Drawer = createDrawerNavigator();
 
 const AccountNavigator = () => {
     const {user, logOut} = useAuth();
     return (
+        <Drawer.Navigator
+            independant={true}
+            drawerContent={props => <DrawerContainer {...props}/>}
+            drawerPosition={'right'}
+        >
+            <Drawer.Screen name="Account" component={AccountScreen}/>
+            <Drawer.Screen name="UpdateProfile" component={UpdateProfileScreen}/>
+        </Drawer.Navigator>
+    )
+
+    /*return (
         <Stack.Navigator screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitle: user?.sub ? user.sub : "Account",
@@ -26,8 +43,8 @@ const AccountNavigator = () => {
             }}/>
             <Stack.Screen name="Messages" component={MessagesScreen}/>
         </Stack.Navigator>
-    )
-};
+    )*/
+}
 
 const styles = StyleSheet.create({
     headerStyle: {
