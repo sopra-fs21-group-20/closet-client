@@ -6,15 +6,15 @@ import colors from "../../config/colors";
 
 import defaultStyles from "../../config/styles";
 
-function ProfileBar({children, style, posts, ...otherProps}) {
+function ProfileBar({children, style, posts, followers, following, ...otherProps}) {
     return (
         <View style={styles.container}>
             <View style={styles.barSections}>
-                <Text style={styles.numbers}>NaN</Text>
+                <Text style={styles.numbers}>{followers}</Text>
                 <Text style={styles.tagline}>Followers</Text>
             </View>
             <View style={styles.barSections}>
-                <Text style={styles.numbers}>NaN</Text>
+                <Text style={styles.numbers}>{following}</Text>
                 <Text style={styles.tagline}>Following</Text>
             </View>
             <View style={styles.barSections}>
