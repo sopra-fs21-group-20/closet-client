@@ -65,7 +65,7 @@ const OutfitNavigator = ({navigation}) => {
 
     return (<>
         <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={routes.CLOSET} screenOptions={{
-            headerStyle: [styles.headerStyle],
+            headerStyle: [styles.headerStyle, isOpen && Platform.OS === "android" ? {height: 150} : null],
             headerTitleStyle: styles.headerTitle,
             headerTitle: () => <OutfitDropdown navigation={navigation} setIsOpen={setIsOpen}
                                                isOpen={isOpen}/>,
@@ -79,21 +79,29 @@ const OutfitNavigator = ({navigation}) => {
                 ),
                 headerRight: () => (
                     <MaterialCommunityIcons name={editMode ? "pencil-off-outline" : "pencil-outline"}
-                                            style={styles.headerRight} onPress={() => {
-                        setEditMode(!editMode);
-                    }}/>
+                                            style={[styles.headerRight, isOpen && Platform.OS === "android" ? {top: -35} : null]}
+                                            onPress={() => {
+                                                setEditMode(!editMode);
+                                            }}/>
                 )
             }} children={() => <ClosetScreen navigation={navigation} editMode={editMode} menuOpen={isOpen}/>}/>
             <Stack.Screen name="Mirror" options={{
-                headerLeft: null,
+                headerLeft: () => (
+                    <MaterialCommunityIcons name="arrow-left" style={{opacity: 0}}/>
+                ),
                 headerRight: () => (
-                    <MaterialCommunityIcons name="plus" style={styles.headerRight} onPress={() => {
-                        navigation.navigate('createOutfit');
-                    }}/>
+                    <MaterialCommunityIcons name="plus"
+                                            style={[styles.headerRight, isOpen && Platform.OS === "android" ? {top: -35} : null]}
+                                            onPress={() => {
+                                                navigation.navigate('createOutfit');
+                                            }}/>
                 ),
             }} children={() => <MirrorScreen navigation={navigation} menuOpen={isOpen}/>}/>
             <Stack.Screen name="createOutfit" component={CreateOutfitScreen} options={{
                 cardStyleInterpolator: newItem,
+                headerRight: () => (
+                    <MaterialCommunityIcons name="arrow-left" style={{opacity: 0}}/>
+                ),
             }}/>
         </Stack.Navigator>
     </>)
@@ -102,7 +110,7 @@ const OutfitNavigator = ({navigation}) => {
 const styles = StyleSheet.create({
     headerStyle: {
         backgroundColor: colors.darker,
-        shadowColor: 'transparent'
+        shadowColor: 'transparent',
     },
     headerTitle: {
         color: colors.white,

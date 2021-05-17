@@ -1,5 +1,15 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {Animated, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {
+    Animated,
+    Image,
+    Platform,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -217,7 +227,7 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
                             color={colors.white}
                             size={40}/>
                 </TouchableOpacity>}
-                <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]} refreshControl={
+                <ScrollView style={[styles.container, {marginTop: menuOpen ? (Platform.OS === "ios" ? 110 : 0) : (Platform.OS === "ios" ? 0 : -20),}]} refreshControl={
                     <RefreshControl
                         refreshing={getOutfitApi.loading}
                         onRefresh={onRefresh}

@@ -317,7 +317,7 @@ export default function ClosetScreen({
             <ActivityIndicator visible={getClosetApi.loading || deleteClosetApi.loading}/>
             <Screen>
                 <ScrollView
-                    style={[styles.container, {marginTop: menuOpen ? (Platform.OS === "ios" ? 110 : 80) : (Platform.OS === "ios" ? 0 : -20),}, isInjected ? {
+                    style={[styles.container, {marginTop: menuOpen ? (Platform.OS === "ios" ? 110 : 0) : (Platform.OS === "ios" ? 0 : -20),}, isInjected ? {
                         margin: 0,
                         marginTop: 0,
                         borderRadius: 5,

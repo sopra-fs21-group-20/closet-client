@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from "react-native";
+import {View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Platform} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {useRoute} from '@react-navigation/native';
 
@@ -25,13 +25,12 @@ function OutfitDropdown({navigation, setIsOpen, isOpen}) {
     return (
         <>
             <TouchableOpacity
-                activeOpacity={0.7}
                 onPress={() => {
                     if (route.name !== routes.CREATEOUTFIT) {
                         setIsOpen(!isOpen);
                     }
                 }}
-                style={styles.container}
+                style={[styles.container, Platform.OS === "android" && isOpen ? {top: 0} : null]}
             >
                 <View style={[styles.title, route.name !== routes.CREATEOUTFIT ? {paddingLeft: 0} : null]}>
                     <Text style={styles.text}>{route.name === routes.CREATEOUTFIT ? "New Outfit" : route.name}</Text>
@@ -43,7 +42,10 @@ function OutfitDropdown({navigation, setIsOpen, isOpen}) {
                         />
                     </View>}
                 </View>
-                <View style={styles.dropDown}>
+                <View style={[styles.dropDown, Platform.OS === "ios" ? {
+                    position: "absolute",
+                    top: "150%",
+                } : null]}>
                     <View style={{display: isOpen ? "flex" : "none"}}>
                         {
                             dropdownOptions.map(({navigateTo, title}, index) =>
@@ -73,8 +75,7 @@ const styles = StyleSheet.create({
         paddingLeft: 31,
     },
     dropDown: {
-        position: "absolute",
-        top: "150%",
+        zIndex: 100,
     },
     text: {
         display: 'flex',
