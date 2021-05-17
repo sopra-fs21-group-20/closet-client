@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {Animated, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from "react-native";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Animated, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -11,6 +11,7 @@ import outfitApi from "../api/outfitApi";
 import AppButton from "../components/Button";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import ActivityIndicator from "../components/ActivityIndicator";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 export default function MirrorScreen({menuOpen, isInjected = false}) {
 
@@ -176,10 +177,46 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
         setCurrentOutfit(pageNum);
     }
 
+    const flatlist = useRef();
+
+    const goToPrevPage = () => {
+        if (currentOutfit === 0) return;
+        flatlist.current.scrollToIndex({
+            index: (currentOutfit - 1),
+            animated: true,
+        });
+        setCurrentOutfit(currentOutfit - 1);
+    };
+
+    const goToNextPage = () => {
+        if (currentOutfit >= getOutfitApi.data.length - 1) return;
+        flatlist.current.scrollToIndex({
+            index: (currentOutfit + 1),
+            animated: true,
+        });
+        setCurrentOutfit(currentOutfit + 1);
+    };
+
     return (
         <View style={{flex: 1}}>
             <ActivityIndicator visible={getOutfitApi.loading}/>
             <Screen>
+                {currentOutfit !== 0 && <TouchableOpacity onPress={() => {
+                    goToPrevPage();
+                }} style={[styles.navButton, styles.prevButton]}>
+                    <MaterialCommunityIcons
+                            name="chevron-left"
+                            color={colors.white}
+                            size={40}/>
+                </TouchableOpacity>}
+                {currentOutfit !== getOutfitApi.data.length -1 && <TouchableOpacity onPress={() => {
+                    goToNextPage();
+                }} style={[styles.navButton, styles.nextButton]}>
+                    <MaterialCommunityIcons
+                            name="chevron-right"
+                            color={colors.white}
+                            size={40}/>
+                </TouchableOpacity>}
                 <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]} refreshControl={
                     <RefreshControl
                         refreshing={getOutfitApi.loading}
@@ -198,6 +235,7 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
                         keyExtractor={(item) => item.id.toString()}
                         data={getOutfitApi.data}
                         pagingEnabled={true}
+                        ref={flatlist}
                         renderItem={({item}) => {
                             return <View>
                                 <Canvas outfit={item.outfitItems} positions={item.itemPositions}
@@ -242,5 +280,26 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 10,
         paddingBottom: 0,
+    },
+    navButton: {
+        position: "absolute",
+        zIndex: 10,
+        backgroundColor: colors.dark,
+        width: 60,
+        height: 60,
+        top: 170,
+        justifyContent: "center",
+    },
+    prevButton: {
+        left: -30,
+        borderTopRightRadius: 30,
+        borderBottomRightRadius: 30,
+        alignItems: "flex-end",
+    },
+    nextButton: {
+        right: -30,
+        borderTopLeftRadius: 30,
+        borderBottomLeftRadius: 30,
+        alignItems: "flex-start",
     },
 });
