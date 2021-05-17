@@ -56,15 +56,21 @@ function OutfitItem({
     }
 
     const handleSubmit = async (listing) => {
+        if (listing.title === "") return Alert.alert("Please fill out the title.");
+        if (listing.brand === "") return Alert.alert("Please fill out the brand.");
+        if (Object.keys(data.attributes).length === 0) return Alert.alert("Please add at least one attribute.");
+        if (listing.image[0] === null) return Alert.alert("Please add an image.");
+
         const tempData = data;
         tempData.name = listing.title;
         tempData.brand = listing.brand;
         tempData.attributes = data.attributes;
-        tempData.image = listing.image[0].base64;
+        if (listing.image[0].base64) tempData.image = listing.image[0].base64;
         tempData.signedUrl = listing.image[0].uri;
         tempData.price = 0;
         tempData.public = true;
         tempData.isPublic = true;
+
         addFunc(tempData);
         resetComponent();
         modalCloseFunc(false);
@@ -106,22 +112,23 @@ function OutfitItem({
                             style={stylesPopup.closeIcon}
                             size={20}/>
                     </TouchableOpacity>
-                    <ScrollView style={stylesPopup.scrollView} contentContainerStyle={{flexGrow: 1}}>
-                        <KeyboardAvoidingView
-                            behavior={Platform.OS === "ios" ? "position" : "height"}
-                            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === "ios" ? "position" : "height"}
+                        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+                    >
+                        <Form
+                            initialValues={{
+                                image: [data?.signedUrl ? {uri: data?.signedUrl, base64: ""} : null],
+                                title: data?.name ? data?.name : "",
+                                brand: data?.brand ? data?.brand : "",
+                            }}
+                            onSubmit={handleSubmit}
+                            validationSchema={validationSchema}
+                            innerRef={form}
                         >
-                            <Form
-                                initialValues={{
-                                    image: [data?.signedUrl ? {uri: data?.signedUrl, base64: ""} : null],
-                                    title: data?.name ? data?.name : "",
-                                    brand: data?.brand ? data?.brand : "",
-                                }}
-                                onSubmit={handleSubmit}
-                                validationSchema={validationSchema}
-                                innerRef={form}
-                            >
-                                <PostImagePicker name="image" base64={true} forceUpdateFunc={setForceUpdate} forceUpdateVal={forceUpdate}/>
+                            <ScrollView style={stylesPopup.scrollView} persistentScrollbar={true}>
+                                <PostImagePicker name="image" base64={true} forceUpdateFunc={setForceUpdate}
+                                                 forceUpdateVal={forceUpdate}/>
                                 <FormField
                                     maxLength={100}
                                     name="title"
@@ -147,17 +154,17 @@ function OutfitItem({
                                     </Text>
                                 </View>
                                 <NewBadge refObj={actionSheetRef} newBadgeFunc={newAttribute}/>
-                                <View style={stylesPopup.buttonContainer}>
-                                    <Button title="Abort" buttonStyle={stylesPopup.buttonAbort}
-                                            onPress={() => {
-                                                resetComponent();
-                                                modalCloseFunc(false);
-                                            }}/>
-                                    <SubmitButton title="Save" buttonStyle={stylesPopup.buttonSave}/>
-                                </View>
-                            </Form>
-                        </KeyboardAvoidingView>
-                    </ScrollView>
+                            </ScrollView>
+                            <View style={stylesPopup.buttonContainer}>
+                                <Button title="Abort" buttonStyle={stylesPopup.buttonAbort}
+                                        onPress={() => {
+                                            resetComponent();
+                                            modalCloseFunc(false);
+                                        }}/>
+                                <SubmitButton title="Save" buttonStyle={stylesPopup.buttonSave}/>
+                            </View>
+                        </Form>
+                    </KeyboardAvoidingView>
                 </View>
             );
         case 2: // Modal view
@@ -173,24 +180,28 @@ function OutfitItem({
                                 style={stylesPopup.closeIcon}
                                 size={20}/>
                         </TouchableOpacity>
-                        <Image2 style={stylesPopup.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
-                        <View style={stylesPopup.textContainer}>
-                            <Text style={stylesPopup.title}>{data.name}</Text>
-                            <Text style={stylesPopup.text}>{data.brand}</Text>
-                        </View>
-                        <View style={stylesPopup.badgeContainer}>
-                            <Text>
-                                {
-                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge
-                                        key={i} color={badgeColor}>{value}</Badge>)
-                                }
-                            </Text>
+                        <View style={stylesPopup.scrollView}>
+                            <Image2 style={stylesPopup.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
+                            <View style={stylesPopup.textContainer}>
+                                <Text style={stylesPopup.title}>{data.name}</Text>
+                                <Text style={stylesPopup.text}>{data.brand}</Text>
+                            </View>
+                            <View style={stylesPopup.badgeContainer}>
+                                <Text>
+                                    {
+                                        data.attributes && Object.entries(data.attributes).map(([key, value], i) =>
+                                            <Badge
+                                                key={i} color={badgeColor}>{value}</Badge>)
+                                    }
+                                </Text>
+                            </View>
                         </View>
                         <View style={stylesPopup.buttonContainer}>
-                            <Button title="Delete" buttonStyle={stylesPopup.buttonDelete} onPress={() => {
+                            <Button title="Delete" buttonStyle={stylesPopup.buttonDelete} onPress={async () => {
                                 const tempDataId = data.id;
-                                resetComponent();
-                                deleteFunc(tempDataId, true);
+                                deleteFunc(tempDataId, true, () => {
+                                    resetComponent();
+                                });
                             }}/>
                             <Button title="Edit" buttonStyle={stylesPopup.buttonEdit} onPress={() => {
                                 changeMode(3);
@@ -205,7 +216,8 @@ function OutfitItem({
                     <View style={stylesList.item}>
                         <Image2 source={{uri: data.signedUrl}} style={stylesList.image}/>
                         <View style={stylesList.information}>
-                            <Text><Text style={stylesList.title}>{data.name}</Text> | <Text style={stylesList.brand}>{data.brand}</Text></Text>
+                            <Text><Text style={stylesList.title}>{data.name}</Text> | <Text
+                                style={stylesList.brand}>{data.brand}</Text></Text>
                             <Text style={stylesList.attributes}>
                                 {
                                     data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge
@@ -317,20 +329,20 @@ const stylesPopup = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'rgba(0,0,0,0.7)',
-        paddingVertical: 50,
+        paddingVertical: 0,
         paddingHorizontal: 40,
     },
     container: {
         width: '100%',
-        paddingHorizontal: 15,
         paddingTop: 30,
         paddingBottom: 15,
         flexDirection: "column",
         position: "relative",
+        marginVertical: 30,
     },
     scrollView: {
-        minHeight: 200,
-        maxHeight: Dimensions.get("screen").height - 110,
+        marginBottom: 80,
+        paddingHorizontal: 15,
     },
     closeIconContainer: {
         position: "absolute",
@@ -346,8 +358,8 @@ const stylesPopup = StyleSheet.create({
     },
     closeIcon: {},
     image: {
-        width: (Dimensions.get("window").width - 110),
-        height: (Dimensions.get("window").width - 110),
+        width: (Dimensions.get("window").width - 80),
+        height: (Dimensions.get("window").width - 80),
     },
     textContainer: {
         flexDirection: "column",
@@ -375,8 +387,18 @@ const stylesPopup = StyleSheet.create({
     },
     buttonContainer: {
         flexDirection: "row",
-        paddingTop: 15,
+        padding: 15,
+        paddingBottom: 0,
         justifyContent: "space-between",
+        position: "absolute",
+        bottom: 0,
+        width: '100%',
+        borderTopColor: colors.dark,
+        borderTopWidth: 1,
+        zIndex: 10,
+        backgroundColor: colors.white,
+        borderBottomRightRadius: 5,
+        borderBottomLeftRadius: 5,
     },
     buttonDelete: {
         width: '47.5%',

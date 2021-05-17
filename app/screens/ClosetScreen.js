@@ -47,6 +47,7 @@ export default function ClosetScreen({
                                      }) {
 
     const getClosetApi = useApi(outfitApi.getCloset);
+    const deleteClosetApi = useApi(outfitApi.deleteItem);
 
     useEffect(() => {
         getClosetApi.request();
@@ -134,7 +135,7 @@ export default function ClosetScreen({
 
     //const [closetItems, setClosetItems] = useState(closet);
 
-    const deleteFromCloset = (id, isModal = false) => {
+    const deleteFromCloset = (id, isModal = false, callBackFunc) => {
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
             {
                 text: 'Cancel',
@@ -143,10 +144,17 @@ export default function ClosetScreen({
             },
             {
                 text: 'Delete',
-                onPress: () => {
+                onPress: async () => {
                     if (getClosetApi.data.find(item => item.id === id)) {
-                        // TODO deleteItemApi.request();
+                        const result = await deleteClosetApi.request(id);
+
+                        if (!result.ok) {
+                            return alert(result.data.message ? result.data.message : "Something went wrong.");
+                        }
+
                         getClosetApi.setData(getClosetApi.data.filter(item => item.id !== id));
+
+                        callBackFunc();
                     }
                     if (isModal) setModalIsShown(false);
                 },
@@ -170,10 +178,25 @@ export default function ClosetScreen({
         const index = tempClosetItems.findIndex(items => items.id === item.id);
         if (index !== -1) {
             tempClosetItems[index] = item;
-            //TODO putItemApi.request(item);
+
+            setProgress(0);
+            setUploadVisible(true);
+            const result = await outfitApi.putItem(
+                item,
+                (progress) => setProgress(progress)
+            );
+
+            if (!result.ok) {
+                // Deletes the base64 from the response
+                const temp = result;
+                delete temp.config;
+                console.log(temp);
+                setUploadVisible(false);
+                return alert(result.data.message ? result.data.message : "Something went wrong.");
+            }
+
             getClosetApi.setData([...tempClosetItems]);
         } else {
-            console.log([...tempClosetItems, item]);
             setProgress(0);
             setUploadVisible(true);
             const result = await outfitApi.postItem(
@@ -291,7 +314,7 @@ export default function ClosetScreen({
                 progress={progress}
                 visible={uploadVisible}
             />
-            <ActivityIndicator visible={getClosetApi.loading}/>
+            <ActivityIndicator visible={getClosetApi.loading || deleteClosetApi.loading}/>
             <Screen>
                 <ScrollView
                     style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {

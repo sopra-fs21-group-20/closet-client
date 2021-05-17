@@ -23,14 +23,14 @@ const postItem = (item, onUploadProgress) => {
 }
 
 const putItem = (item, onUploadProgress) => {
-    return client.put("/items/" + item.itemId, item, {
+    return client.put("/items/" + item.id, item, {
         onUploadProgress: (progress) =>
             onUploadProgress(progress.loaded / progress.total),
     });
 }
 
-const deleteItem = () => {
-    console.log("Test");
+const deleteItem = (id) => {
+    return client.delete("/items/" + id);
 }
 
 export default {
