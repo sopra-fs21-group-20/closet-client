@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {Animated, Image, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Animated, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -10,17 +10,18 @@ import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
 import AppButton from "../components/Button";
 import {useNavigation, useRoute} from "@react-navigation/native";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 export default function MirrorScreen({menuOpen, isInjected = false}) {
 
-    /*const getOutfitApi = useApi(outfitApi.getOutfit)
+    const getOutfitApi = useApi(outfitApi.getOutfits);
 
     useEffect(() => {
         getOutfitApi.request();
-    }, []);*/
+    }, []);
 
 
-    const outfits = [
+    /*const outfits = [
         {
             id: 3,
             name: 'My 1st outfit',
@@ -139,7 +140,7 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
                 2
             ]
         },
-    ]
+    ];*/
 
     /*const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
         console.log("Visible items are", viewableItems);
@@ -156,7 +157,15 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
 
     const navigation = useNavigation();
 
-    const {picture, base64} = isInjected ? route.params : {picture: null , base64: null};
+    const {picture, base64, reload} = isInjected ? route.params : {picture: null, base64: null};
+
+    useEffect(() => {
+        route.params?.reload ? getOutfitApi.request() : null;
+    }, [route]);
+
+    const onRefresh = () => {
+        getOutfitApi.request();
+    };
 
     const [currentOutfit, setCurrentOutfit] = useState(0);
 
@@ -164,37 +173,51 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
         const contentOffset = e.nativeEvent.contentOffset;
         const viewSize = e.nativeEvent.layoutMeasurement;
         const pageNum = Math.floor(contentOffset.x / viewSize.width);
-        console.log('scrolled to page ', pageNum);
         setCurrentOutfit(pageNum);
     }
 
     return (
-        <Screen>
-            <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]}>
-                <Animated.FlatList
-                    horizontal={true}
-                    scrollEventThrottle={32}
-                    onScroll={Animated.event(
-                        [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                        {useNativeDriver: false})}
-                    onMomentumScrollEnd={onScrollEnd}
-                    keyExtractor={(item) => item.id.toString()}
-                    /*data={getOutfitApi.data}*/
-                    data={outfits}
-                    pagingEnabled={true}
-                    renderItem={({item}) => {
-                        return <View>
-                            <Canvas outfit={item.outfitItems} positions={item.itemPositions} key={`canvas-${item.id}`}/>
-                            <CanvasItems outfit={item} key={`canvasItem-${item.id}`}/>
-                        </View>
+        <View style={{flex: 1}}>
+            <ActivityIndicator visible={getOutfitApi.loading}/>
+            <Screen>
+                <ScrollView style={[styles.container, {marginTop: menuOpen ? 110 : 0}]} refreshControl={
+                    <RefreshControl
+                        refreshing={getOutfitApi.loading}
+                        onRefresh={onRefresh}
+                        colors={[colors.light]}
+                        tintColor={colors.light}
+                    />
+                }>
+                    <Animated.FlatList
+                        horizontal={true}
+                        scrollEventThrottle={32}
+                        onScroll={Animated.event(
+                            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                            {useNativeDriver: false})}
+                        onMomentumScrollEnd={onScrollEnd}
+                        keyExtractor={(item) => item.id.toString()}
+                        data={getOutfitApi.data}
+                        pagingEnabled={true}
+                        renderItem={({item}) => {
+                            return <View>
+                                <Canvas outfit={item.outfitItems} positions={item.itemPositions}
+                                        key={`canvas-${item.id}`}/>
+                                <CanvasItems outfit={item} key={`canvasItem-${item.id}`}/>
+                            </View>
+                        }}/>
+                </ScrollView>
+                {isInjected && <View style={styles.chooseOutfitContainer}>
+                    <AppButton title={'choose this outfit'} onPress={() => {
+                        navigation.push('createPost', {
+                            picture: picture,
+                            base64: base64,
+                            outfitId: getOutfitApi.data[currentOutfit].id,
+                            outfitName: getOutfitApi.data[currentOutfit].name
+                        });
                     }}/>
-            </ScrollView>
-            {isInjected && <View style={styles.chooseOutfitContainer}>
-                <AppButton title={'choose this outfit'} onPress={()=> {
-                    navigation.push('createPost', {picture: picture, base64: base64, outfitId: outfits[currentOutfit].id, outfitName: outfits[currentOutfit].name});
-                }}/>
-            </View>}
-        </Screen>
+                </View>}
+            </Screen>
+        </View>
     );
 }
 

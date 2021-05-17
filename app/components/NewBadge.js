@@ -41,39 +41,44 @@ function NewBadge({refObj, newBadgeFunc}) {
             setRadioValue(radio_props[0].value);
             setTextValue("");
         }}>
-            <View style={styles.container}>
-                <RadioForm
-                    radio_props={radio_props}
-                    initial={0}
-                    formHorizontal={false}
-                    labelHorizontal={true}
-                    buttonColor={colors.medium}
-                    selectedButtonColor={colors.dark}
-                    animation={true}
-                    onPress={(value) => {
-                        setRadioValue(value);
-                    }}
-                    style={styles.radioGroup}
-                />
-                <TextInput
-                    onBlur={() => {
-                    }}
-                    onChangeText={(text) => setTextValue(text)}
-                    placeholder={'Value'}
-                    value={textValue}
-                    width={'100%'}
-                />
-                <Button title="Save" buttonStyle={styles.button}
-                        onPress={() => {
-                            if(textValue === "") {
-                                return Alert.alert("Please enter a value.");
-                            }
-                            newBadgeFunc(radioValue, textValue);
-                            setRadioValue(radio_props[0].value);
-                            setTextValue("");
-                            refObj.current?.setModalVisible(false);
-                        }}/>
-            </View>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "position" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+            >
+                <View style={styles.container}>
+                    <RadioForm
+                        radio_props={radio_props}
+                        initial={0}
+                        formHorizontal={false}
+                        labelHorizontal={true}
+                        buttonColor={colors.medium}
+                        selectedButtonColor={colors.dark}
+                        animation={true}
+                        onPress={(value) => {
+                            setRadioValue(value);
+                        }}
+                        style={styles.radioGroup}
+                    />
+                    <TextInput
+                        onBlur={() => {
+                        }}
+                        onChangeText={(text) => setTextValue(text)}
+                        placeholder={'Value'}
+                        value={textValue}
+                        width={'100%'}
+                    />
+                    <Button title="Save" buttonStyle={styles.button}
+                            onPress={() => {
+                                if (textValue === "") {
+                                    return Alert.alert("Please enter a value.");
+                                }
+                                newBadgeFunc(radioValue, textValue);
+                                setRadioValue(radio_props[0].value);
+                                setTextValue("");
+                                refObj.current?.setModalVisible(false);
+                            }}/>
+                </View>
+            </KeyboardAvoidingView>
         </ActionSheet>
     );
 }

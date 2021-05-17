@@ -60,10 +60,11 @@ function OutfitItem({
         tempData.name = listing.title;
         tempData.brand = listing.brand;
         tempData.attributes = data.attributes;
-        tempData.signedUrl = listing.image[0];
-/*
-        console.log(tempData);
-*/
+        tempData.image = listing.image[0].base64;
+        tempData.signedUrl = listing.image[0].uri;
+        tempData.price = 0;
+        tempData.public = true;
+        tempData.isPublic = true;
         addFunc(tempData);
         resetComponent();
         modalCloseFunc(false);
@@ -80,9 +81,8 @@ function OutfitItem({
     }
 
     const newAttribute = (key, value) => {
-        const tempAttributes = data.attributes;
+        const tempAttributes = data.attributes ? data.attributes : {};
         tempAttributes[key] = value;
-        const tempData = data;
         data.attributes = tempAttributes;
         setDataFunc(data);
         setForceUpdate(forceUpdate + 1);
@@ -108,12 +108,12 @@ function OutfitItem({
                     </TouchableOpacity>
                     <ScrollView style={stylesPopup.scrollView} contentContainerStyle={{flexGrow: 1}}>
                         <KeyboardAvoidingView
-                            behavior={Platform.OS === "ios" ? "padding" : "height"}
+                            behavior={Platform.OS === "ios" ? "position" : "height"}
                             keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
                         >
                             <Form
                                 initialValues={{
-                                    image: [data?.signedUrl ? data?.signedUrl : null],
+                                    image: [data?.signedUrl ? {uri: data?.signedUrl, base64: ""} : null],
                                     title: data?.name ? data?.name : "",
                                     brand: data?.brand ? data?.brand : "",
                                 }}
@@ -121,7 +121,7 @@ function OutfitItem({
                                 validationSchema={validationSchema}
                                 innerRef={form}
                             >
-                                <PostImagePicker name="image" forceUpdateFunc={setForceUpdate} forceUpdateVal={forceUpdate}/>
+                                <PostImagePicker name="image" base64={true} forceUpdateFunc={setForceUpdate} forceUpdateVal={forceUpdate}/>
                                 <FormField
                                     maxLength={100}
                                     name="title"

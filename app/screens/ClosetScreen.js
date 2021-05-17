@@ -3,7 +3,7 @@ import {
     Alert,
     Dimensions,
     Image,
-    ImageBackground,
+    ImageBackground, KeyboardAvoidingView,
     ScrollView,
     StyleSheet,
     Text,
@@ -25,6 +25,8 @@ import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
 import ModalLike from "../components/ModalLike";
 import ActivityIndicator from "../components/ActivityIndicator";
+import UploadScreen from "./UploadScreen";
+import feed from "../api/feed";
 
 const filterCategories = (categories, closetItems) => {
     const tempCategories = [];
@@ -44,12 +46,10 @@ export default function ClosetScreen({
                                          injectedItemTapFunc
                                      }) {
 
-    const closetApi = useApi(outfitApi.getCloset);
+    const getClosetApi = useApi(outfitApi.getCloset);
 
     useEffect(() => {
-        closetApi.request().catch(() => {
-            console.log(closetApi.error);
-        });
+        getClosetApi.request();
     }, []);
 
     /*const closet = [
@@ -144,23 +144,15 @@ export default function ClosetScreen({
             {
                 text: 'Delete',
                 onPress: () => {
-                    if (closetApi.data.find(item => item.id === id)) closetApi.setData(closetApi.data.filter(item => item.id !== id));
-                    if (isModal) {
-                        setModalIsShown(false);
+                    if (getClosetApi.data.find(item => item.id === id)) {
+                        // TODO deleteItemApi.request();
+                        getClosetApi.setData(getClosetApi.data.filter(item => item.id !== id));
                     }
+                    if (isModal) setModalIsShown(false);
                 },
             },
         ]);
     }
-
-    useEffect(() => {
-        if (!closetApi.loading && isInjected) {
-            setFilteredCategories(filterCategories(categories, closetApi.data));
-        }
-    }, [closetApi.loading]);
-
-
-    const [filteredCategories, setFilteredCategories] = useState(categories);
 
     const itemTap = (data, state, isShown) => {
         if (isInjected) {
@@ -172,14 +164,33 @@ export default function ClosetScreen({
         }
     }
 
-    const addToCloset = (item) => {
-        const tempClosetItems = closetItems;
+    const addToCloset = async (item) => {
+        console.log(item);
+        const tempClosetItems = getClosetApi.data;
         const index = tempClosetItems.findIndex(items => items.id === item.id);
         if (index !== -1) {
             tempClosetItems[index] = item;
-            setClosetItems([...tempClosetItems]);
+            //TODO putItemApi.request(item);
+            getClosetApi.setData([...tempClosetItems]);
         } else {
-            setClosetItems(closetItems => [...closetItems, item]);
+            console.log([...tempClosetItems, item]);
+            setProgress(0);
+            setUploadVisible(true);
+            const result = await outfitApi.postItem(
+                item,
+                (progress) => setProgress(progress)
+            );
+
+            if (!result.ok) {
+                // Deletes the base64 from the response
+                const temp = result;
+                delete temp.config;
+                console.log(temp);
+                setUploadVisible(false);
+                return alert(result.data.message ? result.data.message : "Something went wrong.");
+            }
+
+            getClosetApi.setData([...tempClosetItems, item]);
         }
     }
 
@@ -196,6 +207,10 @@ export default function ClosetScreen({
 
     // Height of closet container
     //const [containerHeight, setContainerHeight] = useState(500);
+
+    // Upload
+    const [uploadVisible, setUploadVisible] = useState(false);
+    const [progress, setProgress] = useState(0);
 
 
     // Renders panel header (always shown)
@@ -222,12 +237,12 @@ export default function ClosetScreen({
 
     //Renders panel content
     const _renderContent = section => {
-        const carouselItems = closetApi.data.filter(item => item.categoryId === section.categoryId);
+        const carouselItems = getClosetApi.data.filter(item => item.categoryId === section.categoryId);
         return (
             <View
                 style={carouselItems.length ? styles.sectionContent : [styles.sectionContent, styles.sectionContentRel]}>
                 {!isInjected && <TouchableOpacity onPress={() => {
-                    itemTap({}, 3, true);
+                    itemTap({categoryId: section.categoryId}, 3, true);
                 }}>
                     <View style={carouselItems.length ? styles.newItem : [styles.newItem, styles.newItemRel]}>
                         <MaterialCommunityIcons
@@ -239,7 +254,7 @@ export default function ClosetScreen({
                 </TouchableOpacity>}
                 {!isInjected && carouselItems.length ? (
                     <TouchableOpacity onPress={() => {
-                        itemTap({}, 3, true);
+                        itemTap({categoryId: section.categoryId}, 3, true);
                     }} style={{zIndex: 10}}>
                         <View style={styles.newItemOverlay}>
                         </View>
@@ -270,8 +285,13 @@ export default function ClosetScreen({
 
     // Renders whole screen
     return (
-        <View style={isInjected ? {height: (filteredCategories.length * 100 + activeSection.length * 225)} : {flex: 1}}>
-            <ActivityIndicator visible={closetApi.loading}/>
+        <View style={isInjected ? {height: (filterCategories(categories, getClosetApi.data).length * 100 + activeSection.length * 225)} : {flex: 1}}>
+            <UploadScreen
+                onDone={() => setUploadVisible(false)}
+                progress={progress}
+                visible={uploadVisible}
+            />
+            <ActivityIndicator visible={getClosetApi.loading}/>
             <Screen>
                 <ScrollView
                     style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {
@@ -286,7 +306,7 @@ export default function ClosetScreen({
                     }}*/
                 >
                     <Accordion
-                        sections={filteredCategories}
+                        sections={isInjected ? filterCategories(categories, getClosetApi.data) : categories}
                         activeSections={activeSection}
                         renderHeader={_renderHeader}
                         renderContent={_renderContent}
