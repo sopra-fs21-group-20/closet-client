@@ -61,18 +61,14 @@ const newItem = ({current, next, layouts}) => ({
 const OutfitNavigator = ({navigation}) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const isOpenChanged = (isOpenTemp) => {
-        setIsOpen(isOpenTemp);
-    }
-
     const [editMode, setEditMode] = useState(false);
 
     return (<>
         <Stack.Navigator mode="screen" headerMode={"float"} initialRouteName={routes.CLOSET} screenOptions={{
             headerStyle: [styles.headerStyle],
             headerTitleStyle: styles.headerTitle,
-            headerTitle: () => <OutfitDropdown navigation={navigation} isOpenChanged={isOpenChanged}
-                                               isOpenInitial={isOpen}/>,
+            headerTitle: () => <OutfitDropdown navigation={navigation} setIsOpen={setIsOpen}
+                                               isOpen={isOpen}/>,
             cardStyleInterpolator: forFade,
         }}>
             <Stack.Screen name="Closet" options={{

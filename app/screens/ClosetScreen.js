@@ -3,7 +3,7 @@ import {
     Alert,
     Dimensions,
     Image,
-    ImageBackground, KeyboardAvoidingView,
+    ImageBackground, KeyboardAvoidingView, Platform,
     ScrollView,
     StyleSheet,
     Text,
@@ -41,7 +41,7 @@ const filterCategories = (categories, closetItems) => {
 export default function ClosetScreen({
                                          navigation,
                                          editMode = false,
-                                         menuOpen = false,
+                                         menuOpen,
                                          isInjected = false,
                                          injectedItemTapFunc
                                      }) {
@@ -317,7 +317,7 @@ export default function ClosetScreen({
             <ActivityIndicator visible={getClosetApi.loading || deleteClosetApi.loading}/>
             <Screen>
                 <ScrollView
-                    style={[styles.container, {marginTop: menuOpen ? 110 : 0,}, isInjected ? {
+                    style={[styles.container, {marginTop: menuOpen ? (Platform.OS === "ios" ? 110 : 80) : (Platform.OS === "ios" ? 0 : -20),}, isInjected ? {
                         margin: 0,
                         marginTop: 0,
                         borderRadius: 5,

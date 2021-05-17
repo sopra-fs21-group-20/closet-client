@@ -7,8 +7,10 @@ function ModalLike({isVisible, onBackdropPress, children}) {
             onBackdropPress()
         }}>
             <TouchableWithoutFeedback>
-                <View style={[styles.backdrop, {display: isVisible ? "flex" : "none"}]}>
-                    {children}
+                <View style={[{display: isVisible ? "flex" : "none"}]}>
+                    <View style={[styles.backdrop]}>
+                        {children}
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         </TouchableWithoutFeedback>

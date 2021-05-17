@@ -7,7 +7,7 @@ import colors from "../config/colors";
 import routes from "./routes";
 import Text from "../components/Text";
 
-function OutfitDropdown({navigation, isOpenChanged, isOpenInitial}) {
+function OutfitDropdown({navigation, setIsOpen, isOpen}) {
     const route = useRoute();
     const dropdownOptions = [{
         title: "Closet",
@@ -17,12 +17,9 @@ function OutfitDropdown({navigation, isOpenChanged, isOpenInitial}) {
         navigateTo: routes.MIRROR
     }];
 
-    const [isOpen, setIsOpen] = useState(isOpenInitial);
-
     useEffect(() => {
-        return setIsOpen(isOpenInitial);
-    }, [isOpenInitial]);
-
+        console.log(isOpen);
+    }, [isOpen]);
 
 
     return (
@@ -30,9 +27,8 @@ function OutfitDropdown({navigation, isOpenChanged, isOpenInitial}) {
             <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                    if(route.name !== routes.CREATEOUTFIT) {
+                    if (route.name !== routes.CREATEOUTFIT) {
                         setIsOpen(!isOpen);
-                        isOpenChanged(!isOpen);
                     }
                 }}
                 style={styles.container}
@@ -47,16 +43,18 @@ function OutfitDropdown({navigation, isOpenChanged, isOpenInitial}) {
                         />
                     </View>}
                 </View>
-                <View style={[styles.dropDown, {display: isOpen ? "flex": "none"}]} >
-                    {
-                        dropdownOptions.map(({navigateTo, title}, index) =>
-                            <TouchableOpacity key={index} onPress={() => {
-                                navigation.navigate(navigateTo);
-                                isOpenChanged(false);
-                            }}>
-                                <Text style={styles.text}>{title}</Text>
-                            </TouchableOpacity>)
-                    }
+                <View style={styles.dropDown}>
+                    <View style={{display: isOpen ? "flex" : "none"}}>
+                        {
+                            dropdownOptions.map(({navigateTo, title}, index) =>
+                                <TouchableOpacity key={index} onPress={() => {
+                                    navigation.navigate(navigateTo);
+                                    setIsOpen(false);
+                                }}>
+                                    <Text style={styles.text}>{title}</Text>
+                                </TouchableOpacity>)
+                        }
+                    </View>
                 </View>
             </TouchableOpacity>
         </>
