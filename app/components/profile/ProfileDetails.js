@@ -19,7 +19,7 @@ export default function ProfileDetails({userDetails, postsAmount}) {
                 <Text style={styles.username}>{userDetails.username}</Text>
                 <Text style={styles.bio}>{userDetails.biography ? userDetails.biography : 'this is a placeholder'}</Text>
             </View>
-            <ProfileBar posts={postsAmount}/>
+            <ProfileBar followers={userDetails.numberOfFollowers} following={userDetails.numberOfFollowing} posts={postsAmount}/>
         </View>
     );
 }
