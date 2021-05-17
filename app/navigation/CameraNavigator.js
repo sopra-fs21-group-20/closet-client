@@ -60,17 +60,17 @@ const CameraNavigator = ({navigation, route}) => {
                     navigation.goBack();
                     }}/>,
                 headerRight: () => <MaterialCommunityIcons name="plus" style={styles.headerRight} onPress={() => {
-                        navigation.navigate("createOutfit")
+                        navigation.navigate("injectedCreateOutfit")
                     }}/>,
             }} children={() => <MirrorScreen isInjected={true} />}/>
-            <Stack.Screen name="createOutfit" component={CreateOutfitScreen} navigation={navigation} route={route} options={{
+            <Stack.Screen name="injectedCreateOutfit" navigation={navigation} route={route} options={{
                 headerShown: true,
                 headerTitle: null,
                 headerLeft: () => <MaterialCommunityIcons name="arrow-left" style={styles.headerLeft} onPress={() => {
                     navigation.goBack();
                 }}/>,
                 cardStyleInterpolator: newItem,
-            }}/>
+            }} children={() => <CreateOutfitScreen isInjected={true} />}/>
             <Stack.Screen name="createPost" component={CreatePostScreen} feedNavigation={navigation}/>
         </Stack.Navigator>)
 

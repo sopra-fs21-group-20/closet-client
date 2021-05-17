@@ -11,7 +11,7 @@ import * as Yup from "yup";
 import {StackActions as navigation} from "react-navigation";
 import useLocation from "../hooks/useLocation";
 import outfitApi from "../api/outfitApi";
-import {StackActions} from '@react-navigation/native';
+import {StackActions, useNavigation} from '@react-navigation/native';
 import ActionSheet from "react-native-actions-sheet";
 import ClosetScreen from "./ClosetScreen";
 import useApi from "../hooks/useApi";
@@ -77,7 +77,9 @@ const outfitData = [
 const closetActionSheet = createRef();
 
 
-export default function CreateOutfitScreen({navigation}) {
+export default function CreateOutfitScreen({isInjected = false}) {
+
+    const navigation = useNavigation();
 
     const [outfit, setOutfit] = useState([]);
     const [position, setPosition] = useState([]);
@@ -138,7 +140,8 @@ export default function CreateOutfitScreen({navigation}) {
                 return alert("Could not save the outfit");
             }
             resetForm();
-            navigation.navigate(routes.MIRROR, {reload: true});
+            setOutfit([]);
+            navigation.navigate(isInjected ? routes.CHOOSEOUTFIT : routes.MIRROR, {reload: true});
         } else {
             Alert.alert("Please enter an outfit name.");
         }
