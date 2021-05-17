@@ -4,7 +4,7 @@ import {Alert, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import defaultStyles from "../config/styles";
 import colors from "../config/colors";
 
-function Badge({children, type = "", color = "rgb(72,69,69)", onPressFunction}) {
+function Badge({children, type = "", color = "rgb(72,69,69)", onPressFunction, pressable = true}) {
     const [colorString, setColorString] = useState(color);
     const [childrenString, setChildrenString] = useState(children);
 
@@ -16,7 +16,7 @@ function Badge({children, type = "", color = "rgb(72,69,69)", onPressFunction}) 
 
     return (
         <TouchableOpacity onPress={() => {
-            onPressFunction();
+            if(pressable) onPressFunction();
         }}>
             <View style={[styles.badgeContainer, {opacity: type === "new" ? 0.5 : 1}]}>
                 <View style={[styles.badge]}>

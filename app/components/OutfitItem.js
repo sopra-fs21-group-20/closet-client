@@ -221,7 +221,7 @@ function OutfitItem({
                             <Text style={stylesList.attributes}>
                                 {
                                     data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge
-                                        key={i} color={badgeColor}>{value}</Badge>)
+                                        key={i} color={badgeColor} pressable={false}>{value}</Badge>)
                                 }
                             </Text>
                         </View>
