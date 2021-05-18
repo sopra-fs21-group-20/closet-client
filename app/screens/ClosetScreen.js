@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {createRef, useEffect, useRef, useState} from "react";
 import {
     Alert,
     Dimensions,
@@ -236,6 +236,15 @@ export default function ClosetScreen({
     const [progress, setProgress] = useState(0);
 
 
+    const carousels = useRef(categories.map(() => createRef()));
+
+    const goToLast = (index, indexOfLast) => {
+        const current = carousels.current[index].current;
+        if(Platform.OS === "android" && current.currentIndex === 0)
+        current.snapToItem(indexOfLast, false, false);
+    }
+
+
     // Renders panel header (always shown)
     const _renderHeader = section => {
         return (
@@ -259,7 +268,7 @@ export default function ClosetScreen({
     };
 
     //Renders panel content
-    const _renderContent = section => {
+    const _renderContent = (section, index) => {
         const carouselItems = getClosetApi.data.filter(item => item.categoryId === section.categoryId);
         return (
             <View
@@ -267,7 +276,7 @@ export default function ClosetScreen({
                 {!isInjected && <TouchableOpacity onPress={() => {
                     itemTap({categoryId: section.categoryId}, 3, true);
                 }}>
-                    <View style={carouselItems.length ? styles.newItem : [styles.newItem, styles.newItemRel]}>
+                    <View style={carouselItems.length ? [styles.newItem, Platform.OS === "android" ? {left: null, right: 20} : null] : [styles.newItem, styles.newItemRel]}>
                         <MaterialCommunityIcons
                             name="plus"
                             color={colors.white}
@@ -290,6 +299,11 @@ export default function ClosetScreen({
                     itemWidth={200}
                     layout={'stack'}
                     layoutCardOffset={100}
+                    ref={carousels.current[index]}
+                    key={index}
+                    onLayout={(event) => {
+                        goToLast(index, carouselItems.length -1);
+                    }}
                 />
             </View>
         );

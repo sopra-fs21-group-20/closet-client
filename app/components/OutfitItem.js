@@ -232,15 +232,17 @@ function OutfitItem({
             return (
                 <View style={stylesSquare.wrapper}>
                     <View style={[styles.container, stylesSquare.container]}>
-                        <TouchableOpacity onPress={() => {
-                            deleteFunc(data.id);
-                        }} style={[styles.deleteIconContainer, {display: (editMode ? "flex" : "none")}]}>
-                            <MaterialCommunityIcons
-                                name="trash-can-outline"
-                                color={colors.white}
-                                style={styles.deleteIcon}
-                                size={20}/>
-                        </TouchableOpacity>
+                        <View style={{display: (editMode ? "flex" : "none")}}>
+                            <TouchableOpacity onPress={() => {
+                                deleteFunc(data.id);
+                            }} style={[styles.deleteIconContainer]}>
+                                <MaterialCommunityIcons
+                                    name="trash-can-outline"
+                                    color={colors.white}
+                                    style={styles.deleteIcon}
+                                    size={20}/>
+                            </TouchableOpacity>
+                        </View>
                         <Image2 style={stylesSquare.image} source={{uri: data.signedUrl}} resizeMode={"cover"}/>
                     </View>
                 </View>
