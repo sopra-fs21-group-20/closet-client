@@ -21,6 +21,7 @@ const cameraDimensions = 4/3
 const cameraContainerHeight = dimensions.width * cameraDimensions
 const topButtonContainerHeight = (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4
 const bottomButtonContainerHeight = (dimensions.height-dimensions.width * cameraDimensions)* 0.6
+const compression = 0.5
 
 export default function TakePictureScreen({navigation}) {
     const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
@@ -66,7 +67,7 @@ export default function TakePictureScreen({navigation}) {
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 0,
+            quality: compression,
             base64: true
         });
 
@@ -83,7 +84,7 @@ export default function TakePictureScreen({navigation}) {
         return await ImageManipulator.manipulateAsync(
             imgUri,
             [{resize: {width: dimensions.width}}],
-            { compress: 0.5, format: ImageManipulator.SaveFormat.JPEG, base64: true}
+            { compress: compression, format: ImageManipulator.SaveFormat.JPEG, base64: true}
         );
     };
 
