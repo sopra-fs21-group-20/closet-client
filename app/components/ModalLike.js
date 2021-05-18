@@ -2,19 +2,18 @@ import React from "react";
 import {Dimensions, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 
 function ModalLike({isVisible, onBackdropPress, children}) {
-    return (
+    if(isVisible) return (
         <TouchableWithoutFeedback onPress={() => {
             onBackdropPress()
         }}>
-            <TouchableWithoutFeedback>
-                <View style={[{display: isVisible ? "flex" : "none"}]}>
-                    <View style={[styles.backdrop]}>
-                        {children}
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
+            <View style={[styles.backdrop]}>
+                <TouchableWithoutFeedback>
+                    {children}
+                </TouchableWithoutFeedback>
+            </View>
         </TouchableWithoutFeedback>
     );
+    else return null;
 }
 
 const styles = StyleSheet.create({
@@ -30,6 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 25,
         paddingVertical: 0,
+        zIndex: 100,
     }
 });
 
