@@ -352,13 +352,20 @@ export default function ClosetScreen({
                         sectionContainerStyle={styles.sectionContainer}
                     />
                 </ScrollView>
-                {!isInjected && <ModalLike
+                {!isInjected && Platform.OS === "ios" && <ModalLike
                     isVisible={modalIsShown}
                     onBackdropPress={() => setModalIsShown(false)}>
                     <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState}
                                 setStateFunc={setModalState} modalCloseFunc={setModalIsShown}
                                 deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
                 </ModalLike>}
+                {!isInjected && Platform.OS === "android" && <Modal
+                    isVisible={modalIsShown}
+                    onBackdropPress={() => setModalIsShown(false)}>
+                    <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState}
+                                setStateFunc={setModalState} modalCloseFunc={setModalIsShown}
+                                deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
+                </Modal>}
             </Screen>
         </View>
     );
