@@ -91,11 +91,25 @@ The client provides touch and feel to MyOutfit mobile application. The client de
 
 ### Illustrations
 
-#### Feed
+#### The Feed
 When launching the App you get greeted by the Feed. This is the place where you see what your friends wear and where you find inspiration for new outfits and new clothes you could buy in the future.
 
 <div align="center">
   <img alt="feed" height="500" src="./img/feed.png">
+</div>
+
+#### The Closet
+Here is where all your clothes are stored. As can be seen everything is organized in a drawer-like structure to find items faster
+
+<div align="center">
+  <img alt="feed" height="500" src="./img/closet.png">
+</div>
+
+#### The Profile Screen
+The Profile screen summarizes all your posts and account information at one place. This helps you to keep track of personal metrics.
+
+<div align="center">
+  <img alt="feed" height="500" src="./img/account.png">
 </div>
 
 <!-- GETTING STARTED -->
