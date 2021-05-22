@@ -36,14 +36,14 @@
   <p align="center">
     The frontend powering MyOutfit
     <br />
-    <a href="https://github.com/sopra-fs21-group-20/closet-server"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/sopra-fs21-group-20/closet-client"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/sopra-fs21-group-20/closet-server">View Demo</a>
+    <a href="https://myoutf.it">View Demo</a>
     ·
-    <a href="https://github.com/sopra-fs21-group-20/closet-server/issues">Report Bug</a>
+    <a href="https://github.com/sopra-fs21-group-20/closet-client/issues">Report Bug</a>
     ·
-    <a href="https://github.com/sopra-fs21-group-20/closet-server/issues">Request Feature</a>
+    <a href="https://github.com/sopra-fs21-group-20/closet-client/issues">Request Feature</a>
   </p>
 </p>
 
@@ -86,6 +86,7 @@ MyOutfit's client is the magic that provides touch and feel to MyOutfit mobile a
 ### Built With
 
 * [React Native](https://github.com/facebook/react-native)
+* [Expo](https://github.com/expo/expo)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -94,7 +95,12 @@ To get a local copy up and running follow these simple steps:
 
 ### Prerequisites
 
-First you need to ensure gradle is installed. You can install gradle in the following way:
+First you need to ensure Node.js is install. Then install Expo CLI on your device. 
+
+* You can download Node.js [here](https://nodejs.org/en/download/)
+* Install Expo CLI: (`npm install --global expo-cli`)
+
+
 
 * Linux based: `sdk install gradle 7.0.2` Note this relies on [SDKMan](http://sdkman.io)
 * MacOS homebrew: `brew install gradle`
