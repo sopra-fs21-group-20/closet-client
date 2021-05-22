@@ -93,16 +93,24 @@ The client provides touch and feel to MyOutfit mobile application. The client de
 
 #### The Feed
 When launching the App you get greeted by the Feed. This is the place where you see what your friends wear and where you find inspiration for new outfits and new clothes you could buy in the future.
+The live poll feature together with the commen section allows you to get feedback on how you like the posted outfit.
 
 <div align="center">
   <img alt="feed" height="500" src="./img/feed.png">
 </div>
 
 #### The Closet
-Here is where all your clothes are stored. As can be seen everything is organized in a drawer-like structure to find items faster
+Here is where all your clothes are stored. As can be seen everything is organized in a drawer-like structure to find items faster.
 
 <div align="center">
   <img alt="feed" height="500" src="./img/closet.png">
+</div>
+
+#### The Mirror
+All outfits are found in the mirror. This is the digital equivalent to trying on outfits or laying them out on the floor.
+
+<div align="center">
+  <img alt="feed" height="500" src="./img/mirror.png">
 </div>
 
 #### The Profile Screen
