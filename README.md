@@ -80,13 +80,17 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-MyOutfit's client is the magic that provides touch and feel to MyOutfit mobile application. The client depends on the [server](https://github.com/sopra-fs21-group-20/closet-server) following a client/server architecture.
+MyOutfit pursues the goal of fusing the real and virtual world of wearing, buying, selling and marketing clothes and accessoires.
+The client provides touch and feel to MyOutfit mobile application. The client depends on the [server](https://github.com/sopra-fs21-group-20/closet-server) following a client/server architecture.
 
 
 ### Built With
 
 * [React Native](https://github.com/facebook/react-native)
 * [Expo](https://github.com/expo/expo)
+
+### Illustrations
+When launching the App the 
 
 <!-- GETTING STARTED -->
 ## Getting Started
