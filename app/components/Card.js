@@ -45,7 +45,7 @@ function Card({
     const scrollableImages = useRef();
 
     useEffect(() => {
-        if(viewableCards.includes(post_id)) {
+        if (viewableCards.includes(post_id)) {
             handleRefresh();
         }
     }, [viewableCards]);
@@ -191,20 +191,22 @@ function Card({
                    swipeDirection={"down"}
             >
                 <SafeAreaView style={{flex: 1, height: Dimensions.get("screen").height}}>
-                    <TouchableOpacity onPress={() => {
-                        setShowModal(false);
-                    }} style={[styles.closeIconContainer, Platform.OS === "ios" ? {top: 60} : null]}>
-                        <MaterialCommunityIcons
-                            name="close"
-                            color={colors.white}
-                            style={styles.closeIcon}
-                            size={20}/>
-                    </TouchableOpacity>
-                    {outfit?.outfitItems && outfit?.itemPositions &&
-                    <>
-                        <Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
-                        <CanvasItems outfit={outfit}/>
-                    </>}
+                    <ScrollView style={{flex: 1}}>
+                        <TouchableOpacity onPress={() => {
+                            setShowModal(false);
+                        }} style={[styles.closeIconContainer, Platform.OS === "ios" ? {top: 60} : null]}>
+                            <MaterialCommunityIcons
+                                name="close"
+                                color={colors.white}
+                                style={styles.closeIcon}
+                                size={20}/>
+                        </TouchableOpacity>
+                        {outfit?.outfitItems && outfit?.itemPositions &&
+                        <>
+                            <Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
+                            <CanvasItems outfit={outfit}/>
+                        </>}
+                    </ScrollView>
                 </SafeAreaView>
             </Modal>
         </>
