@@ -23,6 +23,7 @@ import Text from "../components/Text";
 import Card from "../components/Card";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import ScrollScreen from "../components/ScrollScreen";
 
 function AccountScreen({navigation}) {
     const getFeedApi = useApi(profile.getPosts);
@@ -39,7 +40,7 @@ function AccountScreen({navigation}) {
     return (
         <>
             <ActivityIndicator visible={getFeedApi.loading}/>
-            <Screen style={styles.screen}>
+            <ScrollScreen style={styles.screen}>
                 {(getFeedApi.error) && (
                     <ScrollView contentContainerStyle={styles.errorView} refreshControl={
                         <RefreshControl
@@ -74,7 +75,7 @@ function AccountScreen({navigation}) {
                         <Gallery data={getFeedApi.data.userPosts}/>
                     </ScrollView>
                 )}
-            </Screen>
+            </ScrollScreen>
         </>
     );
 };
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
     },
     screenInner: {
         flex: 1,
-        borderRadius: 50,
     },
     flatList: {
         flex: 1
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         padding: 40,
-        borderTopLeftRadius: 50,
         shadowColor: colors.black,
         shadowOffset: {
             height: -5
