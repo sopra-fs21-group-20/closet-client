@@ -110,44 +110,16 @@ First you need to ensure Node.js is install. Then install Expo CLI on your devic
    ```sh
    npm install
    ```
-3. Run development server
-   ```sh
-   expo start
-   ```
-
-Please note the appropriate platform prefix based upon your OS:
-
-MAC OS X: `./gradlew`
-Linux: `./gradlew`
-Windows: `./gradlew.bat`
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Start the server with  
+Start the development server with  
 ```sh
-./gradelw bootRun
+expo start
 ```
 
-Gradle is also compatible with all mainstream IDE's, with run support baked in natively or via extensions.
-The team recommends [IntelliJ](https://www.jetbrains.com/idea/download/#section=mac).
-
-Make sure to set the following environment variables or the build will fail:
-
-* `AWS_ACCESS_KEY`
-* `AWS_SECRET_KEY`
-* `DB_URL` of the form `jdbc:postgresql://{hostname}:{port}/{db_name}`. You need to have a database instance running locally or use the provided test database we provide you
-* `DB_USERNAME`
-* `DB_PASSWORD`
-* `DUMMY_UPLOAD` set to `true` to preserve image upload bandwith during troubleshooting and local development
-* `CLOUDINARY_CLOUD_NAME`
-* `CLOUDINARY_ACCESS_KEY`
-* `CLOUDINARY_SECRET_KEY`
-* `CLOUDINARY_ACTIVE`
-* `DB_INIT_BEHAVIOR` set to `create-drop` for local development or `none` for persistent storage. Do not use any other option besides `none` if you connect to the test database
-
-You now have a local server process running. To verify your endpoints, see the official Postman.
-
+You now have a local server process running.
 ### Component Heirarchy
 
 The system is comprised of entities and their relationships. HTTP requests flow over the respective controllers which delegate their logical implementations to the service layer. The service layers then interact with the appropriate entities and return an appropriate model back to the controller, where an HTTP response is generated.
