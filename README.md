@@ -98,23 +98,21 @@ To get a local copy up and running follow these simple steps:
 First you need to ensure Node.js is install. Then install Expo CLI on your device. 
 
 * You can download Node.js [here](https://nodejs.org/en/download/)
-* Install Expo CLI: (`npm install --global expo-cli`)
-
-
-
-* Linux based: `sdk install gradle 7.0.2` Note this relies on [SDKMan](http://sdkman.io)
-* MacOS homebrew: `brew install gradle`
-* Windows please see: https://gradle.org/install/
+* Install Expo CLI: `npm install --global expo-cli`
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/sopra-fs21-group-20/closet-server.git
+   git clone https://github.com/sopra-fs21-group-20/closet-client.git
    ```
-2. Run build script
+2. Install dependencies
    ```sh
-   ./gradlew build
+   npm install
+   ```
+3. Run development server
+   ```sh
+   expo start
    ```
 
 Please note the appropriate platform prefix based upon your OS:
