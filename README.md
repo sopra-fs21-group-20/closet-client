@@ -120,23 +120,7 @@ expo start
 ```
 
 You now have a local server process running.
-### Component Heirarchy
 
-The system is comprised of entities and their relationships. HTTP requests flow over the respective controllers which delegate their logical implementations to the service layer. The service layers then interact with the appropriate entities and return an appropriate model back to the controller, where an HTTP response is generated.
-
-Users familiar with Spring should feel comfortable with our repository structure as it follows common idioms.
-
-The application class itself can be reached [here](https://github.com/sopra-fs21-group-20/closet-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs21/Application.java).
-
-## Testing
-
-```sh
-./gradelw test
-```
-
-<!-- _For more examples, please refer to the [Documentation](https://example.com)_ -->
-
-<!-- ROADMAP -->
 ## Roadmap
 
 The current highest priority contributions are:
@@ -145,7 +129,7 @@ The current highest priority contributions are:
 * Integration of a proprietary background removal extension
 * Extension of the community features
 
-Please see the [open issues](https://github.com/sopra-fs21-group-20/closet-server/issues) for a further list of proposed features (and known issues).
+Please see the [open issues](https://github.com/sopra-fs21-group-20/closet-client/issues) for a further list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -164,10 +148,10 @@ Distributed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4
 <!-- CONTACT -->
 ## Contact
 
-This implementation is the work of the entire MyOutfit team, specifically the backend team Corey Bothwell, Silvan Kübler, and Nicolas Peyer.
+This implementation is the work of the entire MyOutfit team, specifically the frontend team Joel Weber and Matteo Gamba.
 They can be reached via their respective GitHub accounts.
 
-Project Link: [https://github.com/sopra-fs21-group-20/closet-server](https://github.com/sopra-fs21-group-20/closet-server)
+Project Link: [https://github.com/sopra-fs21-group-20/closet-client](https://github.com/sopra-fs21-group-20/closet-client)
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
