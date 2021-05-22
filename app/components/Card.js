@@ -74,7 +74,7 @@ function Card({
     const [disliked, setDisliked] = useState(hasBeenDisliked);
     const [progress, setProgress] = useState((likes + dislikes) === 0 ? 0 : likes / (dislikes + likes));
     //this prevents sending multiple requests at once and bombarding our server
-    let processingRequest = false;
+    const [processingRequest, setProcessingRequest] = useState(false);
 
     const handleRefresh = async () => {
         const result = await feed.getPostPoll(post_id)
@@ -89,28 +89,28 @@ function Card({
         if (processingRequest) {
             return;
         }
-        processingRequest = true;
+        setProcessingRequest(true);
         if (!liked) {
             setLiked(true);
             setDisliked(false);
         } else (setLiked(false));
         await feed.likePost(post_id);
         await handleRefresh();
-        processingRequest = false;
+        setProcessingRequest(false);
     }
 
     const handleDislike = async () => {
         if (processingRequest) {
             return;
         }
-        processingRequest = true;
+        setProcessingRequest(true);
         if (!disliked) {
             setDisliked(true);
             setLiked(false);
         } else (setDisliked(false));
         await feed.dislikePost(post_id);
         await handleRefresh();
-        processingRequest = false;
+        setProcessingRequest(false);
     }
 
     const getPollRate = async () => {
@@ -169,6 +169,7 @@ function Card({
                               handleDislike={handleDislike}
                               lightTheme={false/*index % 2 !== 0*/}
                               post_id={post_id}
+                              processingRequest={processingRequest}
                     />
                     {/*<UserDisplay
                     username={username}
