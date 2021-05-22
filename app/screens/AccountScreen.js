@@ -40,7 +40,7 @@ function AccountScreen({navigation}) {
         <>
             <ActivityIndicator visible={getFeedApi.loading}/>
             <Screen style={styles.screen}>
-                {(getFeedApi.error || (getFeedApi.data.userPosts && getFeedApi.data.userPosts.length === 0)) && (
+                {(getFeedApi.error) && (
                     <ScrollView contentContainerStyle={styles.errorView} refreshControl={
                         <RefreshControl
                             refreshing={getFeedApi.loading}
@@ -49,12 +49,12 @@ function AccountScreen({navigation}) {
                     }>
                         <View style={styles.errorViewInner}>
                             <Text
-                                style={styles.errorText}>{getFeedApi.data.userPosts && getFeedApi.data.userPosts.length === 0 ? "You have not yet posted any posts." : "There was an error while loading the posts."}</Text>
+                                style={styles.errorText}>There was an error while loading the posts.</Text>
                             <Button title="Retry" onPress={getFeedApi.request}/>
                         </View>
                     </ScrollView>
                 )}
-                {getFeedApi.data.userPosts && getFeedApi.data.userPosts.length >= 1 && (
+                {getFeedApi.data.userPosts && (
                     <ScrollView style={styles.screenInner} refreshControl={
                         <RefreshControl
                             refreshing={getFeedApi.loading}
@@ -67,6 +67,10 @@ function AccountScreen({navigation}) {
                         </TouchableWithoutFeedback>
                         <ProfileDetails userDetails={getFeedApi.data.user}
                                         postsAmount={getFeedApi.data.userPosts.length}/>
+                        {getFeedApi.data.userPosts && getFeedApi.data.userPosts.length === 0 ?
+                            <View style={{alignItems: 'center'}}>
+                                <Text style={{color: colors.white}}>You have not yet posted any posts.</Text>
+                            </View>: null}
                         <Gallery data={getFeedApi.data.userPosts}/>
                     </ScrollView>
                 )}
