@@ -50,7 +50,7 @@ function LoginScreen() {
                     <FormField
                         autoCapitalize="none"
                         autoCorrect={false}
-                        icon="email"
+                        icon="account"
                         name="username"
                         placeholder="Username"
                     />
