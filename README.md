@@ -31,10 +31,10 @@
     <img src="logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">MyOutfit Server</h3>
+  <h3 align="center">MyOutfit Client</h3>
 
   <p align="center">
-    The backend powering MyOutfit
+    The frontend powering MyOutfit
     <br />
     <a href="https://github.com/sopra-fs21-group-20/closet-server"><strong>Explore the docs »</strong></a>
     <br />
