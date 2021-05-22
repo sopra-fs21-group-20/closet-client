@@ -80,13 +80,45 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-MyOutfit's client is the magic that provides touch and feel to MyOutfit mobile application. The client depends on the [server](https://github.com/sopra-fs21-group-20/closet-server) following a client/server architecture.
+MyOutfit pursues the goal of fusing the real and virtual world of wearing, buying, selling and marketing clothes and accessoires.
+The client provides touch and feel to MyOutfit mobile application. The client depends on the [server](https://github.com/sopra-fs21-group-20/closet-server) following a client/server architecture.
 
 
 ### Built With
 
 * [React Native](https://github.com/facebook/react-native)
 * [Expo](https://github.com/expo/expo)
+
+### Illustrations
+
+#### The Feed
+When launching the App you get greeted by the Feed. This is the place where you see what your friends wear and where you find inspiration for new outfits and new clothes you could buy in the future.
+The live poll feature together with the commen section allows you to get feedback on how you like the posted outfit.
+
+<div align="center">
+  <img alt="feed" height="500" src="./img/feed.png">
+</div>
+
+#### The Closet
+Here is where all your clothes are stored. As can be seen everything is organized in a drawer-like structure to find items faster.
+
+<div align="center">
+  <img alt="feed" height="500" src="./img/closet.png">
+</div>
+
+#### The Mirror
+All outfits are found in the mirror. This is the digital equivalent to trying on outfits or laying them out on the floor.
+
+<div align="center">
+  <img alt="feed" height="500" src="./img/mirror.png">
+</div>
+
+#### The Profile Screen
+The Profile screen summarizes all your posts and account information at one place. This helps you to keep track of personal metrics.
+
+<div align="center">
+  <img alt="feed" height="500" src="./img/account.png">
+</div>
 
 <!-- GETTING STARTED -->
 ## Getting Started
