@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {StyleSheet, Image} from "react-native";
+import {StyleSheet, Image, View} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -13,6 +13,8 @@ import authApi from "../api/login";
 import useAuth from "../auth/useAuth";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Image2 from "../components/Image";
+import colors from "../config/colors";
+import Text from "../components/Text";
 
 const validationSchema = Yup.object().shape({
     username: Yup.string().required().label("Username"),
@@ -65,6 +67,10 @@ function LoginScreen() {
                     />
                     <SubmitButton title="Login"/>
                 </Form>
+                <View style={styles.textContainer}>
+                    <Text style={styles.text}>If logging in takes longer than expected, do not worry!</Text>
+                    <Text style={styles.text}>You are just waking up the server</Text>
+                </View>
             </Screen>
         </>
     );
@@ -81,6 +87,17 @@ const styles = StyleSheet.create({
         marginTop: 50,
         marginBottom: 20,
     },
+    text:{
+        color: colors.white,
+        textAlign: 'center'
+    },
+    textContainer:{
+        width: '100%',
+        position: 'absolute',
+        alignItems: 'center',
+        bottom: 0
+        ,
+    }
 });
 
 export default LoginScreen;

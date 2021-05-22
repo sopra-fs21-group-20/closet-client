@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     StyleSheet,
     Text,
@@ -6,21 +6,21 @@ import {
     TouchableOpacity,
     SafeAreaView,
     TouchableWithoutFeedback,
-    Dimensions,
+    Dimensions, Button,
 } from 'react-native';
-import { Camera } from 'expo-camera';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
+import {Camera} from 'expo-camera';
+import {MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import colors from "../config/colors";
 
 const dimensions = Dimensions.get('screen')
-const cameraDimensions = 4/3
+const cameraDimensions = 4 / 3
 const cameraContainerHeight = dimensions.width * cameraDimensions
-const topButtonContainerHeight = (dimensions.height-dimensions.width * (1 + 1/3)) * 0.4
-const bottomButtonContainerHeight = (dimensions.height-dimensions.width * cameraDimensions)* 0.6
+const topButtonContainerHeight = (dimensions.height - dimensions.width * (1 + 1 / 3)) * 0.4
+const bottomButtonContainerHeight = (dimensions.height - dimensions.width * cameraDimensions) * 0.6
 const compression = 0.5
 
 export default function TakePictureScreen({navigation}) {
@@ -44,25 +44,33 @@ export default function TakePictureScreen({navigation}) {
         })();
     }, []);
 
-    if (hasCameraPermission === null || hasGalleryPermission === null) {
-        return <View />;
+/*    if (hasCameraPermission === null || hasGalleryPermission === null) {
+        return <View/>;
     }
     if (hasCameraPermission === false || hasGalleryPermission === false) {
         return <Text>No access to camera</Text>;
-    }
+    }*/
 
     const takePicture = async () => {
-        if(camera){
+        if (camera) {
             const data = await camera.takePictureAsync(/*{base64: true, quality: 0}*/)
             setPictureTaken(true)
             setImage(data.uri)
             const imageInfo = await FileSystem.getInfoAsync(data.uri)
             const manipulatedImg = await compress(data.uri)
-            navigation.push('pictureTaken', {picture: manipulatedImg.uri, base64: manipulatedImg.base64, cameraDimensions})
+            navigation.push('pictureTaken', {
+                picture: manipulatedImg.uri,
+                base64: manipulatedImg.base64,
+                cameraDimensions
+            })
         }
     }
 
     const pickImage = async () => {
+        if (!hasGalleryPermission){
+            alert('The app has no permission to use your gallery.')
+            return
+        }
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
@@ -84,7 +92,7 @@ export default function TakePictureScreen({navigation}) {
         return await ImageManipulator.manipulateAsync(
             imgUri,
             [{resize: {width: dimensions.width}}],
-            { compress: compression, format: ImageManipulator.SaveFormat.JPEG, base64: true}
+            {compress: compression, format: ImageManipulator.SaveFormat.JPEG, base64: true}
         );
     };
 
@@ -119,27 +127,36 @@ export default function TakePictureScreen({navigation}) {
         <SafeAreaView style={styles.container}>
             <View style={styles.topButtonContainer}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <MaterialIcons name="arrow-back" size={35} color="white" />
+                    <MaterialIcons name="arrow-back" size={35} color="white"/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setFlash()}>
-                    <MaterialIcons name={flashIcon} size={35} color="white" />
+                    <MaterialIcons name={flashIcon} size={35} color="white"/>
                 </TouchableOpacity>
             </View>
             <TouchableWithoutFeedback onPress={handleTap}>
                 <View style={styles.cameraContainer}>
-                    <Camera
-                        ref={ref => setCamera(ref)}
-                        flashMode={flashMode}
-                        style={styles.camera}
-                        type={type}
-                        ratio={'4:3'}
-                    />
+                    {
+                        hasCameraPermission ?
+                            <Camera
+                                ref={ref => setCamera(ref)}
+                                flashMode={flashMode}
+                                style={styles.camera}
+                                type={type}
+                                ratio={'4:3'}
+                            />
+                            :
+                            <View style={{alignSelf: 'center'}}>
+                                <Text style={styles.text}>The app has no permission to use your camera.</Text>
+                                <Text style={styles.text}>Please check your settings.</Text>
+                                <Button title={'go back'} onPress={()=> navigation.goBack()}/>
+                            </View>
+                    }
                 </View>
             </TouchableWithoutFeedback>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     onPress={switchCamera}>
-                    <MaterialCommunityIcons name="reload" size={35} color="white" />
+                    <MaterialCommunityIcons name="reload" size={35} color="white"/>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => takePicture()} View style={styles.triggerButton}>
@@ -147,7 +164,7 @@ export default function TakePictureScreen({navigation}) {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => pickImage()}>
-                    <FontAwesome name="picture-o" size={30} color="white" />
+                    <FontAwesome name="picture-o" size={30} color="white"/>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
@@ -155,39 +172,40 @@ export default function TakePictureScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         justifyContent: 'center',
         height: '100%',
         alignItems: 'center',
         backgroundColor: colors.black
     },
-    buttonContainer:{
+    buttonContainer: {
         width: '100%',
         height: bottomButtonContainerHeight,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
-    topButtonContainer:{
+    topButtonContainer: {
         flexDirection: 'row',
-        width:'100%',
+        width: '100%',
         height: topButtonContainerHeight,
         justifyContent: 'space-between',
         alignItems: 'flex-end',
         padding: 25,
     },
-    button:{
+    button: {
         width: '33%',
     },
     cameraContainer: {
         /*flex: 1,*/
         height: cameraContainerHeight,
         flexDirection: 'row',
+        justifyContent: 'center',
     },
     camera: {
         flex: 1,
     },
-    triggerButton:{
+    triggerButton: {
         height: 80,
         width: 80,
         borderRadius: 40,
@@ -195,7 +213,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    triggerButtonChild:{
+    triggerButtonChild: {
         borderRadius: 35,
         height: 70,
         width: 70,
@@ -203,5 +221,9 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'black',
     },
+    text:{
+        color: colors.white,
+        textAlign: 'center'
+    }
 
 })
