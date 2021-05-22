@@ -136,6 +136,7 @@ export default function ClosetScreen({
     //const [closetItems, setClosetItems] = useState(closet);
 
     const deleteFromCloset = (id, isModal = false, callBackFunc) => {
+        console.log("id", id);
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
             {
                 text: 'Cancel',
@@ -149,7 +150,7 @@ export default function ClosetScreen({
                         const result = await deleteClosetApi.request(id);
 
                         if (!result.ok) {
-                            return alert(result.data.message ? result.data.message : "Something went wrong.");
+                            return alert(result.data?.message ? result.data.message : "Something went wrong.");
                         }
 
                         getClosetApi.setData(getClosetApi.data.filter(item => item.id !== id));
@@ -415,8 +416,8 @@ const styles = StyleSheet.create({
     sectionContentRel: {
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: 25,
-        paddingBottom: 25,
+        paddingTop: 40,
+        paddingBottom: 40,
     },
     text: {
         color: colors.lighter,

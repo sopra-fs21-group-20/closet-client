@@ -114,7 +114,8 @@ function OutfitItem({
                     </TouchableOpacity>
                     <KeyboardAvoidingView
                         behavior={Platform.OS === "ios" ? "position" : "height"}
-                        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+                        keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
+                        style={{overflow: "hidden"}}
                     >
                         <Form
                             initialValues={{
@@ -128,7 +129,7 @@ function OutfitItem({
                         >
                             <ScrollView style={stylesPopup.scrollView} persistentScrollbar={true}>
                                 <PostImagePicker name="image" base64={true} forceUpdateFunc={setForceUpdate}
-                                                 forceUpdateVal={forceUpdate}/>
+                                                 forceUpdateVal={forceUpdate} isInPopup={true}/>
                                 <FormField
                                     maxLength={100}
                                     name="title"

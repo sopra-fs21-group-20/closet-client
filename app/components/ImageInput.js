@@ -13,7 +13,7 @@ import colors from "../config/colors";
 import {useFormikContext} from "formik";
 import Image2 from "./Image";
 
-function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, editable, hasMultiple}) {
+function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, editable, hasMultiple, isInPopup}) {
     const {values} = useFormikContext();
 
     const [forceUpdate, setForceUpdate] = useState(0);
@@ -66,7 +66,7 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
 
     return (
         <TouchableOpacity onPress={handlePress}>
-            <View style={[styles.container, !hasMultiple ? {
+            <View style={[styles.container, !hasMultiple && !isInPopup ? {
                 width: Dimensions.get("screen").width - 20,
                 height: Dimensions.get("screen").width - 20,
             } : null]}>

@@ -2,16 +2,10 @@ import React from "react";
 import {Dimensions, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 
 function ModalLike({isVisible, onBackdropPress, children}) {
-    if(isVisible) return (
-        <TouchableWithoutFeedback onPress={() => {
-            onBackdropPress()
-        }}>
-            <View style={[styles.backdrop]}>
-                <TouchableWithoutFeedback>
-                    {children}
-                </TouchableWithoutFeedback>
-            </View>
-        </TouchableWithoutFeedback>
+    if (isVisible) return (
+        <View style={[styles.backdrop]}>
+            {children}
+        </View>
     );
     else return null;
 }

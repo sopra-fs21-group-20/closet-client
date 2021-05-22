@@ -6,7 +6,7 @@ import PostInputList from "../PostInputList";
 import {ScrollView, StyleSheet, View} from "react-native";
 import ImageInput from "../ImageInput";
 
-function PostImagePicker({name, base64 = false, hasMultiple = false, editable = true, forceUpdateFunc = () => {}, forceUpdateVal = 0}) {
+function PostImagePicker({name, base64 = false, hasMultiple = false, editable = true, forceUpdateFunc = () => {}, forceUpdateVal = 0, isInPopup = false}) {
     const {errors, setFieldValue, touched, values} = useFormikContext();
 
     const [imageUris, setImageUris] = useState(values[name]);
@@ -39,11 +39,11 @@ function PostImagePicker({name, base64 = false, hasMultiple = false, editable = 
                         {imageUris.map((uri, index) => (
                             <View key={index} style={styles.image}>
                                 <ImageInput
-                                    onRemoveImage={handleRemove} index={index} name={name} editable={editable} hasMultiple={hasMultiple}
+                                    onRemoveImage={handleRemove} index={index} name={name} editable={editable} hasMultiple={hasMultiple} isInPopup={isInPopup}
                                 />
                             </View>
                         ))}
-                        <ImageInput onAddImage={handleAdd} newImage={true} name={name} editable={editable} index={0} hasMultiple={hasMultiple}/>
+                        <ImageInput onAddImage={handleAdd} newImage={true} name={name} editable={editable} index={0} hasMultiple={hasMultiple} isInPopup={isInPopup}/>
                     </View>
                 </ScrollView>
             </View>}
@@ -57,6 +57,7 @@ function PostImagePicker({name, base64 = false, hasMultiple = false, editable = 
                             editable={editable}
                             index={0}
                             hasMultiple={hasMultiple}
+                            isInPopup={isInPopup}
                         />
                     </View>
                 </View>
