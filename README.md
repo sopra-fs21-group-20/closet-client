@@ -80,15 +80,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-MyOutfit's server is the magic that powers the MyOutfit mobile application. The server facilitates a wide variety of client applications and follows the standard client/server model.
+MyOutfit's client is the magic that provides touch and feel to MyOutfit mobile application. The client depends on the [server](https://github.com/sopra-fs21-group-20/closet-server) following a client/server architecture.
 
 
 ### Built With
 
-* [Spring Boot](https://github.com/spring-projects/spring-boot)
-* [Postgresql](https://github.com/postgres/postgres)
-* [Hibernate](https://github.com/hibernate/)
-* [JPA](https://github.com/spring-projects/spring-data-jpa)
+* [React Native](https://github.com/facebook/react-native)
 
 <!-- GETTING STARTED -->
 ## Getting Started
