@@ -125,8 +125,8 @@ You now have a local server process running.
 
 The current highest priority contributions are:
 
-* Further testing and refinement of the core engine
-* Integration of a proprietary background removal extension
+* Bug fixing and seamless functionality cross-platform
+* Integration of a proprietary background removal feature
 * Extension of the community features
 
 Please see the [open issues](https://github.com/sopra-fs21-group-20/closet-client/issues) for a further list of proposed features (and known issues).
