@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {
+    Alert,
     Animated,
     Image,
     Platform,
@@ -26,6 +27,7 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 export default function MirrorScreen({menuOpen, isInjected = false}) {
 
     const getOutfitApi = useApi(outfitApi.getOutfits);
+    const deleteOutfitApi = useApi(outfitApi.deleteOutfit);
 
     useEffect(() => {
         getOutfitApi.request();
@@ -207,10 +209,35 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
         setCurrentOutfit(currentOutfit + 1);
     };
 
+    const deleteFromMirror = (id) => {
+        console.log("id", id);
+        Alert.alert("Confirm deletion:", "Are you sure you want to delete this outfit?", [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            {
+                text: 'Delete',
+                onPress: async () => {
+                    if (getOutfitApi.data.find(item => item.id === id)) {
+                        const result = await deleteOutfitApi.request(id);
+
+                        if (!result.ok) {
+                            return alert(result.data?.message ? result.data.message : "Something went wrong.");
+                        }
+
+                        getOutfitApi.setData(getOutfitApi.data.filter(item => item.id !== id));
+                    }
+                },
+            },
+        ]);
+    }
+
     return (
         <View style={{flex: 1}}>
             <ActivityIndicator visible={getOutfitApi.loading}/>
-            <Screen>
+            {getOutfitApi.data.length >= 1 ? <Screen>
                 {currentOutfit !== 0 && <TouchableOpacity onPress={() => {
                     goToPrevPage();
                 }} style={[styles.navButton, styles.prevButton]}>
@@ -250,7 +277,7 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
                             return <View>
                                 <Canvas outfit={item.outfitItems} positions={item.itemPositions}
                                         key={`canvas-${item.id}`}/>
-                                <CanvasItems outfit={item} key={`canvasItem-${item.id}`}/>
+                                <CanvasItems outfit={item} key={`canvasItem-${item.id}`} deleteFunc={deleteFromMirror} isInjected={isInjected} itemId={item.id}/>
                             </View>
                         }}/>
                 </ScrollView>
@@ -264,7 +291,10 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
                         });
                     }}/>
                 </View>}
-            </Screen>
+            </Screen> :
+            <Screen style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Text style={{color: colors.light}}>Seems like you have not created any outfits yet. Click on the plus to change that.</Text>
+            </Screen>}
         </View>
     );
 }

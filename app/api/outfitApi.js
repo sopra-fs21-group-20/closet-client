@@ -33,6 +33,10 @@ const deleteItem = (id) => {
     return client.delete("/items/" + id);
 }
 
+const deleteOutfit = (id) => {
+    return client.delete("/outfits/" + id);
+}
+
 export default {
     getOutfits,
     addOutfit,
@@ -40,4 +44,5 @@ export default {
     postItem,
     putItem,
     deleteItem,
+    deleteOutfit
 };
