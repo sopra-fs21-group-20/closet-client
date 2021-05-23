@@ -12,7 +12,7 @@ const paddingBetweenTiles = 3;
 
 export default function Gallery({data}) {
 
-    const windowWidth = Dimensions.get("window").width-20-(4*paddingBetweenTiles)
+    const windowWidth = Dimensions.get("screen").width-(4*paddingBetweenTiles)
     const itemsOnLine = 3
 
     return (
