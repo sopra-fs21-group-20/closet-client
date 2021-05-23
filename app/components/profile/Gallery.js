@@ -17,7 +17,7 @@ export default function Gallery({data}) {
 
     return (
         <View style={styles.container}>
-            {data.map((item, index) => <ProfilePost key={index} imageUrl={item.images[0].url} paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>)}
+            {data.map((item, index) => <ProfilePost key={index} data={item} paddingBetweenTiles={paddingBetweenTiles} size={windowWidth/itemsOnLine}/>)}
         </View>
     );
 }

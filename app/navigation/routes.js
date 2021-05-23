@@ -11,4 +11,5 @@ export default Object.freeze({
   OUTFIT: "MirrorScreen",
   REGISTER: "Register",
   CAMERA: "cameraNavigator",
+  POSTDETAIL: "PostDetail"
 });

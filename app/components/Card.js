@@ -39,7 +39,8 @@ function Card({
                   onPress,
                   index,
                   onCommentClick,
-                  viewableCards
+                  viewableCards,
+                  isInjected = false
               }) {
 
     const scrollableImages = useRef();
@@ -162,7 +163,7 @@ function Card({
                 <View style={styles.detailsContainer}>
                     {caption ?
                         <View style={styles.caption}><Text style={{color: colors.white}}>{caption}</Text></View> : null}
-                    <LivePoll progress={progress}
+                    {!isInjected && <LivePoll progress={progress}
                               liked={liked}
                               disliked={disliked}
                               handleLike={handleLike}
@@ -170,7 +171,7 @@ function Card({
                               lightTheme={false/*index % 2 !== 0*/}
                               post_id={post_id}
                               processingRequest={processingRequest}
-                    />
+                    />}
                     {/*<UserDisplay
                     username={username}
                     profileImage={profileImage}
