@@ -4,7 +4,7 @@ import {
     StyleSheet,
     Image,
     TouchableWithoutFeedback,
-    Alert, TouchableOpacity, Dimensions,
+    Alert, TouchableOpacity, Dimensions, ActionSheetIOS,
 } from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -47,6 +47,23 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
         if(editable || newImage) selectImage();
     };
 
+    const onPress = () =>
+        ActionSheetIOS.showActionSheetWithOptions(
+            {
+                options: ['Cancel', 'Camera Roll', 'Camera'],
+                cancelButtonIndex: 0,
+            },
+            buttonIndex => {
+                if (buttonIndex === 0) {
+                    // cancel action
+                } else if (buttonIndex === 1) {
+                    selectImage();
+                } else if (buttonIndex === 2) {
+                    console.log('2')
+                }
+            }
+        );
+
     const selectImage = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -64,8 +81,9 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
         }
     };
 
+
     return (
-        <TouchableOpacity onPress={handlePress}>
+        <TouchableOpacity onPress={onPress}>
             <View style={[styles.container, !hasMultiple && !isInPopup ? {
                 width: Dimensions.get("screen").width - 20,
                 height: Dimensions.get("screen").width - 20,
