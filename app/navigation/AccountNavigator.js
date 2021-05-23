@@ -11,6 +11,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {DrawerContainer} from "../components/DrawerContainer";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import UpdateProfileScreen from "../screens/UpdateProfileScreen";
+import AccountFeedNavigator from "./AccountFeedNavigator";
 
 
 const Drawer = createDrawerNavigator();
@@ -23,7 +24,7 @@ const AccountNavigator = () => {
             drawerContent={props => <DrawerContainer {...props}/>}
             drawerPosition={'right'}
         >
-            <Drawer.Screen name="Account" component={AccountScreen}/>
+            <Drawer.Screen name="AccountFeedNavigator" component={AccountFeedNavigator}/>
             <Drawer.Screen name="UpdateProfile" component={UpdateProfileScreen}/>
         </Drawer.Navigator>
     )
