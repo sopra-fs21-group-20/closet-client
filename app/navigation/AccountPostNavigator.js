@@ -11,40 +11,24 @@ import {NavigationContainer} from "@react-navigation/native";
 import {DrawerContainer} from "../components/DrawerContainer";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import UpdateProfileScreen from "../screens/UpdateProfileScreen";
-import AccountPostNavigator from "./AccountPostNavigator";
+import PostDetailScreen from "../screens/PostDetailScreen";
 
+const Stack = createStackNavigator();
 
-const Drawer = createDrawerNavigator();
-
-const AccountNavigator = () => {
+const AccountPostNavigator = () => {
     const {user, logOut} = useAuth();
     return (
-        <Drawer.Navigator
-            independant={true}
-            drawerContent={props => <DrawerContainer {...props}/>}
-            drawerPosition={'right'}
-        >
-            <Drawer.Screen name="Account" component={AccountPostNavigator}/>
-            <Drawer.Screen name="UpdateProfile" component={UpdateProfileScreen}/>
-        </Drawer.Navigator>
-    )
-
-    /*return (
         <Stack.Navigator screenOptions={{
-            headerStyle: [styles.headerStyle],
-            headerTitle: user?.sub ? user.sub : "Account",
-            headerTitleStyle: styles.headerTitle,
+            headerShown: false
         }}>
-            <Stack.Screen name="Account" component={AccountScreen} options={{
-                headerRight: () => (
-                    <MaterialCommunityIcons name="logout" style={styles.headerRight} onPress={() => {
-                        logOut();
-                    }}/>
-                )
+            <Stack.Screen name="Account" component={AccountScreen} />
+            <Stack.Screen name="PostDetail" component={PostDetailScreen} options={{
+                headerShown: true,
+                headerBackTitle: null,
+                headerTitle: null
             }}/>
-            <Stack.Screen name="Messages" component={MessagesScreen}/>
         </Stack.Navigator>
-    )*/
+    )
 }
 
 const styles = StyleSheet.create({
@@ -65,4 +49,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AccountNavigator;
+export default AccountPostNavigator;

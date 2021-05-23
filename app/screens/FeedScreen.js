@@ -165,11 +165,7 @@ function FeedScreen({navigation}) {
 
     const handleModal = (outfit) => {
         setMyOutfit(outfit)
-        if (showModal === false) {
-            setShowModal(true)
-        } else {
-            setShowModal(false)
-        }
+        setShowModal(!showModal);
     }
 
     const navigateToComments = (post_id, captionAttrs, lightThemeEnabled) => {
