@@ -41,7 +41,7 @@ function LoginScreen() {
                 <Image2 style={styles.logo} defaultSource={require("../assets/logo-primary.png")} resizeMode={"contain"}/>
 
                 <Form
-                    initialValues={{username: "test", password: "test"}}
+                    initialValues={{username: "", password: ""}}
                     onSubmit={handleSubmit}
                     validationSchema={validationSchema}
                 >

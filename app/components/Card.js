@@ -206,7 +206,7 @@ function Card({
                         {outfit?.outfitItems && outfit?.itemPositions &&
                         <>
                             <Canvas outfit={outfit.outfitItems} positions={outfit.itemPositions} modal={true}/>
-                            <CanvasItems outfit={outfit}/>
+                            <CanvasItems outfit={outfit} isInjected={true}/>
                         </>}
                     </ScrollView>
                 </SafeAreaView>

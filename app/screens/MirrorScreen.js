@@ -236,7 +236,7 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
 
     return (
         <View style={{flex: 1}}>
-            <ActivityIndicator visible={getOutfitApi.loading}/>
+            <ActivityIndicator visible={getOutfitApi.loading || deleteOutfitApi.loading}/>
             {getOutfitApi.data.length >= 1 ? <Screen>
                 {currentOutfit !== 0 && <TouchableOpacity onPress={() => {
                     goToPrevPage();
