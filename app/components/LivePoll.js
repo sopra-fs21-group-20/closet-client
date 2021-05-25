@@ -15,14 +15,14 @@ function LivePoll({
                       handleLike,
                       handleDislike,
                       progress,
-                      processingRequest
+                      processingRequest,
+                      isInjected
                   }) {
-
 
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={handleDislike}>
+            {!isInjected && <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={handleDislike}>
                 <View style={styles.detailsContainer}>
                     {processingRequest ?
                         <View style={styles.loading}>
@@ -40,16 +40,16 @@ function LivePoll({
                             style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
                         />}
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <Progress.Bar
                 progress={progress}
-                width={Dimensions.get("window").width - 150}
+                width={isInjected ? Dimensions.get("window").width - 40 : Dimensions.get("window").width - 150}
                 color={'white'}
                 style={{
                     marginBottom: 0,
                     alignSelf: 'center',
                 }}/>
-            <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={
+            {!isInjected && <TouchableOpacity activeOpacity={(hasBeenLiked ? 1 : 0.2)} onPress={
                 handleLike}>
                 <View style={styles.detailsContainer}>
                     {processingRequest ?
@@ -68,7 +68,7 @@ function LivePoll({
                             style={[styles.icon, {color: (lightTheme ? lightThemeStyle.icon.color : styles.icon.color)}]}
                         />}
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity>}
         </View>
     );
 }

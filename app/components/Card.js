@@ -163,7 +163,7 @@ function Card({
                 <View style={styles.detailsContainer}>
                     {caption ?
                         <View style={styles.caption}><Text style={{color: colors.white}}>{caption}</Text></View> : null}
-                    {!isInjected && <LivePoll progress={progress}
+                    <LivePoll progress={progress}
                               liked={liked}
                               disliked={disliked}
                               handleLike={handleLike}
@@ -171,7 +171,8 @@ function Card({
                               lightTheme={false/*index % 2 !== 0*/}
                               post_id={post_id}
                               processingRequest={processingRequest}
-                    />}
+                              isInjected={isInjected}
+                    />
                     {/*<UserDisplay
                     username={username}
                     profileImage={profileImage}

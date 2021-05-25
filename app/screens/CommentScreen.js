@@ -160,21 +160,12 @@ const styles = StyleSheet.create({
     errorView: {
         flex: 1,
         backgroundColor: colors.darker,
-        paddingTop: 20,
     },
     errorViewInner: {
         flex: 1,
-        backgroundColor: colors.dark,
         alignItems: "center",
         justifyContent: "center",
         padding: 40,
-        borderTopLeftRadius: 50,
-        shadowColor: colors.black,
-        shadowOffset: {
-            height: -5
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
     },
     errorTextContainer: {
         height: "100%",
@@ -186,23 +177,12 @@ const styles = StyleSheet.create({
     },
     commentCard: {
         flex: 1,
-        backgroundColor: colors.dark,
-        borderRadius: 50,
-        marginTop: 20,
-        marginHorizontal: 10,
         padding: 20,
-        shadowColor: colors.black,
-        shadowOffset: {
-            height: -5
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
         zIndex:10,
     },
     commentCardAfter: {
         position: "absolute",
         bottom: 20,
-        backgroundColor: colors.dark,
         height: 300,
         width: Dimensions.get("window").width - 20,
         marginHorizontal: 10,
@@ -216,11 +196,8 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     footer: {
-        backgroundColor: colors.dark,
         paddingHorizontal: 20,
         zIndex: 10,
-        marginHorizontal: 10,
-        marginBottom: 20,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
     }

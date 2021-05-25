@@ -28,6 +28,10 @@ function PostDetailScreen({navigation, route}) {
         setShowModal(!showModal);
     }
 
+    const navigateToComments = (post_id, captionAttrs, lightThemeEnabled) => {
+        navigation.push(routes.COMMENTS, {post_id, captionAttrs, lightThemeEnabled});
+    };
+
     return (
         <>
             <Screen style={styles.screen}>
@@ -51,7 +55,7 @@ function PostDetailScreen({navigation, route}) {
                         comments={cardData.numberOfComments}
                         images={cardData.images}
                         index={0}
-                        onCommentClick={() => {}}
+                        onCommentClick={navigateToComments}
                         handleModal={handleModal}
                         viewableCards={[cardData.id]}
                         outfit={cardData.outfit}

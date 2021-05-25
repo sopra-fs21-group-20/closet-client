@@ -12,6 +12,7 @@ import {DrawerContainer} from "../components/DrawerContainer";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import UpdateProfileScreen from "../screens/UpdateProfileScreen";
 import PostDetailScreen from "../screens/PostDetailScreen";
+import CommentScreen from "../screens/CommentScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,11 @@ const AccountPostNavigator = () => {
                 headerShown: true,
                 headerBackTitle: null,
                 headerTitle: null
+            }}/>
+            <Stack.Screen name="Comments" component={CommentScreen} options={{
+                headerShown: true,
+                headerTitle: "Comments",
+                headerBackTitle: null,
             }}/>
         </Stack.Navigator>
     )
