@@ -2,8 +2,8 @@ import React, {createRef, useEffect, useRef, useState} from "react";
 import {
     Alert,
     Dimensions,
-    Image,
-    ImageBackground, KeyboardAvoidingView, Platform,
+    ImageBackground,
+    Platform,
     ScrollView,
     StyleSheet,
     Text,
@@ -16,17 +16,14 @@ import Screen from "../components/Screen";
 import colors from "../config/colors";
 import Carousel, {Pagination} from "react-native-snap-carousel";
 import Accordion from "react-native-collapsible/Accordion";
-import defaultStyles from "../config/styles";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import OutfitItem from "../components/OutfitItem";
-import fabrics from "../config/fabrics";
 import categories from "../config/categories";
 import useApi from "../hooks/useApi";
 import outfitApi from "../api/outfitApi";
 import ModalLike from "../components/ModalLike";
 import ActivityIndicator from "../components/ActivityIndicator";
 import UploadScreen from "./UploadScreen";
-import feed from "../api/feed";
 
 const filterCategories = (categories, closetItems) => {
     const tempCategories = [];
@@ -39,7 +36,6 @@ const filterCategories = (categories, closetItems) => {
 }
 
 export default function ClosetScreen({
-                                         navigation,
                                          editMode = false,
                                          menuOpen,
                                          isInjected = false,
@@ -53,90 +49,7 @@ export default function ClosetScreen({
         getClosetApi.request();
     }, []);
 
-    /*const closet = [
-        {
-            id: 0,
-            categoryId: 4,
-            name: "Jeans",
-            brand: "Armani",
-            attributes: {
-                color: "marineblue",
-                fabric: fabrics.DENIM,
-            },
-            signedUrl: "https://img01.ztat.net/article/spp-media-p1/c13f661615af36ebb5cbacd662f10719/81535596902346689bfd3ac5de2ebddf.jpg?imwidth=765&filter=packshot",
-        },
-        {
-            id: 1,
-            categoryId: 4,
-            name: "Joggers",
-            brand: "Nike",
-            attributes: {
-                color: "lightgrey",
-                fabric: fabrics.WOOL,
-            },
-            signedUrl: "https://cdn-img.prettylittlething.com/d/9/a/a/d9aad4733cf939f38dafaa3a2f27cd8300df4ea5_CLW0864_3.JPG",
-        },
-        {
-            id: 2,
-            categoryId: 4,
-            name: "Jeans",
-            brand: "Carhardt",
-            attributes: {
-                color: "ultramarine",
-                fabric: fabrics.DENIM,
-            },
-            signedUrl: "https://cdn.skatedeluxe.com/thumb/tJv6tn26l8Ds_vgese0QoUdV3XI=/fit-in/420x490/filters:fill(white):brightness(-4)/product/112940-1-CarharttWIP-WPiercePantMaverick.jpg",
-        },
-        {
-            id: 3,
-            categoryId: 4,
-            name: "Shorts",
-            brand: "Pull&Bear",
-            attributes: {
-                color: "grey",
-                fabric: fabrics.WOOL,
-            },
-            signedUrl: "https://static.pullandbear.net/2/photos/2021/V/0/2/p/4695/500/802/4695500802_1_1_3.jpg?t=1618923076619",
-        },
-        {
-            id: 4,
-            categoryId: 4,
-            name: "Jeans",
-            brand: "Pull&Bear",
-            attributes: {
-                color: "ultramarine",
-                fabric: fabrics.DENIM,
-            },
-            signedUrl: "https://static.pullandbear.net/2/photos/2021/V/0/1/p/4681/309/427/4681309427_1_1_3.jpg?t=1618572622717",
-        },
-        {
-            id: 5,
-            categoryId: 1,
-            name: "Leather Jacket",
-            brand: "Armani",
-            attributes: {
-                color: "black",
-                fabric: fabrics.LEATHER,
-            },
-            signedUrl: "https://www.plein.com/dw/image/v2/BBKQ_PRD/on/demandware.static/-/Sites-plein-master-catalog/default/dwd79b4722/images/large/A17C-MLB0255-PLE046C_02_sf.jpg?sw=603&sh=768",
-        },
-        {
-            id: 6,
-            categoryId: 3,
-            name: "Hoodie",
-            brand: "Hollister",
-            attributes: {
-                color: "black",
-                fabric: fabrics.WOOL,
-            },
-            signedUrl: "https://img01.ztat.net/article/spp-media-p1/81884809114745e1a95320958231ae31/e6dfeb1165834e6aaff00ad40a8fff41.jpg?imwidth=1800&filter=packshot",
-        },
-    ];*/
-
-    //const [closetItems, setClosetItems] = useState(closet);
-
     const deleteFromCloset = (id, isModal = false, callBackFunc) => {
-        console.log("id", id);
         Alert.alert("Confirm deletion:", "Are you sure you want to delete this item?", [
             {
                 text: 'Cancel',
@@ -305,6 +218,7 @@ export default function ClosetScreen({
                     onLayout={(event) => {
                         goToLast(index, carouselItems.length -1);
                     }}
+                    containerCustomStyle={{zIndex: 1}}
                 />
             </View>
         );
@@ -353,14 +267,14 @@ export default function ClosetScreen({
                         sectionContainerStyle={styles.sectionContainer}
                     />
                 </ScrollView>
-                {!isInjected && Platform.OS === "ios" && <ModalLike
+                {/*{!isInjected && <ModalLike
                     isVisible={modalIsShown}
                     onBackdropPress={() => setModalIsShown(false)}>
                     <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState}
                                 setStateFunc={setModalState} modalCloseFunc={setModalIsShown}
                                 deleteFunc={deleteFromCloset} addFunc={addToCloset}/>
-                </ModalLike>}
-                {!isInjected && Platform.OS === "android" && <Modal
+                </ModalLike>}*/}
+                {!isInjected && <Modal
                     isVisible={modalIsShown}
                     onBackdropPress={() => setModalIsShown(false)}>
                     <OutfitItem data={modalData} setDataFunc={setModalData} state={modalState}
@@ -434,21 +348,23 @@ const styles = StyleSheet.create({
         top: 25,
         justifyContent: "center",
         alignItems: "center",
+        zIndex: 10,
     },
     newItemRel: {
         position: "relative",
         left: null,
         top: null,
+        zIndex: 10,
     },
     newItemOverlay: {
         width: 107,
         height: 140,
-        backgroundColor: 'transparent',
         position: "absolute",
         left: 20,
         top: 25,
         justifyContent: "center",
         alignItems: "center",
+        zIndex: 10,
     },
     newItemIcon: {},
 });

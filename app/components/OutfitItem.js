@@ -340,7 +340,7 @@ const stylesPopup = StyleSheet.create({
         paddingBottom: 15,
         flexDirection: "column",
         position: "relative",
-        marginVertical: 30,
+        marginVertical: 60,
     },
     scrollView: {
         marginBottom: 80,
