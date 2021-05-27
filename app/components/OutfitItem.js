@@ -58,7 +58,6 @@ function OutfitItem({
     const handleSubmit = async (listing) => {
         if (listing.title === "") return Alert.alert("Please fill out the title.");
         if (listing.brand === "") return Alert.alert("Please fill out the brand.");
-        if (Object.keys(data.attributes).length === 0) return Alert.alert("Please add at least one attribute.");
         if (listing.image[0] === null) return Alert.alert("Please add an image.");
 
         const tempData = data;
