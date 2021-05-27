@@ -7,7 +7,7 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
+    TouchableOpacity, TouchableWithoutFeedback,
     View
 } from "react-native";
 import Modal from 'react-native-modal';
@@ -24,6 +24,7 @@ import outfitApi from "../api/outfitApi";
 import ModalLike from "../components/ModalLike";
 import ActivityIndicator from "../components/ActivityIndicator";
 import UploadScreen from "./UploadScreen";
+
 
 const filterCategories = (categories, closetItems) => {
     const tempCategories = [];
@@ -199,12 +200,12 @@ export default function ClosetScreen({
                     </View>
                 </TouchableOpacity>}
                 {!isInjected && carouselItems.length ? (
-                    <TouchableOpacity onPress={() => {
+                    <TouchableWithoutFeedback onPress={() => {
                         itemTap({categoryId: section.categoryId}, 3, true);
                     }} style={{zIndex: 10}}>
                         <View style={styles.newItemOverlay}>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableWithoutFeedback>
                 ) : null}
                 <Carousel
                     data={carouselItems}
