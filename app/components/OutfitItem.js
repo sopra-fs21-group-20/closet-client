@@ -53,6 +53,7 @@ function OutfitItem({
     let badgeColor = "";
     if (data.attributes) {
         badgeColor = data.attributes.color;
+        console.log("attrs", data.attributes);
     }
 
     const handleSubmit = async (listing) => {
@@ -146,8 +147,10 @@ function OutfitItem({
                                         {
                                             data.attributes &&
                                             Object.keys(data.attributes).length !== 0 &&
-                                            Object.entries(data.attributes).map(([key, value], i) =>
-                                                <Badge key={i} type={key}>{value}</Badge>
+                                            Object.entries(data.attributes).map(([key, value], i) => {
+                                                    if(value) return (<Badge
+                                                        key={i} color={badgeColor} pressable={false}>{value}</Badge>)
+                                                }
                                             )
                                         }
                                         <Badge type={"new"} onPressFunction={showActionSheet}>New...</Badge>
@@ -189,9 +192,10 @@ function OutfitItem({
                             <View style={stylesPopup.badgeContainer}>
                                 <Text>
                                     {
-                                        data.attributes && Object.entries(data.attributes).map(([key, value], i) =>
-                                            <Badge
-                                                key={i} color={badgeColor}>{value}</Badge>)
+                                        data.attributes && Object.entries(data.attributes).map(([key, value], i) => {
+                                            if(value) return (<Badge
+                                                key={i} color={badgeColor} pressable={false}>{value}</Badge>)
+                                        })
                                     }
                                 </Text>
                             </View>
@@ -220,8 +224,10 @@ function OutfitItem({
                                 style={stylesList.brand}>{data.brand}</Text></Text>
                             <Text style={stylesList.attributes}>
                                 {
-                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => <Badge
-                                        key={i} color={badgeColor} pressable={false}>{value}</Badge>)
+                                    data.attributes && Object.entries(data.attributes).map(([key, value], i) => {
+                                        if(value) return (<Badge
+                                            key={i} color={badgeColor} pressable={false}>{value}</Badge>)
+                                    })
                                 }
                             </Text>
                         </View>
@@ -307,7 +313,8 @@ const stylesList = StyleSheet.create({
     },
     information: {
         flex: 1,
-        marginLeft: 20
+        marginLeft: 20,
+        width: Dimensions.get("window").width - 120,
     },
     title: {
         fontSize: 20,

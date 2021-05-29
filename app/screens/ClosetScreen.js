@@ -3,7 +3,7 @@ import {
     Alert,
     Dimensions,
     ImageBackground,
-    Platform,
+    Platform, RefreshControl,
     ScrollView,
     StyleSheet,
     Text,
@@ -45,6 +45,10 @@ export default function ClosetScreen({
 
     const getClosetApi = useApi(outfitApi.getCloset);
     const deleteClosetApi = useApi(outfitApi.deleteItem);
+
+    const onRefresh = () => {
+        getClosetApi.request();
+    };
 
     useEffect(() => {
         getClosetApi.request();
@@ -256,7 +260,13 @@ export default function ClosetScreen({
                         const {height} = event.nativeEvent.layout;
                         console.log("height", height);
                         setContainerHeight(height);
-                    }}*/
+                    }}*/ refreshControl={
+                    <RefreshControl
+                        refreshing={getClosetApi.loading}
+                        onRefresh={onRefresh}
+                        colors={[colors.light]}
+                        tintColor={colors.light}
+                    />}
                 >
                     <Accordion
                         sections={isInjected ? filterCategories(categories, getClosetApi.data) : categories}

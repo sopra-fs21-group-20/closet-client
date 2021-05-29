@@ -224,6 +224,7 @@ export default function MirrorScreen({menuOpen, isInjected = false}) {
                         const result = await deleteOutfitApi.request(id);
 
                         if (!result.ok) {
+                            console.log(result);
                             return alert(result.data?.message ? result.data.message : "Something went wrong.");
                         }
 
