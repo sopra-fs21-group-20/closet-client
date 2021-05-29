@@ -293,7 +293,6 @@ const stylesList = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 10,
         backgroundColor: colors.white,
-        height: 80,
         width: '100%',
         borderRadius: 10,
         paddingHorizontal: 10,
