@@ -1,17 +1,3 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
-***
-***
-***
-*** To avoid retyping too much info. Do a search and replace for the following:
-*** sopra-fs21-group-20, closet-server, email, project_title, project_description
--->
-
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -152,6 +138,12 @@ expo start
 ```
 
 You now have a local server process running.
+
+In order to actually run and emulate the server process as it would look on a mobile device, you need to have an emulator installed. 
+Please find more details at the following links:
+
+[iOs](https://docs.expo.io/workflow/ios-simulator/)
+[Android](https://docs.expo.io/workflow/android-studio-emulator/)
 
 ## Roadmap
 
