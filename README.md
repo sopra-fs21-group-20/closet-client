@@ -142,8 +142,8 @@ You now have a local server process running.
 In order to actually run and emulate the server process as it would look on a mobile device, you need to have an emulator installed. 
 Please find more details at the following links:
 
-[iOs](https://docs.expo.io/workflow/ios-simulator/)
-[Android](https://docs.expo.io/workflow/android-studio-emulator/)
+For iOS: [here](https://docs.expo.io/workflow/ios-simulator/)
+For Android: [here](https://docs.expo.io/workflow/android-studio-emulator/)
 
 ## Roadmap
 
