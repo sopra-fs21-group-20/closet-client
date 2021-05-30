@@ -47,8 +47,8 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
         if(editable || newImage) selectImage();
     };
 
-    const onPress = () =>
-        ActionSheetIOS.showActionSheetWithOptions(
+    const onPress = () => selectImage()
+        /*ActionSheetIOS.showActionSheetWithOptions(
             {
                 options: ['Cancel', 'Camera Roll', 'Camera'],
                 cancelButtonIndex: 0,
@@ -62,7 +62,7 @@ function ImageInput({onAddImage, onRemoveImage, newImage = false, index, name, e
                     console.log('2')
                 }
             }
-        );
+        );*/
 
     const selectImage = async () => {
         try {
