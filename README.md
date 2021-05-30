@@ -143,6 +143,7 @@ In order to actually run and emulate the server process as it would look on a mo
 Please find more details at the following links:
 
 For iOS: [here](https://docs.expo.io/workflow/ios-simulator/)
+
 For Android: [here](https://docs.expo.io/workflow/android-studio-emulator/)
 
 ## Roadmap
