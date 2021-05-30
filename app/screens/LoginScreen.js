@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {StyleSheet, Image, View} from "react-native";
+import {StyleSheet, Image, View, Dimensions} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -20,6 +20,8 @@ const validationSchema = Yup.object().shape({
     username: Yup.string().required().label("Username"),
     password: Yup.string().required().min(4).label("Password"),
 });
+
+const WIDTH = Dimensions.get('screen').width
 
 function LoginScreen() {
     const auth = useAuth();
@@ -88,12 +90,14 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     text:{
+        fontSize: 15,
         color: colors.white,
         textAlign: 'center'
     },
     textContainer:{
-        width: '100%',
+        width: WIDTH,
         position: 'absolute',
+        justifyContent: 'center',
         alignItems: 'center',
         bottom: 0
         ,
